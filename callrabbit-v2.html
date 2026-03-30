@@ -397,24 +397,10 @@
            Mobile defaults → desktop overrides.
            ============================================ */
 
-        /* --- LAYOUT SPACING --- */
-        .main-content {
-            padding: 76px 16px 16px;
-        }
-        .main-content > * + * {
-            margin-top: 20px;
-        }
-        .platform-section > * + * {
-            margin-top: 16px;
-        }
-
         /* --- NAV --- */
         #navbar-3d-container {
             width: 200px;
-            height: 28px;
-            display: block;
-            position: relative;
-            flex-shrink: 0;
+            margin: 0 auto;
         }
         #mobile-menu-btn {
             position: absolute;
@@ -488,10 +474,8 @@
             #contact form { padding: 48px; }
             .compliance-item .icon-circle { width: 56px; height: 56px; min-width: 56px; }
             .compliance-item .badge-text { font-size: 0.875rem; }
-            .main-content { padding: 128px 24px 80px; }
-            .main-content > * + * { margin-top: 64px; }
-            .platform-section > * + * { margin-top: 40px; }
             footer { padding: 48px; }
+            main { padding-left: 24px; padding-right: 24px; }
         }
 
         /* CSS Parallax Stars */
@@ -602,7 +586,7 @@
 <a href="#contact" class="bg-[#10B981] text-[#003824] px-5 py-3 rounded-full font-bold text-sm tracking-wide text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Get Started</a>
 </div>
 </nav>
-<main class="main-content max-w-7xl mx-auto relative z-10">
+<main class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Hero Section -->
 <section id="hero" class="relative w-full rounded-3xl p-6 md:p-12 lg:p-20 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-6 md:gap-12">
 <div class="absolute -right-20 -top-20 w-96 h-96 emerald-glow pointer-events-none"></div>
@@ -631,12 +615,12 @@
 </div>
 </section>
 <!-- Services Grid -->
-<section id="platform" class="platform-section">
+<section id="platform" class="space-y-16">
 <div class="max-w-3xl">
 <h2 class="text-xs uppercase tracking-[0.3em] font-black text-primary mb-4">Core Ecosystem</h2>
 <h3 class="text-4xl font-extrabold tracking-tight">Sculpted AI Solutions</h3>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
 <!-- Service Card 1 -->
 <div class="service-card tactile-raised rounded-2xl group transition-all duration-500 hover:-translate-y-2">
 <div class="icon-wrap rounded-2xl tactile-raised flex items-center justify-center border border-white/5">
@@ -687,8 +671,8 @@
 </div>
 </div>
 </section>
-<!-- Process Section (hidden on mobile) -->
-<section class="hidden md:block py-10 relative">
+<!-- Process Section -->
+<section class="py-10 relative">
 <div class="text-center mb-10">
 <h3 class="text-4xl font-extrabold tracking-tight">Seamless Implementation</h3>
 </div>
@@ -727,7 +711,7 @@
 </section>
 <!-- Industries Section (outside main for full-width centering) -->
 </main>
-<section id="solutions" class="space-y-6 md:space-y-12 py-4 md:py-8">
+<section id="solutions" class="space-y-12 py-8">
 <h3 class="text-3xl font-extrabold tracking-tight px-10 border-l-4 border-primary max-w-7xl mx-auto">Specialised for Industry</h3>
 <div class="swiper industry-swiper">
 <div class="swiper-wrapper">
@@ -1011,7 +995,7 @@
 </div>
 </div>
 </section>
-<main class="main-content max-w-7xl mx-auto relative z-10">
+<main class="pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Compliance Banner -->
 <section class="tactile-raised rounded-2xl md:rounded-3xl p-5 md:p-12 grid grid-cols-2 md:flex md:flex-wrap md:justify-between items-center gap-4 md:gap-12 border border-white/5">
 <div class="compliance-item flex items-center">
