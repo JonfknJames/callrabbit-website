@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CALL RABBIT | AI Phone &amp; Text Agent Platform</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-tint": "#4edea3",
+              "inverse-on-surface": "#303035",
+              "on-tertiary": "#650911",
+              "surface-variant": "#35343a",
+              "error-container": "#93000a",
+              "surface-container-lowest": "#0e0e13",
+              "surface-container-highest": "#35343a",
+              "on-secondary-fixed": "#002113",
+              "surface-dim": "#131318",
+              "on-secondary": "#013824",
+              "on-tertiary-container": "#711419",
+              "on-background": "#e4e1e8",
+              "on-surface-variant": "#bbcabf",
+              "tertiary-container": "#fc7c78",
+              "on-primary": "#003824",
+              "primary-fixed-dim": "#4edea3",
+              "inverse-primary": "#006c49",
+              "surface-container": "#1f1f24",
+              "on-primary-fixed-variant": "#005236",
+              "surface": "#131318",
+              "on-secondary-container": "#91c4a8",
+              "error": "#ffb4ab",
+              "surface-container-low": "#1b1b20",
+              "secondary": "#9ed2b5",
+              "outline-variant": "#3c4a42",
+              "outline": "#86948a",
+              "on-tertiary-fixed-variant": "#842225",
+              "surface-bright": "#39393e",
+              "primary-fixed": "#6ffbbe",
+              "secondary-fixed": "#baeed1",
+              "on-error-container": "#ffdad6",
+              "on-tertiary-fixed": "#410005",
+              "on-surface": "#e4e1e8",
+              "tertiary-fixed": "#ffdad7",
+              "surface-container-high": "#2a292f",
+              "on-primary-container": "#00422b",
+              "primary-container": "#10b981",
+              "secondary-fixed-dim": "#9ed2b5",
+              "tertiary": "#ffb3af",
+              "on-error": "#690005",
+              "background": "#131318",
+              "inverse-surface": "#e4e1e8",
+              "on-primary-fixed": "#002113",
+              "primary": "#4edea3",
+              "on-secondary-fixed-variant": "#1e4f3a",
+              "tertiary-fixed-dim": "#ffb3af",
+              "secondary-container": "#21523c"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131318;
+            color: #E4E1E8;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Tactical Neumorphic Classes */
+        .tactile-raised {
+            background-color: #1F1F24;
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.4), inset 1px 1px 0px rgba(255,255,255,0.05);
+        }
+
+        .tactile-sunken {
+            background-color: #0E0E13;
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), 1px 1px 0px rgba(255,255,255,0.02);
+        }
+
+        .tactile-button-idle {
+            background-color: #0E0E13;
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tactile-button-raised {
+            background-color: #10B981;
+            box-shadow: 8px 8px 16px rgba(0,0,0,0.4), inset 1px 1px 0px rgba(255,255,255,0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .tactile-button-raised:hover {
+            transform: translateY(-2px);
+            box-shadow: 12px 12px 24px rgba(0,0,0,0.5), inset 1px 1px 0px rgba(255,255,255,0.3);
+        }
+
+        .tactile-button-raised:active {
+            transform: translateY(0px);
+            box-shadow: inset 4px 4px 8px rgba(0,0,0,0.6);
+        }
+
+        .dot-grid {
+            background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .emerald-glow {
+            filter: blur(80px);
+            background: radial-gradient(circle, #10B981 0%, transparent 70%);
+            opacity: 0.15;
+        }
+
+        .horizontal-scroll-mask {
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-surface dot-grid">
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center w-full px-8">
+<div class="rounded-full mt-6 mx-auto max-w-5xl px-6 py-3 bg-[#22222A]/80 backdrop-blur-md flex items-center justify-between w-full shadow-[20px_20px_40px_rgba(0,0,0,0.4),inset_1px_1px_0px_rgba(255,255,255,0.05)] border border-white/5">
+<div class="text-xl font-black tracking-tighter text-[#E4E1E8] font-['Manrope']">
+                CALL RABBIT
+            </div>
+<div class="hidden md:flex items-center gap-8 font-['Manrope'] font-bold tracking-wider uppercase text-sm">
+<a class="text-[#10B981] border-b-2 border-[#10B981] pb-1 transition-all duration-300" href="#">Platform</a>
+<a class="text-[#BBCABF] hover:text-[#4EDE63] transition-all duration-300" href="#">Solutions</a>
+<a class="text-[#BBCABF] hover:text-[#4EDE63] transition-all duration-300" href="#">Pricing</a>
+<a class="text-[#BBCABF] hover:text-[#4EDE63] transition-all duration-300" href="#">Docs</a>
+</div>
+<button class="bg-[#10B981] text-[#003824] px-5 py-2 rounded-full font-bold text-sm tracking-wide active:scale-95 transition-transform duration-200">
+                Get Started
+            </button>
+</div>
+</nav>
+<main class="pt-32 pb-20 px-6 max-w-7xl mx-auto space-y-32">
+<!-- Hero Section -->
+<section class="relative w-full rounded-3xl p-12 md:p-20 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-12">
+<div class="absolute -right-20 -top-20 w-96 h-96 emerald-glow pointer-events-none"></div>
+<div class="w-full md:w-3/5 space-y-8 relative z-10">
+<h1 class="text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight text-on-surface">
+<span class="text-primary-container">Answer calls</span> and automate your business
+                </h1>
+<p class="text-lg md:text-xl text-on-surface-variant max-w-xl font-medium leading-relaxed">
+                    Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7. Tactile interaction meets neural processing.
+                </p>
+<div class="flex flex-wrap gap-6">
+<button class="tactile-button-raised text-on-primary px-8 py-4 rounded-xl font-bold text-lg tracking-wide uppercase">
+                        Start a project
+                    </button>
+<button class="tactile-button-idle border border-white/5 text-on-surface-variant px-8 py-4 rounded-xl font-bold text-lg tracking-wide uppercase hover:text-on-surface transition-colors">
+                        Try live demo
+                    </button>
+</div>
+</div>
+<div class="w-full md:w-2/5 flex justify-center items-center relative h-96">
+<!-- Abstract 3D Object Representing AI -->
+<div class="relative w-64 h-64 rounded-full tactile-raised flex items-center justify-center shadow-[inset_1px_1px_10px_rgba(255,255,255,0.1)]">
+<div class="w-48 h-48 rounded-full bg-gradient-to-br from-primary to-primary-container opacity-20 blur-2xl animate-pulse"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-8xl text-primary" style="font-variation-settings: 'wght' 200, 'FILL' 1;">globe</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Services Grid -->
+<section class="space-y-16">
+<div class="max-w-3xl">
+<h2 class="text-xs uppercase tracking-[0.3em] font-black text-primary mb-4">Core Ecosystem</h2>
+<h3 class="text-4xl font-extrabold tracking-tight">Sculpted AI Solutions</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+<!-- Service Card 1 -->
+<div class="tactile-raised p-8 rounded-3xl group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl tactile-raised flex items-center justify-center mb-8 border border-white/5 shadow-[inset_1px_1px_0px_rgba(255,255,255,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">settings_voice</span>
+</div>
+<h4 class="text-xl font-bold mb-4 tracking-tight">Voice Agents</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Low-latency neural voice synthesis that sounds indistinguishable from humans.</p>
+</div>
+<!-- Service Card 2 -->
+<div class="tactile-raised p-8 rounded-3xl group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl tactile-raised flex items-center justify-center mb-8 border border-white/5 shadow-[inset_1px_1px_0px_rgba(255,255,255,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">chat_bubble</span>
+</div>
+<h4 class="text-xl font-bold mb-4 tracking-tight">Text Agents</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Automate SMS, WhatsApp, and web chat with consistent brand personality.</p>
+</div>
+<!-- Service Card 3 -->
+<div class="tactile-raised p-8 rounded-3xl group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl tactile-raised flex items-center justify-center mb-8 border border-white/5 shadow-[inset_1px_1px_0px_rgba(255,255,255,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">hub</span>
+</div>
+<h4 class="text-xl font-bold mb-4 tracking-tight">Workflow Automation</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Deeply integrated triggers that update your CRM and internal pipelines instantly.</p>
+</div>
+<!-- Service Card 4 -->
+<div class="tactile-raised p-8 rounded-3xl group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl tactile-raised flex items-center justify-center mb-8 border border-white/5 shadow-[inset_1px_1px_0px_rgba(255,255,255,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">api</span>
+</div>
+<h4 class="text-xl font-bold mb-4 tracking-tight">Custom Integrations</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Connect CallRabbit to your existing tech stack via our robust enterprise API.</p>
+</div>
+<!-- Service Card 5 -->
+<div class="tactile-raised p-8 rounded-3xl group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl tactile-raised flex items-center justify-center mb-8 border border-white/5 shadow-[inset_1px_1px_0px_rgba(255,255,255,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">alt_route</span>
+</div>
+<h4 class="text-xl font-bold mb-4 tracking-tight">Smart Routing</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Intelligently qualify leads and route complex queries to the right human expert.</p>
+</div>
+<!-- Service Card 6 -->
+<div class="tactile-raised p-8 rounded-3xl group transition-all duration-500 hover:-translate-y-2">
+<div class="w-16 h-16 rounded-2xl tactile-raised flex items-center justify-center mb-8 border border-white/5 shadow-[inset_1px_1px_0px_rgba(255,255,255,0.1)]">
+<span class="material-symbols-outlined text-primary text-3xl">schedule</span>
+</div>
+<h4 class="text-xl font-bold mb-4 tracking-tight">Always On</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Global uptime with 24/7/365 coverage for your business without fatigue.</p>
+</div>
+</div>
+</section>
+<!-- Process Section -->
+<section class="py-20 relative">
+<div class="text-center mb-20">
+<h3 class="text-4xl font-extrabold tracking-tight">Seamless Implementation</h3>
+</div>
+<div class="relative flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-12 md:gap-0">
+<!-- Sunken connection line -->
+<div class="absolute top-1/2 left-0 w-full h-3 tactile-sunken rounded-full -translate-y-1/2 hidden md:block"></div>
+<!-- Step 1 -->
+<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="w-24 h-24 rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary text-2xl font-black shadow-[20px_20px_40px_rgba(0,0,0,0.5)]">
+                        1
+                    </div>
+<span class="text-sm font-bold tracking-widest uppercase">Connect</span>
+</div>
+<!-- Step 2 -->
+<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="w-24 h-24 rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary text-2xl font-black shadow-[20px_20px_40px_rgba(0,0,0,0.5)]">
+                        2
+                    </div>
+<span class="text-sm font-bold tracking-widest uppercase">Train</span>
+</div>
+<!-- Step 3 -->
+<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="w-24 h-24 rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary text-2xl font-black shadow-[20px_20px_40px_rgba(0,0,0,0.5)]">
+                        3
+                    </div>
+<span class="text-sm font-bold tracking-widest uppercase">Launch</span>
+</div>
+<!-- Step 4 -->
+<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="w-24 h-24 rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary text-2xl font-black shadow-[20px_20px_40px_rgba(0,0,0,0.5)]">
+                        4
+                    </div>
+<span class="text-sm font-bold tracking-widest uppercase">Optimize</span>
+</div>
+</div>
+</section>
+<!-- Industries Section -->
+<section class="space-y-12">
+<h3 class="text-3xl font-extrabold tracking-tight px-4 border-l-4 border-primary">Industry Specialists</h3>
+<div class="overflow-x-auto horizontal-scroll-mask pb-12 hide-scrollbar">
+<div class="flex gap-8 w-max px-4">
+<!-- Industry Card -->
+<div class="w-64 h-[400px] tactile-raised rounded-2xl p-6 flex flex-col justify-end relative overflow-hidden group hover:-translate-y-4 transition-transform duration-500">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-60"></div>
+<div class="absolute top-6 left-6 w-12 h-12 rounded-xl tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">home_repair_service</span>
+</div>
+<h4 class="relative z-10 text-xl font-black tracking-tight uppercase">Home Services</h4>
+</div>
+<div class="w-64 h-[400px] tactile-raised rounded-2xl p-6 flex flex-col justify-end relative overflow-hidden group hover:-translate-y-4 transition-transform duration-500 -ml-12">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-60"></div>
+<div class="absolute top-6 left-6 w-12 h-12 rounded-xl tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">medical_services</span>
+</div>
+<h4 class="relative z-10 text-xl font-black tracking-tight uppercase">Healthcare</h4>
+</div>
+<div class="w-64 h-[400px] tactile-raised rounded-2xl p-6 flex flex-col justify-end relative overflow-hidden group hover:-translate-y-4 transition-transform duration-500 -ml-12">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-60"></div>
+<div class="absolute top-6 left-6 w-12 h-12 rounded-xl tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">real_estate_agent</span>
+</div>
+<h4 class="relative z-10 text-xl font-black tracking-tight uppercase">Real Estate</h4>
+</div>
+<div class="w-64 h-[400px] tactile-raised rounded-2xl p-6 flex flex-col justify-end relative overflow-hidden group hover:-translate-y-4 transition-transform duration-500 -ml-12">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-60"></div>
+<div class="absolute top-6 left-6 w-12 h-12 rounded-xl tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">directions_car</span>
+</div>
+<h4 class="relative z-10 text-xl font-black tracking-tight uppercase">Automotive</h4>
+</div>
+<div class="w-64 h-[400px] tactile-raised rounded-2xl p-6 flex flex-col justify-end relative overflow-hidden group hover:-translate-y-4 transition-transform duration-500 -ml-12">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-60"></div>
+<div class="absolute top-6 left-6 w-12 h-12 rounded-xl tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">gavel</span>
+</div>
+<h4 class="relative z-10 text-xl font-black tracking-tight uppercase">Legal</h4>
+</div>
+<div class="w-64 h-[400px] tactile-raised rounded-2xl p-6 flex flex-col justify-end relative overflow-hidden group hover:-translate-y-4 transition-transform duration-500 -ml-12">
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-60"></div>
+<div class="absolute top-6 left-6 w-12 h-12 rounded-xl tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">shopping_cart</span>
+</div>
+<h4 class="relative z-10 text-xl font-black tracking-tight uppercase">E-Commerce</h4>
+</div>
+</div>
+</div>
+</section>
+<!-- Compliance Banner -->
+<section class="tactile-raised rounded-3xl p-12 flex flex-wrap justify-between items-center gap-12 border border-white/5">
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 rounded-full tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-weight="fill">verified_user</span>
+</div>
+<div class="font-bold tracking-widest uppercase text-xs">SOC2 Type II Compliant</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 rounded-full tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-weight="fill">health_and_safety</span>
+</div>
+<div class="font-bold tracking-widest uppercase text-xs">HIPAA Ready</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 rounded-full tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-weight="fill">policy</span>
+</div>
+<div class="font-bold tracking-widest uppercase text-xs">GDPR Compliant</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="w-14 h-14 rounded-full tactile-sunken flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-weight="fill">security</span>
+</div>
+<div class="font-bold tracking-widest uppercase text-xs">PCI-DSS Level 1</div>
+</div>
+</section>
+<!-- Live Demo CTA -->
+<section class="tactile-raised rounded-3xl p-16 relative overflow-hidden">
+<div class="absolute -right-40 -bottom-40 w-[600px] h-[600px] emerald-glow"></div>
+<div class="relative z-10 flex flex-col md:flex-row items-center gap-16">
+<div class="w-full md:w-1/2 space-y-8">
+<h2 class="text-5xl font-extrabold leading-tight">Talk to our AI agent <span class="text-primary">right now</span></h2>
+<p class="text-on-surface-variant text-lg font-medium leading-relaxed">Experience the weight of digital intelligence. Our demo agent can answer questions about pricing, features, and setup in real-time.</p>
+<button class="tactile-button-raised text-on-primary px-10 py-5 rounded-2xl font-black tracking-widest uppercase flex items-center gap-4">
+<span class="material-symbols-outlined">call</span>
+                        Call Test Number
+                    </button>
+</div>
+<div class="w-full md:w-1/2 flex justify-center">
+<div class="w-72 h-72 rounded-3xl tactile-raised flex items-center justify-center shadow-[inset_1px_1px_20px_rgba(255,255,255,0.05)]">
+<!-- Abstract Headset -->
+<div class="w-48 h-48 border-[12px] border-surface-container rounded-t-full relative">
+<div class="absolute -left-6 bottom-0 w-12 h-16 tactile-sunken rounded-lg"></div>
+<div class="absolute -right-6 bottom-0 w-12 h-16 tactile-sunken rounded-lg"></div>
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 w-4 h-24 bg-surface-container rotate-45 origin-top rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Contact Section -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+<div class="flex flex-col justify-center space-y-12">
+<h2 class="text-5xl font-black tracking-tighter">Ready to evolve?</h2>
+<div class="w-full h-80 tactile-raised rounded-3xl flex items-center justify-center overflow-hidden border border-white/5">
+<div class="w-32 h-32 tactile-sunken rounded-full flex items-center justify-center relative">
+<div class="w-16 h-16 bg-primary blur-3xl opacity-40"></div>
+<span class="material-symbols-outlined text-6xl text-primary" data-weight="fill">robot_2</span>
+</div>
+</div>
+</div>
+<div class="tactile-raised p-12 rounded-3xl border border-white/5 space-y-8">
+<div class="space-y-2">
+<label class="text-xs uppercase tracking-widest font-black text-on-surface-variant px-2">Your Name</label>
+<input class="w-full tactile-sunken border-none rounded-xl p-4 focus:ring-1 focus:ring-primary text-on-surface placeholder:text-on-surface-variant/30" placeholder="John Rabbit" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs uppercase tracking-widest font-black text-on-surface-variant px-2">Business Email</label>
+<input class="w-full tactile-sunken border-none rounded-xl p-4 focus:ring-1 focus:ring-primary text-on-surface placeholder:text-on-surface-variant/30" placeholder="growth@company.com" type="email"/>
+</div>
+<div class="space-y-2">
+<label class="text-xs uppercase tracking-widest font-black text-on-surface-variant px-2">Message</label>
+<textarea class="w-full tactile-sunken border-none rounded-xl p-4 focus:ring-1 focus:ring-primary text-on-surface placeholder:text-on-surface-variant/30" placeholder="Tell us about your automation goals..." rows="4"></textarea>
+</div>
+<button class="w-full tactile-button-raised text-on-primary py-5 rounded-2xl font-black tracking-widest uppercase text-center">
+                    Send message
+                </button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#131318] w-full py-12 border-t border-white/5 shadow-[inset_0px_4px_12px_rgba(0,0,0,0.5)]">
+<div class="max-w-7xl mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="text-lg font-bold text-[#BBCABF] font-['Manrope']">
+                CALL RABBIT
+            </div>
+<div class="flex gap-8 font-['Manrope'] text-xs tracking-widest uppercase font-medium">
+<a class="text-[#BBCABF]/60 hover:text-[#E4E1E8] transition-colors" href="#">Privacy</a>
+<a class="text-[#BBCABF]/60 hover:text-[#E4E1E8] transition-colors" href="#">Terms</a>
+<a class="text-[#BBCABF]/60 hover:text-[#E4E1E8] transition-colors" href="#">Security</a>
+<a class="text-[#BBCABF]/60 hover:text-[#E4E1E8] transition-colors" href="#">Status</a>
+</div>
+<div class="font-['Manrope'] text-xs tracking-widest uppercase font-medium text-[#BBCABF]/60">
+                © 2024 CALL RABBIT. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>

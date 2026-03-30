@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CallRabbit | AI Phone Agents for Modern Business</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface-container": "#1a1919",
+              "background": "#0e0e0e",
+              "surface": "#0e0e0e",
+              "outline": "#777575",
+              "surface-container-high": "#201f1f",
+              "secondary-fixed": "#5afcd2",
+              "tertiary-dim": "#00cdeb",
+              "on-primary-fixed-variant": "#006544",
+              "surface-container-lowest": "#000000",
+              "surface-bright": "#2c2c2c",
+              "surface-tint": "#69f6b8",
+              "on-secondary-fixed": "#004939",
+              "tertiary": "#77e6ff",
+              "on-surface": "#ffffff",
+              "surface-container-low": "#131313",
+              "tertiary-fixed": "#00dcfd",
+              "error": "#ff716c",
+              "on-background": "#ffffff",
+              "on-primary-container": "#002919",
+              "secondary": "#5afcd2",
+              "outline-variant": "#494847",
+              "on-error-container": "#ffa8a3",
+              "on-error": "#490006",
+              "on-tertiary": "#005360",
+              "on-primary-fixed": "#00452d",
+              "inverse-surface": "#fcf8f8",
+              "error-dim": "#d7383b",
+              "on-primary": "#005a3c",
+              "surface-container-highest": "#262626",
+              "primary-fixed": "#69f6b8",
+              "on-surface-variant": "#adaaaa",
+              "on-tertiary-fixed": "#00343c",
+              "on-tertiary-container": "#004955",
+              "on-tertiary-fixed-variant": "#005360",
+              "surface-dim": "#0e0e0e",
+              "primary-fixed-dim": "#58e7ab",
+              "tertiary-fixed-dim": "#00cdeb",
+              "secondary-fixed-dim": "#47edc4",
+              "on-secondary-fixed-variant": "#006853",
+              "inverse-primary": "#006d4a",
+              "primary-dim": "#58e7ab",
+              "secondary-dim": "#47edc4",
+              "primary-container": "#06b77f",
+              "surface-variant": "#262626",
+              "inverse-on-surface": "#565554",
+              "tertiary-container": "#00dcfd",
+              "secondary-container": "#006b56",
+              "error-container": "#9f0519",
+              "primary": "#69f6b8",
+              "on-secondary": "#005d4a",
+              "on-secondary-container": "#defff2"
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Manrope"],
+              "label": ["Manrope"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #0e0e0e; color: #ffffff; }
+        .glass-card { background: rgba(38, 38, 38, 0.6); backdrop-filter: blur(20px); }
+        .primary-gradient { background: linear-gradient(135deg, #69f6b8 0%, #06b77f 100%); }
+        .text-glow { text-shadow: 0 0 20px rgba(105, 246, 184, 0.3); }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    </style>
+</head>
+<body class="antialiased selection:bg-primary selection:text-on-primary-container">
+<!-- TopAppBar Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-[#0E0E0E]/80 backdrop-blur-xl no-border bg-[#131313]/50 shadow-2xl shadow-emerald-900/5">
+<div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
+<div class="text-xl font-bold text-[#10B981] tracking-tighter">CallRabbit</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-manrope text-sm font-medium tracking-tight text-[#ADAAAA] hover:text-[#69F6B8] transition-colors duration-300" href="#">Services</a>
+<a class="font-manrope text-sm font-medium tracking-tight text-[#ADAAAA] hover:text-[#69F6B8] transition-colors duration-300" href="#">Process</a>
+<a class="font-manrope text-sm font-medium tracking-tight text-[#ADAAAA] hover:text-[#69F6B8] transition-colors duration-300" href="#">Industries</a>
+<a class="font-manrope text-sm font-medium tracking-tight text-[#ADAAAA] hover:text-[#69F6B8] transition-colors duration-300" href="#">Security</a>
+<a class="font-manrope text-sm font-medium tracking-tight text-[#ADAAAA] hover:text-[#69F6B8] transition-colors duration-300" href="#">Demo</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="rounded-full primary-gradient px-6 py-2.5 text-on-primary-container font-semibold text-sm scale-95 active:scale-90 transition-transform">
+                    Get a Demo
+                </button>
+</div>
+</div>
+</nav>
+<main class="pt-32">
+<!-- Hero Section -->
+<section class="max-w-7xl mx-auto px-8 mb-40 text-center lg:text-left flex flex-col lg:flex-row items-center gap-16">
+<div class="flex-1">
+<h1 class="text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-8 font-headline">
+<span class="text-primary text-glow">Answer calls</span> and automate your business
+                </h1>
+<p class="text-on-surface-variant text-lg lg:text-xl max-w-2xl mb-12 leading-relaxed">
+                    Voice and text agents custom-built for your industry. Deployed in days, running 24/7.
+                </p>
+<div class="flex flex-wrap gap-4 justify-center lg:justify-start">
+<button class="rounded-full primary-gradient px-10 py-5 text-on-primary-container font-bold text-lg shadow-xl shadow-primary/10 transition-transform hover:scale-105 active:scale-95">
+                        Start a project
+                    </button>
+<button class="rounded-full border border-outline-variant/15 px-10 py-5 text-primary font-bold text-lg backdrop-blur-sm hover:bg-white/5 transition-all">
+                        Try live demo
+                    </button>
+</div>
+</div>
+<div class="flex-1 relative group">
+<div class="absolute -inset-4 bg-primary/10 rounded-xl blur-3xl transition group-hover:bg-primary/20"></div>
+<div class="relative bg-surface-container-highest rounded-lg overflow-hidden border border-outline-variant/10">
+<img alt="AI Interface Hero" class="w-full aspect-square object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" data-alt="Futuristic glowing 3D interface showing digital brain waves and phone connectivity in deep emerald and black tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChYTnggsX45UVbZGRPHcPpx90PWCtKoREkWNV3cTQDIpTOwzpsnqrQfdVb29aZsRM97-WnxcOiH-64Nvok7H19oKEq04Qww_mXIptDzz9sfAe9bkkORjagm-9h8Jc_0pJWWPRn7re0bRiLHTMulvrX90WWb_Mg0wVmEBGHWk7-H55GvCsKuNmmo6hry6R7yQFqL3Sr9vuBz5NsZN5hmn4kxfDVIx-03Wkey6wmypfGBhf-L2AY5azkFXaNVDoQI5wzysNEZkyJKw8"/>
+</div>
+</div>
+</section>
+<!-- Compliance & Security Badges -->
+<section class="max-w-7xl mx-auto px-8 mb-40">
+<div class="flex flex-wrap justify-between items-center gap-8 py-10 px-12 bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-4 opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-3xl">verified_user</span>
+<span class="font-label tracking-widest text-xs uppercase font-bold">HIPAA-Eligible</span>
+</div>
+<div class="flex items-center gap-4 opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-3xl">lock</span>
+<span class="font-label tracking-widest text-xs uppercase font-bold">E2E Encryption</span>
+</div>
+<div class="flex items-center gap-4 opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-3xl">security</span>
+<span class="font-label tracking-widest text-xs uppercase font-bold">SOC 2 Type II</span>
+</div>
+<div class="flex items-center gap-4 opacity-70 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-3xl">bolt</span>
+<span class="font-label tracking-widest text-xs uppercase font-bold">99.99% Uptime</span>
+</div>
+</div>
+</section>
+<!-- Tabbed Services Section -->
+<section class="max-w-7xl mx-auto px-8 mb-40">
+<h2 class="text-3xl font-bold font-headline mb-12 text-center">Intelligent Automation Ecosystem</h2>
+<div class="flex flex-wrap justify-center gap-2 mb-12">
+<button class="px-6 py-3 rounded-full bg-primary text-on-primary-container font-semibold text-sm">Voice Agents</button>
+<button class="px-6 py-3 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Text Agents</button>
+<button class="px-6 py-3 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Workflow Automation</button>
+<button class="px-6 py-3 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Custom Integrations</button>
+<button class="px-6 py-3 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Smart Routing</button>
+<button class="px-6 py-3 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-primary transition-colors font-semibold text-sm">Always On</button>
+</div>
+<div class="grid lg:grid-cols-2 gap-8 bg-surface-container-low rounded-lg p-12 items-center">
+<div class="order-2 lg:order-1">
+<h3 class="text-4xl font-bold mb-6">Human-like Voice Agents</h3>
+<p class="text-on-surface-variant text-lg mb-8 leading-relaxed">
+                        Our AI agents sound indistinguishable from humans, handling complex phone conversations, scheduling, and support without the robotic latency of legacy systems.
+                    </p>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span>Ultra-low latency sub-second response times</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span>Natural inflection and emotional intelligence</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<span>Multi-language support for global reach</span>
+</li>
+</ul>
+</div>
+<div class="order-1 lg:order-2 rounded-lg overflow-hidden aspect-video">
+<img alt="Voice Technology" class="w-full h-full object-cover" data-alt="Abstract visualization of sound waves and neural networks overlapping in a high-tech dark room with emerald highlights" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmhYDTt0Pcj7MhXE5r0jJ_AFUaCAep_N1Rh5eBb9lUjkdmU1XUvVPvvSyG_PI_RoSDuRQTZC9PH2UwtRSWCF6e5fYNlIh2ZPVlK-jCfH9umVpSRtO5lEAnS0fN6lYoy6ALhRRPRKrLSO23lALf8N9PaO3b4fPjtY7xsVi7mQAdwYFh03QORd114zzy7Y0WxEa6C7lx-lnemDfSVCRV-oyreWFqCMQ__QaOAvaLQrHZvBe0g7QSyvf6r3VS3DmYhRQuD2bwy4fohgA"/>
+</div>
+</div>
+</section>
+<!-- 4-Step Process Row -->
+<section class="max-w-7xl mx-auto px-8 mb-40">
+<div class="grid md:grid-cols-4 gap-8">
+<div class="relative pt-12">
+<div class="text-7xl font-extrabold text-white/5 absolute top-0 left-0 leading-none">01</div>
+<div class="relative z-10">
+<h4 class="text-xl font-bold mb-4">Discovery</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">We analyze your call logs and workflows to identify automation opportunities that maximize ROI.</p>
+</div>
+</div>
+<div class="relative pt-12">
+<div class="text-7xl font-extrabold text-white/5 absolute top-0 left-0 leading-none">02</div>
+<div class="relative z-10">
+<h4 class="text-xl font-bold mb-4">Build</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Our engineers craft your custom agent's persona, knowledge base, and specific tool access.</p>
+</div>
+</div>
+<div class="relative pt-12">
+<div class="text-7xl font-extrabold text-white/5 absolute top-0 left-0 leading-none">03</div>
+<div class="relative z-10">
+<h4 class="text-xl font-bold mb-4">Deploy</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Live in days, not months. We integrate seamlessly with your existing CRM and phone system.</p>
+</div>
+</div>
+<div class="relative pt-12">
+<div class="text-7xl font-extrabold text-white/5 absolute top-0 left-0 leading-none">04</div>
+<div class="relative z-10">
+<h4 class="text-xl font-bold mb-4">Optimize</h4>
+<p class="text-on-surface-variant text-sm leading-relaxed">Continuous learning cycles ensure your AI agent gets smarter with every interaction.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Industry Cards Carousel (Grid Layout) -->
+<section class="max-w-7xl mx-auto px-8 mb-40">
+<h2 class="text-3xl font-bold font-headline mb-16 text-center">Built for any industry</h2>
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Card 1 -->
+<div class="group bg-surface-container-low rounded-lg p-8 hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">home_repair_service</span>
+</div>
+<h5 class="text-xl font-bold mb-4">Home Services</h5>
+<p class="text-on-surface-variant text-sm leading-relaxed">Instant scheduling for plumbing, HVAC, and landscaping professionals.</p>
+</div>
+<!-- Card 2 -->
+<div class="group bg-surface-container-low rounded-lg p-8 hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">medical_services</span>
+</div>
+<h5 class="text-xl font-bold mb-4">Healthcare</h5>
+<p class="text-on-surface-variant text-sm leading-relaxed">HIPAA-compliant appointment management and intake processing.</p>
+</div>
+<!-- Card 3 -->
+<div class="group bg-surface-container-low rounded-lg p-8 hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">real_estate_agent</span>
+</div>
+<h5 class="text-xl font-bold mb-4">Real Estate</h5>
+<p class="text-on-surface-variant text-sm leading-relaxed">Prequalify leads and schedule property viewings automatically 24/7.</p>
+</div>
+<!-- Card 4 -->
+<div class="group bg-surface-container-low rounded-lg p-8 hover:bg-surface-container-high transition-all duration-300 border border-outline-variant/10">
+<div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-primary text-3xl">directions_car</span>
+</div>
+<h5 class="text-xl font-bold mb-4">Automotive</h5>
+<p class="text-on-surface-variant text-sm leading-relaxed">Handle service inquiries, test drive bookings, and parts availability.</p>
+</div>
+</div>
+</section>
+<!-- Live Demo CTA Card -->
+<section class="max-w-7xl mx-auto px-8 mb-40">
+<div class="glass-card rounded-lg p-16 text-center border border-primary/20 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="text-[10px] font-bold tracking-widest uppercase text-secondary">AI Agent Live</span>
+</div>
+</div>
+<h2 class="text-4xl lg:text-5xl font-bold mb-8 font-headline tracking-tight">Talk to our AI agent right now</h2>
+<p class="text-on-surface-variant text-lg max-w-2xl mx-auto mb-12">
+                    Experience the speed and intelligence of CallRabbit for yourself. Connect in seconds.
+                </p>
+<div class="flex flex-wrap justify-center gap-6">
+<button class="rounded-full primary-gradient px-12 py-5 text-on-primary-container font-bold flex items-center gap-3 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined">call</span>
+                        Start voice call
+                    </button>
+<button class="rounded-full bg-surface-container-highest px-12 py-5 text-on-surface font-bold flex items-center gap-3 border border-outline-variant/20 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">chat</span>
+                        Text chat
+                    </button>
+</div>
+</div>
+</section>
+<!-- Contact Form Section -->
+<section class="max-w-3xl mx-auto px-8 mb-40">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-bold font-headline mb-4">Get in touch</h2>
+<p class="text-on-surface-variant">Let's build your custom AI voice solution together.</p>
+</div>
+<form class="space-y-6">
+<div class="grid md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant ml-2">Full Name</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-lg px-6 py-4 focus:border-primary/40 focus:ring-0 transition-all outline-none" placeholder="Jane Doe" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant ml-2">Work Email</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-lg px-6 py-4 focus:border-primary/40 focus:ring-0 transition-all outline-none" placeholder="jane@company.com" type="email"/>
+</div>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant ml-2">Company</label>
+<input class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-lg px-6 py-4 focus:border-primary/40 focus:ring-0 transition-all outline-none" placeholder="Acme Inc." type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label text-xs uppercase tracking-widest font-bold text-on-surface-variant ml-2">Message</label>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant/15 rounded-lg px-6 py-4 focus:border-primary/40 focus:ring-0 transition-all outline-none" placeholder="Tell us about your automation needs..." rows="4"></textarea>
+</div>
+<button class="w-full rounded-full primary-gradient py-5 text-on-primary-container font-bold text-lg hover:shadow-2xl hover:shadow-primary/20 transition-all mt-4" type="submit">
+                    Send message
+                </button>
+</form>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#0E0E0E] w-full pt-20 pb-10 border-t border-[#494847]/15">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 max-w-7xl mx-auto gap-8">
+<div class="text-lg font-bold text-[#10B981]">CallRabbit</div>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-manrope text-xs tracking-widest uppercase text-[#ADAAAA] hover:text-[#69F6B8] transition-all opacity-80 hover:opacity-100" href="#">Privacy Policy</a>
+<a class="font-manrope text-xs tracking-widest uppercase text-[#ADAAAA] hover:text-[#69F6B8] transition-all opacity-80 hover:opacity-100" href="#">Terms of Service</a>
+<a class="font-manrope text-xs tracking-widest uppercase text-[#ADAAAA] hover:text-[#69F6B8] transition-all opacity-80 hover:opacity-100" href="#">Security Overview</a>
+<a class="font-manrope text-xs tracking-widest uppercase text-[#ADAAAA] hover:text-[#69F6B8] transition-all opacity-80 hover:opacity-100" href="#">Contact Support</a>
+</div>
+<div class="font-manrope text-xs tracking-widest uppercase text-[#ADAAAA]">
+                © 2024 CallRabbit AI. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>

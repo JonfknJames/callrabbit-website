@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CallRabbit | AI Voice &amp; Text Automation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-secondary-fixed-variant": "#006853",
+                        "primary-container": "#06b77f",
+                        "on-tertiary-fixed": "#00343c",
+                        "on-primary-fixed-variant": "#006544",
+                        "on-secondary": "#005d4a",
+                        "inverse-surface": "#fcf9f8",
+                        "tertiary": "#77e6ff",
+                        "surface-variant": "#262626",
+                        "on-tertiary-fixed-variant": "#005360",
+                        "surface-container-lowest": "#000000",
+                        "secondary-fixed-dim": "#47edc4",
+                        "secondary-dim": "#47edc4",
+                        "primary-dim": "#58e7ab",
+                        "surface-container-low": "#131313",
+                        "outline-variant": "#484847",
+                        "on-primary": "#005a3c",
+                        "on-error-container": "#ffa8a3",
+                        "tertiary-dim": "#00cdeb",
+                        "on-surface": "#ffffff",
+                        "secondary": "#5afcd2",
+                        "error": "#ff716c",
+                        "on-error": "#490006",
+                        "inverse-on-surface": "#565555",
+                        "surface-bright": "#2c2c2c",
+                        "on-tertiary-container": "#004955",
+                        "on-tertiary": "#005360",
+                        "error-dim": "#d7383b",
+                        "outline": "#767575",
+                        "secondary-container": "#006b56",
+                        "on-surface-variant": "#adaaaa",
+                        "on-primary-fixed": "#00452d",
+                        "tertiary-fixed-dim": "#00cdeb",
+                        "on-primary-container": "#002919",
+                        "surface-container-high": "#201f1f",
+                        "tertiary-container": "#00dcfd",
+                        "background": "#0e0e0e",
+                        "surface-container": "#1a1919",
+                        "on-secondary-fixed": "#004939",
+                        "on-secondary-container": "#defff2",
+                        "primary": "#69f6b8",
+                        "primary-fixed-dim": "#58e7ab",
+                        "surface-tint": "#69f6b8",
+                        "error-container": "#9f0519",
+                        "secondary-fixed": "#5afcd2",
+                        "surface": "#0e0e0e",
+                        "inverse-primary": "#006d4a",
+                        "surface-dim": "#0e0e0e",
+                        "primary-fixed": "#69f6b8",
+                        "surface-container-highest": "#262626",
+                        "tertiary-fixed": "#00dcfd",
+                        "on-background": "#ffffff"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "body": ["Manrope"],
+                        "label": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .glass-nav {
+            background: rgba(14, 14, 14, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .glow-pulse {
+            box-shadow: 0 0 20px rgba(105, 246, 184, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-[#0E0E0E]/60 backdrop-blur-xl shadow-[0px_0px_32px_rgba(255,255,255,0.06)] h-16 flex items-center justify-between px-6">
+<div class="flex items-center gap-3">
+<button class="text-[#69F6B8] active:scale-95 duration-200 hover:bg-[#262626] p-2 rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<span class="text-xl font-black tracking-tighter text-white font-manrope">CallRabbit</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#ADAAAA] text-xl" data-icon="search">search</span>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center border border-outline-variant/15">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+</header>
+<main class="pt-16">
+<!-- Hero Section -->
+<section class="px-6 pt-12 pb-16 relative overflow-hidden">
+<div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-primary/5 rounded-full blur-[80px]"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container-high border border-outline-variant/10 mb-8">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-[10px] font-bold tracking-widest uppercase text-primary">System Live</span>
+</div>
+<h1 class="text-4xl font-extrabold tracking-tight leading-[1.1] mb-6 font-headline">
+                    Answer calls and <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">automate your business</span>
+</h1>
+<p class="text-on-surface-variant text-base leading-relaxed mb-10 max-w-[320px]">
+                    Voice and text agents custom-built for your industry. Deployed in days, running 24/7.
+                </p>
+<!-- Hero Visual: Abstract Geometric Pulse -->
+<div class="relative w-full aspect-square max-w-[300px] flex items-center justify-center">
+<div class="absolute inset-0 border border-primary/10 rounded-full animate-[ping_3s_infinite]"></div>
+<div class="absolute inset-4 border border-primary/20 rounded-full animate-[ping_4s_infinite]"></div>
+<div class="w-48 h-48 rounded-full bg-surface-container-low flex items-center justify-center relative overflow-hidden border border-outline-variant/10">
+<div class="absolute inset-0 opacity-20">
+<img class="w-full h-full object-cover" data-alt="abstract geometric 3D shapes in dark space with emerald green glowing lines and futuristic nodes" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiXukEGYukhc6W454J3QOvfdLiiUewVRE7ReIfnwoeWudrSPY7VpLtfrilsgNjC4BtDQfe7tlcII_BvrR93EqKNT0azQAT4D7ygbPkb9CMxplpdjfdYywSdw5GHkfiBVf3EMlqS9idgT37dDGpvo_A8-Cp9fl0ubZXxQCmez0Q1gRM11P45bvbkMjZezqeCSfKxTLe1ocSDxjVLMypgLm3bmtnQZwxYwn4cZ3rW8SCdgk8AYj-AdPIUIVZ86Xv6rs4eX-6PCkWalA"/>
+</div>
+<span class="material-symbols-outlined text-6xl text-primary drop-shadow-[0_0_15px_rgba(105,246,184,0.4)]" data-icon="hub">hub</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Feature Section: Horizontal Scroll -->
+<section class="py-12 bg-surface-container-low">
+<div class="px-6 mb-8 flex items-end justify-between">
+<div>
+<h2 class="text-xs font-bold text-primary tracking-widest uppercase mb-2">Capabilities</h2>
+<h3 class="text-2xl font-bold">Autonomous Core</h3>
+</div>
+<div class="flex gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-highest"></span>
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-highest"></span>
+</div>
+</div>
+<div class="flex overflow-x-auto hide-scrollbar gap-4 px-6 pb-4">
+<!-- Voice Card -->
+<div class="min-w-[280px] bg-surface-container-highest p-6 rounded-xl relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-5">
+<span class="material-symbols-outlined text-8xl" data-icon="record_voice_over">record_voice_over</span>
+</div>
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="record_voice_over">record_voice_over</span>
+</div>
+<h4 class="text-lg font-bold mb-2">Voice AI</h4>
+<p class="text-on-surface-variant text-sm">Natural sounding voice agents that handle scheduling, intake, and support.</p>
+</div>
+<!-- Text Card -->
+<div class="min-w-[280px] bg-surface-container-highest p-6 rounded-xl relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-5">
+<span class="material-symbols-outlined text-8xl" data-icon="chat_bubble">chat_bubble</span>
+</div>
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="chat_bubble">chat_bubble</span>
+</div>
+<h4 class="text-lg font-bold mb-2">Omni-Text</h4>
+<p class="text-on-surface-variant text-sm">Instant SMS and web-chat responses that convert leads while you sleep.</p>
+</div>
+<!-- Workflow Card -->
+<div class="min-w-[280px] bg-surface-container-highest p-6 rounded-xl relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-5">
+<span class="material-symbols-outlined text-8xl" data-icon="account_tree">account_tree</span>
+</div>
+<div class="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="account_tree">account_tree</span>
+</div>
+<h4 class="text-lg font-bold mb-2">Smart Workflow</h4>
+<p class="text-on-surface-variant text-sm">Syncs directly with your CRM to automate data entry and follow-ups.</p>
+</div>
+</div>
+</section>
+<!-- Process Section: Vertical Stack -->
+<section class="px-6 py-20 bg-surface">
+<h2 class="text-3xl font-extrabold mb-12 text-center">Our Process</h2>
+<div class="space-y-4">
+<!-- Step 1 -->
+<div class="group p-6 bg-surface-container-low rounded-xl flex gap-6 items-start transition-all hover:bg-surface-container">
+<div class="flex-shrink-0 w-10 h-10 rounded-full border border-primary flex items-center justify-center text-primary font-bold text-sm">01</div>
+<div>
+<h4 class="text-lg font-bold mb-1">Discovery</h4>
+<p class="text-on-surface-variant text-sm">We analyze your call logs and business rules to map out the perfect agent flow.</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="group p-6 bg-surface-container-low rounded-xl flex gap-6 items-start transition-all hover:bg-surface-container">
+<div class="flex-shrink-0 w-10 h-10 rounded-full border border-primary flex items-center justify-center text-primary font-bold text-sm">02</div>
+<div>
+<h4 class="text-lg font-bold mb-1">Build</h4>
+<p class="text-on-surface-variant text-sm">Our engineers train your custom AI model with industry-specific knowledge.</p>
+</div>
+</div>
+<!-- Step 3 -->
+<div class="group p-6 bg-surface-container-low rounded-xl flex gap-6 items-start transition-all hover:bg-surface-container">
+<div class="flex-shrink-0 w-10 h-10 rounded-full border border-primary flex items-center justify-center text-primary font-bold text-sm">03</div>
+<div>
+<h4 class="text-lg font-bold mb-1">Deploy</h4>
+<p class="text-on-surface-variant text-sm">Launch in under 7 days. Seamless integration with your existing phone lines.</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="group p-6 bg-surface-container-low rounded-xl flex gap-6 items-start transition-all hover:bg-surface-container">
+<div class="flex-shrink-0 w-10 h-10 rounded-full border border-primary flex items-center justify-center text-primary font-bold text-sm">04</div>
+<div>
+<h4 class="text-lg font-bold mb-1">Optimize</h4>
+<p class="text-on-surface-variant text-sm">Continuous learning loop. Your agent gets smarter with every single interaction.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Industry Section: 2-Column Grid -->
+<section class="py-20 bg-surface-container-lowest">
+<div class="px-6 mb-12">
+<h3 class="text-2xl font-bold mb-2">Built For Your Industry</h3>
+<div class="w-12 h-1 bg-primary rounded-full"></div>
+</div>
+<div class="grid grid-cols-2 gap-4 px-6">
+<div class="bg-surface-container p-6 rounded-xl flex flex-col items-center text-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="home_repair_service">home_repair_service</span>
+<span class="text-sm font-bold">Home Services</span>
+</div>
+<div class="bg-surface-container p-6 rounded-xl flex flex-col items-center text-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="medical_services">medical_services</span>
+<span class="text-sm font-bold">Healthcare</span>
+</div>
+<div class="bg-surface-container p-6 rounded-xl flex flex-col items-center text-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="real_estate_agent">real_estate_agent</span>
+<span class="text-sm font-bold">Real Estate</span>
+</div>
+<div class="bg-surface-container p-6 rounded-xl flex flex-col items-center text-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="directions_car">directions_car</span>
+<span class="text-sm font-bold">Automotive</span>
+</div>
+</div>
+</section>
+<!-- Compliance Section: Vertically Stacked Badges -->
+<section class="px-6 py-16 bg-surface-container-low">
+<div class="flex flex-col items-center gap-8">
+<div class="text-center">
+<h4 class="text-xs font-bold tracking-[0.2em] text-on-surface-variant uppercase mb-2">Enterprise Grade</h4>
+<p class="text-lg font-medium">Security you can trust</p>
+</div>
+<div class="w-full space-y-3">
+<div class="flex items-center justify-between px-5 py-4 bg-surface rounded-lg border border-outline-variant/5">
+<span class="font-bold text-sm tracking-wide">HIPAA Compliant</span>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex items-center justify-between px-5 py-4 bg-surface rounded-lg border border-outline-variant/5">
+<span class="font-bold text-sm tracking-wide">End-to-End Encryption</span>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex items-center justify-between px-5 py-4 bg-surface rounded-lg border border-outline-variant/5">
+<span class="font-bold text-sm tracking-wide">SOC 2 Type II</span>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex items-center justify-between px-5 py-4 bg-surface rounded-lg border border-outline-variant/5">
+<span class="font-bold text-sm tracking-wide">99.99% Uptime SLA</span>
+<span class="material-symbols-outlined text-primary" data-icon="verified" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="px-6 py-20 relative">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
+<div class="relative z-10 text-center">
+<h2 class="text-3xl font-extrabold mb-8">Talk to our AI agent right now</h2>
+<div class="flex flex-col gap-4">
+<button class="w-full h-14 rounded-full bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold text-base flex items-center justify-center gap-3 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined" data-icon="call">call</span>
+                        Start voice call
+                    </button>
+<button class="w-full h-14 rounded-full bg-surface-container-highest text-primary font-bold text-base flex items-center justify-center gap-3 active:scale-[0.98] transition-all border border-primary/20">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+                        Text chat
+                    </button>
+</div>
+</div>
+</section>
+<!-- Contact Form Section -->
+<section class="px-6 py-16 bg-surface-container">
+<div class="mb-10">
+<h3 class="text-2xl font-bold mb-2">Request a Demo</h3>
+<p class="text-on-surface-variant text-sm">Custom solutions for high-volume businesses.</p>
+</div>
+<form class="space-y-6">
+<div>
+<label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Full Name</label>
+<input class="w-full bg-surface-container-low border-b-2 border-x-0 border-t-0 border-outline-variant rounded-t-md focus:ring-0 focus:border-primary px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40" placeholder="John Doe" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Email Address</label>
+<input class="w-full bg-surface-container-low border-b-2 border-x-0 border-t-0 border-outline-variant rounded-t-md focus:ring-0 focus:border-primary px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40" placeholder="john@company.com" type="email"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Company</label>
+<input class="w-full bg-surface-container-low border-b-2 border-x-0 border-t-0 border-outline-variant rounded-t-md focus:ring-0 focus:border-primary px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40" placeholder="Your Agency" type="text"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-primary uppercase tracking-wider mb-2">Message</label>
+<textarea class="w-full bg-surface-container-low border-b-2 border-x-0 border-t-0 border-outline-variant rounded-t-md focus:ring-0 focus:border-primary px-4 py-3 text-on-surface placeholder:text-on-surface-variant/40" placeholder="How can we help?" rows="4"></textarea>
+</div>
+<button class="w-full h-14 rounded-full bg-primary text-on-primary font-bold tracking-tight text-lg shadow-[0_4px_20px_rgba(105,246,184,0.3)]" type="submit">
+                    Send Inquiry
+                </button>
+</form>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-12 px-6 border-t border-[#484847]/15 bg-[#000000] flex flex-col items-center gap-6 text-center">
+<div class="flex gap-4">
+<span class="text-[#ADAAAA] font-manrope text-xs hover:text-white transition-colors">Privacy</span>
+<span class="text-[#ADAAAA] font-manrope text-xs hover:text-white transition-colors">Terms</span>
+<span class="text-[#ADAAAA] font-manrope text-xs hover:text-white transition-colors">API Status</span>
+</div>
+<p class="font-manrope text-xs tracking-wide text-[#ADAAAA] opacity-80">© 2024 CallRabbit AI. Built for high performance.</p>
+</footer>
+<!-- Navigation Drawer (Conceptual state: hidden, but defined per shared component rules) -->
+<div class="hidden fixed inset-y-0 left-0 z-[60] flex flex-col h-full w-[280px] rounded-r-2xl bg-[#0E0E0E] shadow-2xl transition-all duration-300" id="navDrawer">
+<div class="text-2xl font-black text-white px-4 py-8 font-manrope">CallRabbit</div>
+<nav class="flex flex-col divide-y divide-white/5">
+<a class="flex items-center gap-4 px-6 py-4 text-[#69F6B8] bg-[#131313] border-l-4 border-[#69F6B8] font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+                Features
+            </a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#ADAAAA] hover:bg-[#201F1F] font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+                Solutions
+            </a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#ADAAAA] hover:bg-[#201F1F] font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Pricing
+            </a>
+<a class="flex items-center gap-4 px-6 py-4 text-[#ADAAAA] hover:bg-[#201F1F] font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+                Support
+            </a>
+</nav>
+</div>
+</body></html>
