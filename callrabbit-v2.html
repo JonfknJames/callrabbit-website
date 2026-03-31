@@ -1154,15 +1154,22 @@ function openBensonWidget() {
   function collapseWidget() {
     var root = widget.shadowRoot;
     if (!root) return;
-    // Try labelled close/back button first
-    var closeBtn = root.querySelector(
-      '[aria-label*="close" i],[aria-label*="back" i],[aria-label*="minimise" i],' +
-      '[aria-label*="minimize" i],[class*="close"],[class*="collapse"],[class*="back"]'
-    );
+    // Try widget public API
+    if (typeof widget.collapse === 'function') { widget.collapse(); return; }
+    if (typeof widget.close === 'function') { widget.close(); return; }
+    // Try ElevenLabs-specific compact sheet element
+    var sheet = root.querySelector('.rounded-compact-sheet,[class*="compact-sheet"]');
+    if (sheet) { sheet.click(); return; }
+    // Try labelled close/back button
+    var closeBtn = root.querySelector('[aria-label*="close" i],[aria-label*="back" i],[aria-label*="collapse" i],[aria-label*="dismiss" i]');
     if (closeBtn) { closeBtn.click(); return; }
-    // Fallback: click launcher button to toggle panel closed
-    var launcher = root.querySelector('[class*="fab"],[class*="bubble"],[class*="trigger"],[class*="launcher"]');
-    if (launcher) launcher.click();
+    // Last resort: find any button that isn't "Start a call" — likely the toggle/close
+    var btns = Array.from(root.querySelectorAll('button'));
+    var other = btns.find(function(b) {
+      var t = b.textContent.trim().toLowerCase();
+      return t.indexOf('start') === -1 && t.indexOf('end') === -1;
+    });
+    if (other) other.click();
   }
 
   // Prefer native event
