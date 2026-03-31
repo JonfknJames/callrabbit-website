@@ -127,7 +127,7 @@ footer{
 .footer-links a:hover{color:#E4E1E8;}
 .footer-copy{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(187,202,191,0.4);}
 
-/* ElevenLabs widget — constrained to overlay container, not floating */
+/* ElevenLabs widget — dark theme vars */
 elevenlabs-convai{
   --el-bg-color:#1F1F24;
   --el-text-color:#E4E1E8;
@@ -136,66 +136,8 @@ elevenlabs-convai{
   --el-border-color:rgba(255,255,255,0.05);
   --el-focus-color:#10B981;
   --el-powered-by-display:none;
-  /* Override widget's own position:fixed so it stays inside #widget-overlay */
-  position:absolute!important;
-  inset:0!important;
-  width:100%!important;
-  height:100%!important;
 }
 elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlabs.io"][target="_blank"]{display:none!important;}
-
-/* Widget wrap — full width; absolute children use inset:0 */
-#widget-wrap{
-  width:100%;
-  padding:0 16px;
-  margin-top:32px;
-  position:relative;
-  height:68px;
-}
-
-/* Visual pill — decorative only; pointer-events:none so taps fall through to overlay */
-#call-btn-visual{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  gap:14px;
-  background:#1F1F24;
-  border:1px solid rgba(255,255,255,0.06);
-  border-radius:9999px;
-  box-shadow:12px 12px 24px rgba(0,0,0,0.4),inset 1px 1px 0 rgba(255,255,255,0.06);
-  padding:12px 16px 12px 12px;
-  pointer-events:none;
-}
-#call-btn-visual img{
-  width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;
-}
-#call-btn-label{
-  display:flex;flex-direction:column;align-items:flex-start;gap:3px;flex:1;
-}
-#call-btn-label .btn-title{
-  font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;
-  color:#E4E1E8;letter-spacing:0.01em;line-height:1.2;
-}
-#call-btn-label .btn-sub{
-  font-family:'Manrope',sans-serif;font-size:11px;color:#BBCABF;
-  font-weight:500;letter-spacing:0.06em;text-transform:uppercase;line-height:1.2;
-}
-#call-btn-icon{
-  margin-left:auto;
-  width:36px;height:36px;border-radius:50%;
-  background:#10B981;
-  display:flex;align-items:center;justify-content:center;
-  flex-shrink:0;
-  box-shadow:4px 4px 8px rgba(0,0,0,0.3),inset 1px 1px 0 rgba(255,255,255,0.2);
-}
-
-/* Widget overlay — actual ElevenLabs element sits here; shadow DOM makes it invisible */
-#widget-overlay{
-  position:absolute;
-  inset:0;
-  z-index:2;
-}
 </style>
 </head>
 <body>
@@ -230,27 +172,11 @@ elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlab
     <div id="rabbit"></div>
   </div>
 
-  <!-- 3. WIDGET — visual pill is decorative; ElevenLabs element is the real tap target -->
-  <div id="widget-wrap">
-    <!-- Decorative layer — pointer-events:none so taps fall through -->
-    <div id="call-btn-visual">
-      <img src="benson-face.png" alt="Benson"/>
-      <div id="call-btn-label">
-        <span class="btn-title">Talk to Benson</span>
-        <span class="btn-sub">AI voice agent · available now</span>
-      </div>
-      <div id="call-btn-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#003824" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 1.18C.02.62.42.07 1 .02h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L5.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
-      </div>
-    </div>
-    <!-- Interactive layer — ElevenLabs element, launcher button made transparent to fill area -->
-    <div id="widget-overlay">
-      <elevenlabs-convai
-        agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
-        avatar-image-url="benson-face.png"
-      ></elevenlabs-convai>
-    </div>
-  </div>
+  <!-- 3. WIDGET — default ElevenLabs floating widget, dark-themed -->
+  <elevenlabs-convai
+    agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
+    avatar-image-url="benson-face.png"
+  ></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
   <!-- 4. CONTACT FORM -->
@@ -429,86 +355,30 @@ if (rabbitContainer) {
 }
 </script>
 
-<!-- ElevenLabs widget: launcher fills pill area (invisible via host opacity:0),
-     reveal widget when call starts, collapse + restore pill when call ends -->
+<!-- ElevenLabs: dark theme + nuke all branding links -->
 <script>
 (function() {
-  var widget = document.querySelector('elevenlabs-convai');
-  var visual = document.getElementById('call-btn-visual');
-  if (!widget) return;
-
-  function onReady() {
-    if (!widget.shadowRoot) return setTimeout(onReady, 400);
+  function styleWidget() {
+    var widget = document.querySelector('elevenlabs-convai');
+    if (!widget || !widget.shadowRoot) return setTimeout(styleWidget, 500);
     var root = widget.shadowRoot;
-
-    // Inject two states as a single swappable style block.
-    // CLOSED: launcher button fills the host so any tap on the pill hits it.
-    // OPEN:   panel gets neumorphic + centred styling; launcher sizing not needed.
     var s = document.createElement('style');
-    s.id = 'el-css';
+    s.textContent =
+      'button,[role="button"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.06)!important;box-shadow:12px 12px 24px rgba(0,0,0,0.45),inset 1px 1px 0 rgba(255,255,255,0.07)!important;}' +
+      '[class*="card"],[class*="panel"],[class*="dialog"],[class*="modal"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.05)!important;box-shadow:20px 20px 40px rgba(0,0,0,0.4),inset 1px 1px 0 rgba(255,255,255,0.05)!important;border-radius:24px!important;}' +
+      'input,textarea{background:#0E0E13!important;border:none!important;border-radius:12px!important;color:#E4E1E8!important;box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5)!important;}' +
+      '*{color:#E4E1E8!important;}' +
+      'a[href*="elevenlabs"],a[href*="eleven"],a[target="_blank"],[class*="powered"],[class*="branding"],[class*="watermark"]{display:none!important;pointer-events:none!important;}';
     root.appendChild(s);
-
-    function setClosed() {
-      // Kill visual content without opacity on any parent element.
-      // Parents stay at opacity:1 so the button's composite opacity = 1 * 0.001 = 0.001
-      // — browsers hit-test it and it counts as a trusted user gesture for audio.
-      s.textContent =
-        '*{background:transparent!important;background-color:transparent!important;' +
-          'color:transparent!important;border-color:transparent!important;' +
-          'box-shadow:none!important;fill:transparent!important;stroke:transparent!important;}' +
-        'img{opacity:0!important;}' +
-        'button,[role="button"]{' +
-          'position:absolute!important;inset:0!important;' +
-          'width:100%!important;height:100%!important;' +
-          'opacity:0.001!important;border-radius:9999px!important;' +
-          'pointer-events:auto!important;cursor:pointer!important;}';
-    }
-
-    function setOpen() {
-      s.textContent =
-        'button,[role="button"]{background:#1F1F24!important;' +
-          'border:1px solid rgba(255,255,255,0.06)!important;' +
-          'box-shadow:12px 12px 24px rgba(0,0,0,0.45),inset 1px 1px 0 rgba(255,255,255,0.07)!important;}' +
-        'input,textarea{background:#0E0E13!important;border:none!important;' +
-          'border-radius:12px!important;color:#E4E1E8!important;' +
-          'box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5)!important;}' +
-        '*{color:#E4E1E8!important;}' +
-        'a[href*="elevenlabs"],[class*="powered"],[class*="branding"]{display:none!important;}';
-    }
-
-    setClosed();
-
-    function showWidget() {
-      setOpen();
-      widget.style.opacity = '1';
-      if (visual) visual.style.opacity = '0';
-    }
-
-    function hideWidget() {
-      widget.style.opacity = '0';
-      if (visual) visual.style.opacity = '1';
-      // Brief delay then reset launcher CSS for next tap
-      setTimeout(setClosed, 300);
-    }
-
-    // Detect call active/ended by watching for "End call" button text
-    var wasInCall = false;
+    // Watch for any dynamically injected branding links and kill them
     new MutationObserver(function() {
-      var buttons = root.querySelectorAll('button');
-      var inCallNow = Array.from(buttons).some(function(b) {
-        return b.textContent && b.textContent.trim().toLowerCase().indexOf('end call') !== -1;
+      root.querySelectorAll('a[href*="elevenlabs"],a[target="_blank"],[class*="powered"]').forEach(function(el) {
+        el.style.display = 'none';
+        el.style.pointerEvents = 'none';
       });
-      if (inCallNow && !wasInCall) {
-        wasInCall = true;
-        showWidget();
-      } else if (!inCallNow && wasInCall) {
-        wasInCall = false;
-        setTimeout(hideWidget, 1500);
-      }
-    }).observe(root, {childList: true, subtree: true, characterData: true});
+    }).observe(root, {childList: true, subtree: true});
   }
-
-  onReady();
+  styleWidget();
 })();
 </script>
 </body>
