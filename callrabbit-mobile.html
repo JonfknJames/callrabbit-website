@@ -370,13 +370,28 @@ if (rabbitContainer) {
       '*{color:#E4E1E8!important;}' +
       'a[href*="elevenlabs"],a[href*="eleven"],a[target="_blank"],[class*="powered"],[class*="branding"],[class*="watermark"]{display:none!important;pointer-events:none!important;}';
     root.appendChild(s);
-    // Watch for any dynamically injected branding links and kill them
+    // Watch for branding links (kill them) and call end (collapse widget)
+    var wasInCall = false;
     new MutationObserver(function() {
+      // Kill branding links
       root.querySelectorAll('a[href*="elevenlabs"],a[target="_blank"],[class*="powered"]').forEach(function(el) {
         el.style.display = 'none';
         el.style.pointerEvents = 'none';
       });
-    }).observe(root, {childList: true, subtree: true});
+      // Auto-collapse: detect "End call" button disappearing after call was active
+      var hasEndCall = Array.from(root.querySelectorAll('button')).some(function(b) {
+        return b.textContent && b.textContent.trim().toLowerCase() === 'end call';
+      });
+      if (hasEndCall) { wasInCall = true; return; }
+      if (wasInCall) {
+        wasInCall = false;
+        setTimeout(function() {
+          // Click the launcher button to collapse the widget back to pill
+          var btn = root.querySelector('button');
+          if (btn) btn.click();
+        }, 1500);
+      }
+    }).observe(root, {childList: true, subtree: true, characterData: true});
   }
   styleWidget();
 })();
