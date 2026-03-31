@@ -141,6 +141,8 @@ elevenlabs-convai{
   inset:0!important;
   width:100%!important;
   height:100%!important;
+  /* Start invisible — JS reveals it when call starts; no flash of default widget UI */
+  opacity:0;
 }
 elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlabs.io"][target="_blank"]{display:none!important;}
 
@@ -427,102 +429,80 @@ if (rabbitContainer) {
 }
 </script>
 
-<!-- ElevenLabs: state-aware overlay injection + auto-collapse -->
+<!-- ElevenLabs widget: launcher fills pill area (invisible via host opacity:0),
+     reveal widget when call starts, collapse + restore pill when call ends -->
 <script>
-(function initWidget() {
-  const widget = document.querySelector('elevenlabs-convai');
-  if (!widget || !widget.shadowRoot) return setTimeout(initWidget, 500);
-  const root = widget.shadowRoot;
-  const visual = document.getElementById('call-btn-visual');
+(function() {
+  var widget = document.querySelector('elevenlabs-convai');
+  var visual = document.getElementById('call-btn-visual');
+  if (!widget) return;
 
-  // Selectors that indicate the expanded panel is open
-  const PANEL_SEL = '[class*="card"],[class*="panel"],[class*="dialog"],[class*="chat"],[class*="sheet"],[class*="conversation"],[class*="modal"]';
+  function onReady() {
+    if (!widget.shadowRoot) return setTimeout(onReady, 400);
+    var root = widget.shadowRoot;
 
-  function applyCSS(panelOpen) {
-    let s = root.querySelector('#el-state');
-    if (!s) { s = document.createElement('style'); s.id = 'el-state'; root.appendChild(s); }
+    // Inject two states as a single swappable style block.
+    // CLOSED: launcher button fills the host so any tap on the pill hits it.
+    // OPEN:   panel gets neumorphic + centred styling; launcher sizing not needed.
+    var s = document.createElement('style');
+    s.id = 'el-css';
+    root.appendChild(s);
 
-    if (!panelOpen) {
-      // CLOSED STATE — launcher is nuclear-transparent but fully tappable.
-      // Every shadow-DOM element is invisible so only our custom pill shows.
-      // The launcher button fills the entire pill area so any native tap hits it.
-      s.textContent = [
-        ':host{display:block!important;width:100%!important;height:100%!important;',
-        'position:absolute!important;inset:0!important;overflow:visible!important;}',
-        '*{background:transparent!important;background-color:transparent!important;',
-        'color:transparent!important;border-color:transparent!important;',
-        'box-shadow:none!important;opacity:0.001!important;',
-        'fill:transparent!important;stroke:transparent!important;}',
-        'button,[role="button"]{position:absolute!important;inset:0!important;',
-        'width:100%!important;height:100%!important;',
-        'pointer-events:auto!important;cursor:pointer!important;',
-        'border-radius:9999px!important;margin:0!important;padding:0!important;',
-        'transform:none!important;min-width:unset!important;min-height:unset!important;}'
-      ].join('');
-    } else {
-      // OPEN STATE — show panel with neumorphic styling, centred on screen.
-      s.textContent = [
-        ':host{overflow:visible!important;}',
-        '* {opacity:1!important;}',
-        PANEL_SEL + '{',
-        'position:fixed!important;top:50%!important;left:50%!important;',
-        'transform:translate(-50%,-50%)!important;',
-        'bottom:unset!important;right:unset!important;margin:0!important;',
-        'background:#1F1F24!important;',
-        'border:1px solid rgba(255,255,255,0.05)!important;',
-        'box-shadow:20px 20px 40px rgba(0,0,0,0.4),inset 1px 1px 0px rgba(255,255,255,0.05)!important;',
-        'border-radius:24px!important;}',
-        'button,[role="button"]{background:#1F1F24!important;',
-        'border:1px solid rgba(255,255,255,0.06)!important;',
-        'box-shadow:12px 12px 24px rgba(0,0,0,0.45),inset 1px 1px 0px rgba(255,255,255,0.07)!important;}',
-        'input,textarea{background:#0E0E13!important;border:none!important;',
-        'border-radius:12px!important;',
-        'box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5)!important;color:#E4E1E8!important;}',
-        '*{color:#E4E1E8!important;}',
-        'p,span,label,[class*="subtitle"],[class*="secondary"]{color:#BBCABF!important;}',
-        'a[href*="elevenlabs"],[class*="powered"],[class*="branding"]{display:none!important;}'
-      ].join('');
+    function setClosed() {
+      s.textContent =
+        'button,[role="button"]{' +
+          'position:absolute!important;inset:0!important;' +
+          'width:100%!important;height:100%!important;' +
+          'border-radius:9999px!important;' +
+          'background:transparent!important;border:none!important;' +
+          'outline:none!important;box-shadow:none!important;}';
     }
+
+    function setOpen() {
+      s.textContent =
+        'button,[role="button"]{background:#1F1F24!important;' +
+          'border:1px solid rgba(255,255,255,0.06)!important;' +
+          'box-shadow:12px 12px 24px rgba(0,0,0,0.45),inset 1px 1px 0 rgba(255,255,255,0.07)!important;}' +
+        'input,textarea{background:#0E0E13!important;border:none!important;' +
+          'border-radius:12px!important;color:#E4E1E8!important;' +
+          'box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5)!important;}' +
+        '*{color:#E4E1E8!important;}' +
+        'a[href*="elevenlabs"],[class*="powered"],[class*="branding"]{display:none!important;}';
+    }
+
+    setClosed();
+
+    function showWidget() {
+      setOpen();
+      widget.style.opacity = '1';
+      if (visual) visual.style.opacity = '0';
+    }
+
+    function hideWidget() {
+      widget.style.opacity = '0';
+      if (visual) visual.style.opacity = '1';
+      // Brief delay then reset launcher CSS for next tap
+      setTimeout(setClosed, 300);
+    }
+
+    // Detect call active/ended by watching for "End call" button text
+    var wasInCall = false;
+    new MutationObserver(function() {
+      var buttons = root.querySelectorAll('button');
+      var inCallNow = Array.from(buttons).some(function(b) {
+        return b.textContent && b.textContent.trim().toLowerCase().indexOf('end call') !== -1;
+      });
+      if (inCallNow && !wasInCall) {
+        wasInCall = true;
+        showWidget();
+      } else if (!inCallNow && wasInCall) {
+        wasInCall = false;
+        setTimeout(hideWidget, 1500);
+      }
+    }).observe(root, {childList: true, subtree: true, characterData: true});
   }
 
-  // Start in closed state
-  applyCSS(false);
-
-  // Track panel open/close via MutationObserver
-  let isOpen = false;
-  new MutationObserver(function() {
-    const panelNowVisible = !!root.querySelector(PANEL_SEL);
-    if (panelNowVisible !== isOpen) {
-      isOpen = panelNowVisible;
-      applyCSS(isOpen);
-      // Hide/show custom pill — panel takes the full screen, no need to show pill behind it
-      if (visual) visual.style.opacity = isOpen ? '0' : '1';
-    }
-    // Strip branding nodes
-    root.querySelectorAll('*').forEach(function(el) {
-      if (el.textContent && el.textContent.trim() === 'Powered by' && el.children.length < 2) el.style.display = 'none';
-    });
-  }).observe(root, {childList:true, subtree:true});
-
-  // Auto-collapse when call ends
-  function collapseWidget() {
-    const closeBtn = root.querySelector(
-      '[aria-label*="close" i],[aria-label*="back" i],[aria-label*="minimise" i],' +
-      '[aria-label*="minimize" i],[class*="close"],[class*="collapse"],[class*="back"]'
-    );
-    if (closeBtn) { closeBtn.click(); return; }
-    const launcher = root.querySelector('button,[role="button"]');
-    if (launcher) launcher.click();
-  }
-  widget.addEventListener('elevenlabs-convai:call_ended', function() { setTimeout(collapseWidget, 1500); });
-  let wasInCall = false;
-  new MutationObserver(function() {
-    const hasEndBtn = Array.from(root.querySelectorAll('button')).some(function(b) {
-      return b.textContent && b.textContent.trim().toLowerCase().includes('end call');
-    });
-    if (hasEndBtn) { wasInCall = true; return; }
-    if (wasInCall) { wasInCall = false; setTimeout(collapseWidget, 1500); }
-  }).observe(root, {childList:true, subtree:true, characterData:true});
+  onReady();
 })();
 </script>
 </body>
