@@ -1293,7 +1293,7 @@ const contactContainer = document.getElementById('contact-rabbit-canvas');
 if (contactContainer) {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(40, contactContainer.clientWidth / contactContainer.clientHeight, 0.1, 100);
-  camera.position.set(0, 0.8, 3.2);
+  camera.position.set(0, 0.8, 4.5);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
   renderer.setSize(contactContainer.clientWidth, contactContainer.clientHeight);
@@ -1341,7 +1341,7 @@ if (contactContainer) {
     const box = new THREE.Box3().setFromObject(model);
     const size = box.getSize(new THREE.Vector3());
     const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = 4.0 / maxDim;
+    const scale = 2.8 / maxDim;
     model.scale.setScalar(scale);
 
     const scaledBox = new THREE.Box3().setFromObject(model);
