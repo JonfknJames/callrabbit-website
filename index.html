@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CALL RABBIT</title>
+  <script>
+    // Runs synchronously before any render — zero flicker redirect
+    (function () {
+      var dest = window.innerWidth < 768
+        ? 'callrabbit-mobile.html'
+        : 'callrabbit-v2.html';
+      window.location.replace(dest);
+    })();
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=callrabbit-v2.html"/>
+  </noscript>
+</head>
+<body>
+  <!-- Redirecting to the right version of CALL RABBIT... -->
+</body>
+</html>

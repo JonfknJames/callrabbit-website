@@ -127,12 +127,11 @@ footer{
 .footer-links a:hover{color:#E4E1E8;}
 .footer-copy{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(187,202,191,0.4);}
 
-/* ElevenLabs widget — visually hidden, triggered by proxy button */
-/* opacity:0 hides it; pointer-events:none prevents accidental taps;
-   programmatic .click() still fires regardless of pointer-events */
+/* ElevenLabs widget — launcher parked off-screen, expanded panel floats naturally */
 elevenlabs-convai{
-  opacity:0!important;
-  pointer-events:none!important;
+  position:fixed!important;
+  left:-9999px!important;
+  bottom:0!important;
 }
 elevenlabs-convai{
   --el-bg-color:#1F1F24;
@@ -442,11 +441,18 @@ if (rabbitContainer) {
 function openBensonWidget() {
   var widget = document.querySelector('elevenlabs-convai');
   if (!widget) return;
+  // Try official API first
   if (typeof widget.open === 'function') { widget.open(); return; }
+  // Bring launcher into viewport momentarily so the click registers
+  widget.style.left = '0';
   var root = widget.shadowRoot;
-  if (!root) return;
+  if (!root) { widget.style.left = '-9999px'; return; }
   var btn = root.querySelector('button') || root.querySelector('[role="button"]');
-  if (btn) btn.click();
+  if (btn) {
+    btn.click();
+    // Re-hide the launcher (the expanded panel escapes the fixed parent naturally)
+    setTimeout(function() { widget.style.left = '-9999px'; }, 100);
+  }
 }
 
 (function styleWidget() {
