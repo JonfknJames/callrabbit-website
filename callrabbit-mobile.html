@@ -455,8 +455,8 @@ body {
 <!-- ==================== STICKY NAV ==================== -->
 <nav class="fixed top-0 left-0 right-0 z-50 flex justify-center px-4" style="height: 56px;">
   <div class="rounded-full mt-3 px-4 py-2 bg-[#22222A]/80 backdrop-blur-md flex items-center justify-between w-full max-w-md" style="box-shadow: 20px 20px 40px rgba(0,0,0,0.4), inset 1px 1px 0px rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.05);">
-    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="flex items-center" style="cursor: pointer;">
-      <span style="font-family:'Manrope',sans-serif;font-weight:800;font-size:15px;letter-spacing:0.08em;color:#BBCABF;text-transform:uppercase;">CALL&nbsp;RABBIT</span>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" id="navbar-3d-container" style="cursor:pointer;display:block;width:160px;height:28px;position:relative;">
+      <span id="nav-logo-fallback" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Manrope',sans-serif;font-weight:800;font-size:15px;letter-spacing:0.08em;color:#BBCABF;text-transform:uppercase;">CALL&nbsp;<span style="color:#C9A962;">RABBIT</span></span>
     </a>
     <button id="mobile-menu-btn" class="flex flex-col gap-1 p-2" style="min-width:48px;min-height:48px;align-items:center;justify-content:center;" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
       <span class="w-5 h-0.5 bg-on-surface-variant rounded-full"></span>
@@ -875,7 +875,7 @@ body {
   </section>
 
   <!-- ==================== COMPLIANCE BANNER ==================== -->
-  <section class="tactile-raised rounded-2xl p-5 grid grid-cols-2 gap-4 border border-white/5">
+  <section class="tactile-raised rounded-2xl p-5 grid grid-cols-2 gap-4 border border-white/5" style="margin-top:-24px;">
     <div class="flex items-center gap-3">
       <div class="rounded-full tactile-sunken flex items-center justify-center" style="width:36px;height:36px;min-width:36px;">
         <span class="material-symbols-outlined text-primary" style="font-size:18px;" data-weight="fill">verified_user</span>
@@ -947,15 +947,20 @@ body {
 </main>
 
 <!-- ==================== FOOTER ==================== -->
-<footer class="bg-surface-container-lowest w-full py-8 relative z-10" style="box-shadow: inset 0px 4px 12px rgba(0,0,0,0.5);">
-  <div class="max-w-md mx-auto px-4 flex flex-col items-center gap-4">
-    <div class="font-bold text-on-surface-variant font-headline" style="font-size:16px;">CALL RABBIT</div>
+<footer class="bg-surface-container-lowest w-full py-10 relative z-10" style="box-shadow: inset 0px 4px 12px rgba(0,0,0,0.5);">
+  <div class="max-w-md mx-auto px-4 flex flex-col items-center gap-5">
+    <!-- Woodcut logo -->
+    <img src="logo-woodcut.png" alt="CallRabbit" style="height:80px;width:auto;opacity:0.6;filter:drop-shadow(0 0 20px rgba(16,185,129,0.06));"/>
+    <!-- Text logo -->
+    <div class="font-bold text-on-surface-variant font-headline" style="font-size:16px;letter-spacing:0.08em;text-transform:uppercase;">CALL RABBIT</div>
+    <!-- Links -->
     <div class="flex flex-wrap justify-center gap-4 font-headline font-medium" style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">
       <a class="text-on-surface-variant/60" href="privacy.html">Privacy</a>
       <a class="text-on-surface-variant/60" href="terms.html">Terms</a>
       <a class="text-on-surface-variant/60" href="security.html">Security</a>
       <a class="text-on-surface-variant/60" href="mailto:info@callrabbit.ai">Contact</a>
     </div>
+    <!-- Copyright -->
     <div class="font-headline font-medium text-on-surface-variant/40 text-center" style="font-size:11px;letter-spacing:0.1em;text-transform:uppercase;">
       &copy; 2026 CALL RABBIT. All rights reserved.
     </div>
@@ -1228,6 +1233,89 @@ if (heroContainer) {
     camera.updateProjectionMatrix();
     renderer.setSize(w, h);
   }).observe(heroContainer);
+}
+
+// ===== NAVBAR 3D TEXT =====
+const navContainer = document.getElementById('navbar-3d-container');
+if (navContainer) {
+  const navScene = new THREE.Scene();
+  const nw = navContainer.clientWidth;
+  const nh = navContainer.clientHeight;
+  const nAspect = nw / nh;
+  const nFrustum = 1.2;
+  const navCam = new THREE.OrthographicCamera(
+    -nFrustum * nAspect / 2, nFrustum * nAspect / 2,
+    nFrustum / 2, -nFrustum / 2, 0.1, 50
+  );
+  navCam.position.set(0, 0, 5);
+  const navRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  navRenderer.setSize(nw, nh);
+  navRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  navRenderer.toneMapping = THREE.ACESFilmicToneMapping;
+  navRenderer.toneMappingExposure = 1.2;
+  navRenderer.outputColorSpace = THREE.SRGBColorSpace;
+  navContainer.appendChild(navRenderer.domElement);
+  navScene.add(new THREE.AmbientLight(0x111008, 0.3));
+  const navKey = new THREE.DirectionalLight(0xeec88a, 0.5);
+  navKey.position.set(2, 2, 3);
+  navScene.add(navKey);
+  const navSpot = new THREE.SpotLight(0xeedd99, 6.0, 10, Math.PI * 0.3, 0.5, 1.5);
+  navSpot.position.set(-4, 0, 4);
+  const navSpotTarget = new THREE.Object3D();
+  navSpotTarget.position.set(0, 0, 0);
+  navScene.add(navSpotTarget);
+  navSpot.target = navSpotTarget;
+  navScene.add(navSpot);
+  let navTextModel = null;
+  const navLoader = new GLTFLoader();
+  navLoader.load('rabbit-text.glb', (gltf) => {
+    navTextModel = gltf.scene;
+    const box = new THREE.Box3().setFromObject(navTextModel);
+    const size = box.getSize(new THREE.Vector3());
+    const textHeight = size.y || size.z || 1;
+    const scale = (nFrustum * 0.7) / textHeight;
+    navTextModel.scale.multiplyScalar(scale);
+    const sb = new THREE.Box3().setFromObject(navTextModel);
+    const sc = sb.getCenter(new THREE.Vector3());
+    navTextModel.position.sub(sc);
+    navTextModel.traverse((child) => {
+      if (child.isMesh && child.material) {
+        child.material.metalness = 0.6;
+        child.material.roughness = 0.3;
+        child.material.needsUpdate = true;
+      }
+    });
+    navScene.add(navTextModel);
+    // Hide fallback text once 3D loads
+    var fb = document.getElementById('nav-logo-fallback');
+    if (fb) fb.style.display = 'none';
+  });
+  let navScrollProgress = 0;
+  window.addEventListener('scroll', () => {
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    navScrollProgress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
+  }, { passive: true });
+  function animateNav() {
+    requestAnimationFrame(animateNav);
+    const spotX = -4 + navScrollProgress * 8;
+    navSpot.position.x = spotX;
+    navSpot.intensity = 4.0 + navScrollProgress * 6.0;
+    navSpotTarget.position.x = spotX * 0.3;
+    if (navTextModel) navTextModel.rotation.x = -navScrollProgress * 0.15;
+    navRenderer.render(navScene, navCam);
+  }
+  animateNav();
+  new ResizeObserver(() => {
+    const w2 = navContainer.clientWidth;
+    const h2 = navContainer.clientHeight;
+    const a2 = w2 / h2;
+    navCam.left = -nFrustum * a2 / 2;
+    navCam.right = nFrustum * a2 / 2;
+    navCam.top = nFrustum / 2;
+    navCam.bottom = -nFrustum / 2;
+    navCam.updateProjectionMatrix();
+    navRenderer.setSize(w2, h2);
+  }).observe(navContainer);
 }
 </script>
 
