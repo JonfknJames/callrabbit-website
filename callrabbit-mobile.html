@@ -127,12 +127,7 @@ footer{
 .footer-links a:hover{color:#E4E1E8;}
 .footer-copy{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(187,202,191,0.4);}
 
-/* ElevenLabs widget — launcher parked off-screen, expanded panel floats naturally */
-elevenlabs-convai{
-  position:fixed!important;
-  left:-9999px!important;
-  bottom:0!important;
-}
+/* ElevenLabs widget CSS vars */
 elevenlabs-convai{
   --el-bg-color:#1F1F24;
   --el-text-color:#E4E1E8;
@@ -144,58 +139,40 @@ elevenlabs-convai{
 }
 elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlabs.io"][target="_blank"]{display:none!important;}
 
-/* Proxy call button — inline between rabbit and form */
+/* Widget wrap — margin creates 16px gutter; absolutely-positioned children use inset:0 */
 #widget-wrap{
-  width:100%;
-  padding:0 16px;
-  margin-top:32px;
+  margin:32px 16px 0;
+  position:relative;
+  height:68px;
 }
-#call-btn{
-  width:100%;
+
+/* Visual pill — decorative only; pointer-events:none so taps fall through to overlay */
+#call-btn-visual{
+  position:absolute;
+  inset:0;
   display:flex;
   align-items:center;
-  justify-content:center;
   gap:14px;
   background:#1F1F24;
   border:1px solid rgba(255,255,255,0.06);
   border-radius:9999px;
   box-shadow:12px 12px 24px rgba(0,0,0,0.4),inset 1px 1px 0 rgba(255,255,255,0.06);
   padding:12px 16px 12px 12px;
-  cursor:pointer;
-  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-  font-family:'Manrope',sans-serif;
-  text-align:left;
+  pointer-events:none;
 }
-#call-btn:active{
-  box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5),1px 1px 0 rgba(255,255,255,0.02);
-  transform:translateY(1px);
-}
-#call-btn img{
-  width:40px;height:40px;
-  border-radius:50%;
-  object-fit:cover;
-  flex-shrink:0;
+#call-btn-visual img{
+  width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0;
 }
 #call-btn-label{
-  display:flex;flex-direction:column;align-items:flex-start;gap:3px;
-  flex:1;
+  display:flex;flex-direction:column;align-items:flex-start;gap:3px;flex:1;
 }
 #call-btn-label .btn-title{
-  font-family:'Manrope',sans-serif;
-  font-size:15px;
-  font-weight:800;
-  color:#E4E1E8;
-  letter-spacing:0.01em;
-  line-height:1.2;
+  font-family:'Manrope',sans-serif;font-size:15px;font-weight:800;
+  color:#E4E1E8;letter-spacing:0.01em;line-height:1.2;
 }
 #call-btn-label .btn-sub{
-  font-family:'Manrope',sans-serif;
-  font-size:11px;
-  color:#BBCABF;
-  font-weight:500;
-  letter-spacing:0.06em;
-  text-transform:uppercase;
-  line-height:1.2;
+  font-family:'Manrope',sans-serif;font-size:11px;color:#BBCABF;
+  font-weight:500;letter-spacing:0.06em;text-transform:uppercase;line-height:1.2;
 }
 #call-btn-icon{
   margin-left:auto;
@@ -204,6 +181,15 @@ elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlab
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
   box-shadow:4px 4px 8px rgba(0,0,0,0.3),inset 1px 1px 0 rgba(255,255,255,0.2);
+}
+
+/* Widget overlay — actual ElevenLabs element on top; invisible but receives taps */
+#widget-overlay{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  overflow:hidden;
+  border-radius:9999px;
 }
 </style>
 </head>
@@ -239,9 +225,10 @@ elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlab
     <div id="rabbit"></div>
   </div>
 
-  <!-- 3. WIDGET PROXY BUTTON + hidden ElevenLabs element -->
+  <!-- 3. WIDGET — visual pill is decorative; ElevenLabs element is the real tap target -->
   <div id="widget-wrap">
-    <button id="call-btn" onclick="openBensonWidget()">
+    <!-- Decorative layer — pointer-events:none so taps fall through -->
+    <div id="call-btn-visual">
       <img src="benson-face.png" alt="Benson"/>
       <div id="call-btn-label">
         <span class="btn-title">Talk to Benson</span>
@@ -250,14 +237,15 @@ elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlab
       <div id="call-btn-icon">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#003824" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 1.18C.02.62.42.07 1 .02h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L5.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
       </div>
-    </button>
+    </div>
+    <!-- Interactive layer — ElevenLabs element, launcher button made transparent to fill area -->
+    <div id="widget-overlay">
+      <elevenlabs-convai
+        agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
+        avatar-image-url="benson-face.png"
+      ></elevenlabs-convai>
+    </div>
   </div>
-
-  <!-- ElevenLabs widget — hidden, triggered by proxy button above -->
-  <elevenlabs-convai
-    agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
-    avatar-image-url="benson-face.png"
-  ></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
   <!-- 4. CONTACT FORM -->
@@ -436,63 +424,109 @@ if (rabbitContainer) {
 }
 </script>
 
-<!-- ElevenLabs restyling -->
+<!-- ElevenLabs: overlay + styling + auto-collapse -->
 <script>
-function openBensonWidget() {
-  var widget = document.querySelector('elevenlabs-convai');
-  if (!widget) return;
-  // Try official API first
-  if (typeof widget.open === 'function') { widget.open(); return; }
-  // Bring launcher into viewport momentarily so the click registers
-  widget.style.left = '0';
-  var root = widget.shadowRoot;
-  if (!root) { widget.style.left = '-9999px'; return; }
-  var btn = root.querySelector('button') || root.querySelector('[role="button"]');
-  if (btn) {
-    btn.click();
-    // Re-hide the launcher (the expanded panel escapes the fixed parent naturally)
-    setTimeout(function() { widget.style.left = '-9999px'; }, 100);
-  }
-}
-
 (function styleWidget() {
   const widget = document.querySelector('elevenlabs-convai');
   if (!widget || !widget.shadowRoot) return setTimeout(styleWidget, 500);
   const root = widget.shadowRoot;
   const style = document.createElement('style');
   style.textContent = `
-    button,[role="button"],.launcher,[class*="trigger"],[class*="bubble"],[class*="fab"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.06)!important;box-shadow:12px 12px 24px rgba(0,0,0,0.45),-4px -4px 12px rgba(255,255,255,0.03),inset 1px 1px 0px rgba(255,255,255,0.07)!important;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)!important;}
-    [class*="card"],[class*="panel"],[class*="dialog"],[class*="modal"],[class*="container"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.05)!important;box-shadow:20px 20px 40px rgba(0,0,0,0.4),inset 1px 1px 0px rgba(255,255,255,0.05)!important;border-radius:24px!important;}
-    input,textarea{background:#0E0E13!important;border:none!important;border-radius:12px!important;box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5),1px 1px 0px rgba(255,255,255,0.02)!important;color:#E4E1E8!important;}
+    /* Make host fill the #widget-overlay container */
+    :host {
+      display:block!important;
+      width:100%!important;
+      height:100%!important;
+      position:absolute!important;
+      inset:0!important;
+      overflow:visible!important;
+    }
+    /* Launcher button — invisible but covers the full pill so native taps hit it */
+    [class*="fab"],[class*="bubble"],[class*="trigger"],[class*="launcher"],
+    [class*="start"],[class*="open-btn"],[class*="toggle"],
+    button[aria-label*="open" i],button[aria-label*="call" i] {
+      position:absolute!important;
+      inset:0!important;
+      width:100%!important;
+      height:100%!important;
+      opacity:0.001!important;
+      border-radius:9999px!important;
+      margin:0!important;
+      padding:0!important;
+      transform:none!important;
+      min-width:unset!important;
+      min-height:unset!important;
+    }
+    /* Expanded panel — fixed and centred in the viewport */
+    [class*="card"],[class*="panel"],[class*="dialog"],[class*="chat"],
+    [class*="sheet"],[class*="conversation"],[class*="modal"] {
+      position:fixed!important;
+      top:50%!important;
+      left:50%!important;
+      transform:translate(-50%,-50%)!important;
+      bottom:unset!important;
+      right:unset!important;
+      margin:0!important;
+      background:#1F1F24!important;
+      border:1px solid rgba(255,255,255,0.05)!important;
+      box-shadow:20px 20px 40px rgba(0,0,0,0.4),inset 1px 1px 0px rgba(255,255,255,0.05)!important;
+      border-radius:24px!important;
+    }
+    input,textarea{
+      background:#0E0E13!important;border:none!important;border-radius:12px!important;
+      box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5),1px 1px 0px rgba(255,255,255,0.02)!important;
+      color:#E4E1E8!important;
+    }
     *{color:#E4E1E8!important;}
     p,span,label,[class*="subtitle"],[class*="secondary"]{color:#BBCABF!important;}
     a[href*="elevenlabs"],[class*="powered"],[class*="branding"]{display:none!important;}
   `;
   root.appendChild(style);
-  const hideBranding = () => root.querySelectorAll('*').forEach(el => { if (el.textContent && el.textContent.includes('Powered by') && el.children.length < 3) el.style.display = 'none'; });
+  const hideBranding = () => root.querySelectorAll('*').forEach(el => {
+    if (el.textContent && el.textContent.includes('Powered by') && el.children.length < 3) el.style.display = 'none';
+  });
   hideBranding();
   new MutationObserver(hideBranding).observe(root, {childList:true, subtree:true});
 })();
 
+// Auto-collapse widget when the call ends
 (function watchCallEnd() {
   const widget = document.querySelector('elevenlabs-convai');
-  if (!widget || !widget.shadowRoot) return setTimeout(watchCallEnd, 1000);
-  const root = widget.shadowRoot;
-  let wasInCall = false;
-  new MutationObserver(function() {
-    let startBtn=null, feedbackEl=null, endBtn=null;
-    root.querySelectorAll('button,span,div').forEach(el => {
-      const t = el.textContent ? el.textContent.trim() : '';
-      if (t === 'Start a call') startBtn = el;
-      if (t.includes('How was') || t.includes('Rate') || t.includes('feedback')) feedbackEl = el;
-    });
-    root.querySelectorAll('button').forEach(b => { if (b.textContent && b.textContent.trim() === 'End call') endBtn = b; });
-    if (endBtn) wasInCall = true;
-    if (wasInCall && (feedbackEl || startBtn)) {
-      wasInCall = false;
-      setTimeout(() => { const s = root.querySelector('.rounded-compact-sheet'); if (s) s.click(); }, 800);
-    }
-  }).observe(root, {childList:true, subtree:true, characterData:true});
+  if (!widget) return setTimeout(watchCallEnd, 1000);
+
+  function collapseWidget() {
+    const root = widget.shadowRoot;
+    if (!root) return;
+    // Try labelled close/back button first
+    const closeBtn = root.querySelector(
+      '[aria-label*="close" i],[aria-label*="back" i],[aria-label*="minimise" i],' +
+      '[aria-label*="minimize" i],[class*="close"],[class*="collapse"],[class*="back"]'
+    );
+    if (closeBtn) { closeBtn.click(); return; }
+    // Fallback: click launcher to toggle the panel closed
+    const launcher = root.querySelector('[class*="fab"],[class*="bubble"],[class*="trigger"],[class*="launcher"]');
+    if (launcher) launcher.click();
+  }
+
+  // Prefer native event (fires reliably when widget supports it)
+  widget.addEventListener('elevenlabs-convai:call_ended', () => setTimeout(collapseWidget, 1500));
+
+  // Mutation-observer fallback: watch for "End call" button disappearing after being present
+  (function setupObserver() {
+    if (!widget.shadowRoot) return setTimeout(setupObserver, 1000);
+    const root = widget.shadowRoot;
+    let wasInCall = false;
+    new MutationObserver(function() {
+      const hasEndBtn = Array.from(root.querySelectorAll('button')).some(
+        b => b.textContent && b.textContent.trim().toLowerCase().includes('end call')
+      );
+      if (hasEndBtn) { wasInCall = true; return; }
+      if (wasInCall) {
+        wasInCall = false;
+        setTimeout(collapseWidget, 1500);
+      }
+    }).observe(root, {childList:true, subtree:true, characterData:true});
+  })();
 })();
 </script>
 </body>
