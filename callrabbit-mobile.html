@@ -141,14 +141,14 @@ elevenlabs-convai{
   inset:0!important;
   width:100%!important;
   height:100%!important;
-  /* Start invisible — JS reveals it when call starts; no flash of default widget UI */
-  opacity:0;
 }
 elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlabs.io"][target="_blank"]{display:none!important;}
 
-/* Widget wrap — margin creates 16px gutter; absolutely-positioned children use inset:0 */
+/* Widget wrap — full width; absolute children use inset:0 */
 #widget-wrap{
-  margin:32px 16px 0;
+  width:100%;
+  padding:0 16px;
+  margin-top:32px;
   position:relative;
   height:68px;
 }
@@ -449,13 +449,19 @@ if (rabbitContainer) {
     root.appendChild(s);
 
     function setClosed() {
+      // Kill visual content without opacity on any parent element.
+      // Parents stay at opacity:1 so the button's composite opacity = 1 * 0.001 = 0.001
+      // — browsers hit-test it and it counts as a trusted user gesture for audio.
       s.textContent =
+        '*{background:transparent!important;background-color:transparent!important;' +
+          'color:transparent!important;border-color:transparent!important;' +
+          'box-shadow:none!important;fill:transparent!important;stroke:transparent!important;}' +
+        'img{opacity:0!important;}' +
         'button,[role="button"]{' +
           'position:absolute!important;inset:0!important;' +
           'width:100%!important;height:100%!important;' +
-          'border-radius:9999px!important;' +
-          'background:transparent!important;border:none!important;' +
-          'outline:none!important;box-shadow:none!important;}';
+          'opacity:0.001!important;border-radius:9999px!important;' +
+          'pointer-events:auto!important;cursor:pointer!important;}';
     }
 
     function setOpen() {
