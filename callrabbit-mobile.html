@@ -127,7 +127,7 @@ footer{
 .footer-links a:hover{color:#E4E1E8;}
 .footer-copy{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(187,202,191,0.4);}
 
-/* ElevenLabs widget CSS vars */
+/* ElevenLabs widget — constrained to overlay container, not floating */
 elevenlabs-convai{
   --el-bg-color:#1F1F24;
   --el-text-color:#E4E1E8;
@@ -136,6 +136,11 @@ elevenlabs-convai{
   --el-border-color:rgba(255,255,255,0.05);
   --el-focus-color:#10B981;
   --el-powered-by-display:none;
+  /* Override widget's own position:fixed so it stays inside #widget-overlay */
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
 }
 elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlabs.io"][target="_blank"]{display:none!important;}
 
