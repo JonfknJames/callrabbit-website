@@ -1146,37 +1146,6 @@ function openBensonWidget() {
   if (btn) btn.click();
 }
 
-// Auto-collapse: capture-phase delegation on shadow root survives button re-creation.
-(function watchWidgetForCallEnd() {
-  var widget = document.querySelector('elevenlabs-convai');
-  if (!widget) return setTimeout(watchWidgetForCallEnd, 1000);
-  function setup() {
-    var root = widget.shadowRoot;
-    if (!root) return setTimeout(setup, 500);
-    root.addEventListener('click', function(e) {
-      if (!e.isTrusted) return;
-      var t = e.target;
-      while (t && t !== root) {
-        if (t.tagName === 'BUTTON' && t.getAttribute('aria-label') === 'Start a call') {
-          setTimeout(function() {
-            var callActive = false;
-            root.querySelectorAll('span,div,p').forEach(function(el) {
-              var txt = (el.textContent || '').trim().toLowerCase();
-              if (txt === 'talk to interrupt' || txt === 'listening' || txt === 'speaking' || txt === 'connecting') callActive = true;
-            });
-            if (!callActive) {
-              var c = root.querySelector('button[aria-label="Collapse"]');
-              if (c) c.click();
-            }
-          }, 2000);
-          return;
-        }
-        t = t.parentElement;
-      }
-    }, true);
-  }
-  setup();
-})();
 </script>
 <style>
   /* Override ElevenLabs widget to dark mode + CallRabbit brand */
