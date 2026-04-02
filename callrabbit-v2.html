@@ -1654,20 +1654,6 @@ document.addEventListener('DOMContentLoaded', function() {
       allowTouchMove: true,
       breakpoints: {
         768: { slidesPerView: 3, spaceBetween: 24, allowTouchMove: false }
-      },
-      on: {
-        init: function() {
-          // Start autoplay after a delay to avoid stuck animation on load
-          var self = this;
-          setTimeout(function() {
-            if (!self.destroyed) self.autoplay.start();
-          }, 1000);
-        }
-      },
-      autoplay: {
-        delay: isMobile ? 2500 : 4000,
-        disableOnInteraction: true,
-        pauseOnMouseEnter: true,
       }
     });
 
@@ -1735,7 +1721,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
       if (!isActive) {
         document.querySelectorAll('.swiper-slide.expanded').forEach(function(s) { s.classList.remove('expanded'); });
-        swiper.autoplay.stop();
 
         // Force animating false so slideNext/slidePrev aren't blocked
         swiper.animating = false;
@@ -1750,8 +1735,7 @@ document.addEventListener('DOMContentLoaded', function() {
           swiper.slideNext(800);
         }
       } else {
-        // Toggle expand overlay on active card — direct style, no animations
-        swiper.autoplay.stop();
+        // Toggle expand overlay on active card
         var expandEl = slide.querySelector('.industry-card__expand');
         if (!expandEl) return;
 
@@ -1764,7 +1748,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var image = slide.querySelector('.industry-card__image');
 
         if (isExpanded) {
-          // Collapse — fade out + slide down, then restart autoplay
+          // Collapse — fade out + slide down
           slide.classList.remove('expanded');
           animateOverlay(expandEl, 1, 0, 0, 8, 350, function() {
             expandEl.style.visibility = 'hidden';
@@ -1772,8 +1756,6 @@ document.addEventListener('DOMContentLoaded', function() {
           });
           if (desc) animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 300);
           if (image) animateProps(image, { filter: ['brightness(0.15)', 'brightness(0.3)'] }, 500);
-          // Resume autoplay after collapse animation finishes
-          setTimeout(function() { swiper.autoplay.start(); }, 2000);
         } else {
           // Expand — fade in + slide up
           slide.classList.add('expanded');
@@ -1868,17 +1850,6 @@ document.addEventListener('DOMContentLoaded', function() {
       allowTouchMove: true,
       breakpoints: {
         768: { slidesPerView: 3, spaceBetween: 24, allowTouchMove: false }
-      },
-      on: {
-        init: function() {
-          var self = this;
-          setTimeout(function() { if (!self.destroyed) self.autoplay.start(); }, 1200);
-        }
-      },
-      autoplay: {
-        delay: isMobile ? 2800 : 4500,
-        disableOnInteraction: true,
-        pauseOnMouseEnter: true,
       }
     });
     // Fix animating flag for platform swiper too
@@ -1897,7 +1868,6 @@ document.addEventListener('DOMContentLoaded', function() {
       var isActive = slide.classList.contains('swiper-slide-active');
       if (!isActive) {
         document.querySelectorAll('.platform-swiper .swiper-slide.expanded').forEach(function(s) { s.classList.remove('expanded'); });
-        platformSwiper.autoplay.stop();
         platformSwiper.animating = false;
         var slideRect = slide.getBoundingClientRect();
         var activeSlide = document.querySelector('.platform-swiper .swiper-slide-active');
@@ -1905,7 +1875,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeRect && slideRect.left < activeRect.left) { platformSwiper.slidePrev(800); }
         else { platformSwiper.slideNext(800); }
       } else {
-        platformSwiper.autoplay.stop();
         var expandEl = slide.querySelector('.industry-card__expand');
         if (!expandEl) return;
         expandEl.getAnimations().forEach(function(a) { a.cancel(); });
@@ -1918,7 +1887,6 @@ document.addEventListener('DOMContentLoaded', function() {
           animateOverlay(expandEl, 1, 0, 0, 8, 350, function() { expandEl.style.visibility = 'hidden'; expandEl.style.pointerEvents = 'none'; });
           if (desc) animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 300);
           if (image) animateProps(image, { filter: ['brightness(0.15)', 'brightness(0.3)'] }, 500);
-          setTimeout(function() { platformSwiper.autoplay.start(); }, 2000);
         } else {
           slide.classList.add('expanded');
           expandEl.style.visibility = 'visible';
