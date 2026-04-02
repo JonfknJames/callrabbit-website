@@ -1,0 +1,43 @@
+<!-- BIG HEADER BACKUP — saved 2026-04-02 before compact redesign -->
+<!-- CSS rules that apply to this layout:
+     #hero { padding: 20px; gap: 16px; }             (mobile)
+     #hero h1 { font-size: 1.75rem; }                (mobile)
+     #hero .hero-subtext { font-size: 0.9rem; }       (mobile)
+     #hero .hero-logo-wrap { min-height: 180px; }      (mobile)
+     #hero .hero-logo-wrap img { max-height: 160px; }  (mobile)
+     #hero .hero-buttons { flex-direction: column; gap: 12px; } (mobile)
+     @media (min-width: 768px) {
+         #hero { padding: 48px 80px; gap: 48px; }
+         #hero h1 { font-size: 4.5rem; }
+         #hero .hero-subtext { font-size: 1.25rem; }
+         #hero .hero-logo-wrap { min-height: 420px; }
+         #hero .hero-logo-wrap img { max-height: 380px; }
+         #hero .hero-buttons { flex-direction: row; gap: 24px; }
+     }
+-->
+<section id="hero" class="relative w-full rounded-3xl p-6 md:p-12 lg:p-20 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-6 md:gap-12">
+<div class="absolute -right-20 -top-20 w-96 h-96 emerald-glow pointer-events-none"></div>
+<div class="w-full md:w-3/5 space-y-5 md:space-y-8 relative z-10">
+<h1 class="text-3xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight text-on-surface text-center">
+<span class="text-primary-container">Answer calls</span> and automate your business
+            </h1>
+<p class="hero-subtext text-on-surface-variant max-w-xl font-medium leading-relaxed text-center mx-auto">
+                Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7.
+            </p>
+<p class="hero-subtext text-on-surface-variant max-w-xl font-medium leading-relaxed text-center mx-auto">
+                Custom built for your business with zero hold music and zero missed calls.
+            </p>
+<div class="hero-buttons flex justify-center items-center">
+<a href="#contact" class="tactile-button-raised text-on-primary rounded-xl font-bold tracking-wide uppercase inline-block text-center">
+                    Get Started
+                </a>
+<button onclick="openBensonWidget()" class="tactile-button-idle border border-white/5 text-on-surface-variant rounded-xl font-bold tracking-wide uppercase hover:text-on-surface transition-colors">
+                    Try Live Demo
+                </button>
+</div>
+</div>
+<div class="hero-logo-wrap w-full md:w-2/5 flex justify-center items-center relative">
+<!-- Classic CallRabbit Woodcut Logo -->
+<img src="logo-woodcut.png" alt="CallRabbit" style="width: auto; object-fit: contain; filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.08));" />
+</div>
+</section>
