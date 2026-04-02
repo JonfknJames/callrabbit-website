@@ -156,34 +156,6 @@
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
 
-        /* Logo cutout — punched hole through hero card revealing space behind */
-        .hero-logo-cutout {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 32px;
-        }
-        .hero-logo-cutout img {
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 4px 20px rgba(0,0,0,0.6))
-                    drop-shadow(0 0 30px rgba(16, 185, 129, 0.08));
-        }
-        /* The "hole" — body background color with deep inset shadows for depth */
-        .hero-logo-cutout::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50%;
-            background: #131318;
-            box-shadow: inset 8px 8px 24px rgba(0,0,0,0.9),
-                        inset -4px -4px 12px rgba(0,0,0,0.6),
-                        inset 0 0 40px rgba(0,0,0,0.7),
-                        0 0 0 3px rgba(0,0,0,0.4),
-                        0 0 0 4px rgba(255,255,255,0.03);
-            z-index: 1;
-        }
 
         /* Clickable process steps */
         .process-step-circle { cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
@@ -635,14 +607,17 @@
 </nav>
 <main class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Hero Section -->
-<section id="hero" class="relative w-full rounded-3xl p-4 md:p-6 lg:p-8 tactile-raised flex flex-col md:flex-row items-center gap-4 md:gap-6">
+<section id="hero" class="relative w-full rounded-3xl p-4 md:p-6 lg:p-8 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-4 md:gap-6">
 <div class="absolute -right-20 -top-20 w-72 h-72 emerald-glow pointer-events-none"></div>
 <div class="w-full md:w-3/5 space-y-3 md:space-y-4 relative z-10">
 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tighter leading-tight text-on-surface text-center">
 <span class="text-primary-container">Automate</span> your business
                 </h1>
 <p class="hero-subtext text-on-surface-variant max-w-lg font-medium leading-relaxed text-center mx-auto">
-                    Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7. Custom built for your business with zero hold music and zero missed calls.
+                    Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7.
+                </p>
+<p id="hero-rotating-line" class="hero-subtext text-on-surface-variant max-w-lg font-medium leading-relaxed text-center mx-auto" style="min-height:1.8em;">
+                    Custom built for your business with zero hold music and zero missed calls.
                 </p>
 <div class="hero-buttons flex justify-center items-center">
 <a href="#contact" class="tactile-button-raised text-on-primary rounded-xl font-bold tracking-wide uppercase inline-block text-center">
@@ -654,9 +629,7 @@
 </div>
 </div>
 <div class="hero-logo-wrap w-full md:w-2/5 flex justify-center items-center relative">
-<div class="hero-logo-cutout" style="width:280px;height:280px;">
-<img src="logo-woodcut.png" alt="CallRabbit" style="width: auto; max-height: 180px; object-fit: contain;" />
-</div>
+<img src="logo-woodcut.png" alt="CallRabbit" style="width: auto; object-fit: contain; filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.08));" />
 </div>
 </section>
 <!-- Services — 3D Card Carousel (closes main for full-width, re-opens after) -->
@@ -1654,32 +1627,38 @@ if (container) {
     scrollProgress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
   }, { passive: true });
 
-  // Mouse-follow tilt (like 3D industry cards but for the logo text)
-  let mouseX = 0, mouseY = 0;
-  let smoothX = 0, smoothY = 0;
-  const TILT_RANGE = 0.4;    // max rotation in radians (~23°)
-  const SMOOTHING = 0.12;    // lerp factor — lower = smoother
+  // Easter egg — click logo for a backflip
+  let flipProgress = 0;  // 0 = idle, >0 = flipping (radians accumulated)
+  let flipping = false;
+  const FLIP_SPEED = 0.04; // radians per frame (~2.4 seconds for full 2π)
 
-  container.addEventListener('mousemove', (e) => {
-    const rect = container.getBoundingClientRect();
-    mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;  // -1 to 1
-    mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;  // -1 to 1
-  }, { passive: true });
-  container.addEventListener('mouseleave', () => { mouseX = 0; mouseY = 0; });
+  container.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!flipping && textModel) {
+      flipping = true;
+      flipProgress = 0;
+    }
+  });
 
   function animate() {
     requestAnimationFrame(animate);
-    // Smooth lerp towards target
-    smoothX += (mouseX - smoothX) * SMOOTHING;
-    smoothY += (mouseY - smoothY) * SMOOTHING;
 
     const spotX = -4 + scrollProgress * 8;
     spotlight.position.x = spotX;
     spotlight.intensity = 4.0 + scrollProgress * 6.0;
     spotTarget.position.x = spotX * 0.3;
     if (textModel) {
-      textModel.rotation.x = -scrollProgress * 0.15 + smoothY * TILT_RANGE * -0.5;
-      textModel.rotation.y = smoothX * TILT_RANGE;
+      let baseRotX = -scrollProgress * 0.15;
+      if (flipping) {
+        flipProgress += FLIP_SPEED;
+        if (flipProgress >= Math.PI * 2) {
+          flipProgress = 0;
+          flipping = false;
+        }
+        baseRotX += flipProgress;
+      }
+      textModel.rotation.x = baseRotX;
     }
     renderer.render(scene, camera);
   }
@@ -2002,22 +1981,55 @@ document.addEventListener('DOMContentLoaded', function() {
   init();
 });
 </script>
-<!-- Info Modal — single 3D card popup (industry-card style) -->
+<!-- Hero subtitle rotator -->
+<script>
+(function() {
+  var lines = [
+    'Custom built for your business with zero hold music and zero missed calls.',
+    'Secure personal AI assistants you can call, text, and trust with your day.',
+    'Custom AI agents trained on your workflows to automate complex business tasks.',
+    'Intelligent call routing that qualifies leads and connects them to the right person.',
+    'SMS, WhatsApp, and web chat agents that never miss a conversation.'
+  ];
+  var idx = 0;
+  var el = document.getElementById('hero-rotating-line');
+  if (!el) return;
+  setInterval(function() {
+    idx = (idx + 1) % lines.length;
+    // Fade out
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(4px)';
+    setTimeout(function() {
+      el.textContent = lines[idx];
+      // Fade in
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 400);
+  }, 4000);
+  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+})();
+</script>
+
+<!-- Info Modal — single 3D card with Atropos tilt -->
 <div id="info-modal-backdrop" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);opacity:0;"></div>
 <div id="info-modal" style="display:none;position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;height:480px;opacity:0;">
-  <div class="industry-card" style="width:100%;height:100%;position:relative;">
-    <img id="info-modal-img" class="industry-card__image" src="" alt="" style="filter:brightness(0.3) saturate(0.7);"/>
-    <div class="industry-card__overlay"></div>
-    <button id="info-modal-close" onclick="closeInfoModal()" style="position:absolute;top:14px;right:14px;z-index:6;" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer" title="Close">
-      <span class="material-symbols-outlined text-xl" style="background:rgba(14,14,19,0.7);border-radius:50%;padding:4px;backdrop-filter:blur(6px);">close</span>
-    </button>
-    <div class="industry-card__content" style="z-index:2;bottom:0;left:0;right:0;position:absolute;padding:28px;text-align:center;display:flex;flex-direction:column;align-items:center;">
-      <div class="industry-card__icon-wrap">
-        <span id="info-modal-icon" class="material-symbols-outlined text-primary text-2xl"></span>
+  <div id="info-modal-atropos" class="atropos" data-atropos style="width:100%;height:100%;">
+    <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+      <div class="industry-card" style="width:100%;height:100%;position:relative;">
+        <img id="info-modal-img" class="industry-card__image" data-atropos-offset="-3" src="" alt="" style="filter:brightness(0.3) saturate(0.7);"/>
+        <div class="industry-card__overlay"></div>
+        <button id="info-modal-close" onclick="closeInfoModal()" style="position:absolute;top:14px;right:14px;z-index:6;" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer" title="Close">
+          <span class="material-symbols-outlined text-xl" style="background:rgba(14,14,19,0.7);border-radius:50%;padding:4px;backdrop-filter:blur(6px);">close</span>
+        </button>
+        <div class="industry-card__content" data-atropos-offset="5" style="z-index:2;bottom:0;left:0;right:0;position:absolute;padding:28px;text-align:center;display:flex;flex-direction:column;align-items:center;">
+          <div class="industry-card__icon-wrap" data-atropos-offset="8">
+            <span id="info-modal-icon" class="material-symbols-outlined text-primary text-2xl"></span>
+          </div>
+          <h4 id="info-modal-title" class="industry-card__title" data-atropos-offset="6" style="margin-bottom:12px;"></h4>
+          <div id="info-modal-body" class="text-sm leading-relaxed" data-atropos-offset="4" style="color:#C8D0CC;max-height:180px;overflow-y:auto;scrollbar-width:none;"></div>
+        </div>
       </div>
-      <h4 id="info-modal-title" class="industry-card__title" style="margin-bottom:12px;"></h4>
-      <div id="info-modal-body" class="text-sm leading-relaxed" style="color:#C8D0CC;max-height:180px;overflow-y:auto;scrollbar-width:none;"></div>
-    </div>
+    </div></div></div>
   </div>
 </div>
 
@@ -2043,6 +2055,7 @@ var INFO_CONTENT = {
     body: '<p>The highest level of payment card security. All payment data encrypted, tokenized, and never stored on our servers. Every piece of cardholder data protected to bank-grade standards.</p>' }
 };
 var _modalAnimTimer = null;
+var _modalAtropos = null;
 function openInfoModal(el) {
   var key = el.dataset.step || el.dataset.compliance;
   if (!key || !INFO_CONTENT[key]) return;
@@ -2055,6 +2068,21 @@ function openInfoModal(el) {
   document.getElementById('info-modal-title').textContent = d.title;
   document.getElementById('info-modal-body').innerHTML = d.body;
   bd.style.display = 'block'; m.style.display = 'block';
+  // Initialize Atropos on the modal card (same settings as carousel cards)
+  if (_modalAtropos) { try { _modalAtropos.destroy(); } catch(e) {} }
+  setTimeout(function() {
+    if (typeof Atropos !== 'undefined') {
+      _modalAtropos = Atropos({
+        el: document.getElementById('info-modal-atropos'),
+        activeOffset: 40,
+        shadowScale: 1.08,
+        rotateXMax: 10,
+        rotateYMax: 10,
+        shadow: true,
+        highlight: true,
+      });
+    }
+  }, 50);
   if (_modalAnimTimer) clearInterval(_modalAnimTimer);
   var s = Date.now();
   _modalAnimTimer = setInterval(function() {
@@ -2067,6 +2095,7 @@ function openInfoModal(el) {
   }, 16);
 }
 function closeInfoModal() {
+  if (_modalAtropos) { try { _modalAtropos.destroy(); } catch(e) {} _modalAtropos = null; }
   var bd = document.getElementById('info-modal-backdrop');
   var m = document.getElementById('info-modal');
   if (_modalAnimTimer) clearInterval(_modalAnimTimer);
