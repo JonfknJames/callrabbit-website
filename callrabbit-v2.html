@@ -1153,19 +1153,22 @@ function openBensonWidget() {
   function setup() {
     var root = widget.shadowRoot;
     if (!root) return setTimeout(setup, 500);
-    var inCall = false;
     root.addEventListener('click', function(e) {
-      if (!e.isTrusted) return; // ignore synthetic clicks from widget internals
+      if (!e.isTrusted) return;
       var t = e.target;
       while (t && t !== root) {
         if (t.tagName === 'BUTTON' && t.getAttribute('aria-label') === 'Start a call') {
-          inCall = !inCall;
-          if (!inCall) {
-            setTimeout(function() {
+          setTimeout(function() {
+            var callActive = false;
+            root.querySelectorAll('span,div,p').forEach(function(el) {
+              var txt = (el.textContent || '').trim().toLowerCase();
+              if (txt === 'talk to interrupt' || txt === 'listening' || txt === 'speaking' || txt === 'connecting') callActive = true;
+            });
+            if (!callActive) {
               var c = root.querySelector('button[aria-label="Collapse"]');
               if (c) c.click();
-            }, 1500);
-          }
+            }
+          }, 2000);
           return;
         }
         t = t.parentElement;

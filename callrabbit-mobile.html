@@ -378,22 +378,25 @@ if (rabbitContainer) {
       });
     }).observe(root, {childList: true, subtree: true});
 
-    // Auto-collapse: every click on the phone button that ENDS a call
-    // triggers Collapse. Uses capture-phase event delegation on the shadow
-    // root so it survives button re-creation during state changes.
-    var inCall = false;
+    // Auto-collapse: stateless — no toggle. Every phone-button click triggers
+    // a deferred DOM check. If call-active text is present → call running,
+    // do nothing. If absent → call ended, click Collapse.
     root.addEventListener('click', function(e) {
-      if (!e.isTrusted) return; // ignore synthetic clicks from widget internals
+      if (!e.isTrusted) return;
       var t = e.target;
       while (t && t !== root) {
         if (t.tagName === 'BUTTON' && t.getAttribute('aria-label') === 'Start a call') {
-          inCall = !inCall;
-          if (!inCall) {
-            setTimeout(function() {
+          setTimeout(function() {
+            var callActive = false;
+            root.querySelectorAll('span,div,p').forEach(function(el) {
+              var txt = (el.textContent || '').trim().toLowerCase();
+              if (txt === 'talk to interrupt' || txt === 'listening' || txt === 'speaking' || txt === 'connecting') callActive = true;
+            });
+            if (!callActive) {
               var c = root.querySelector('button[aria-label="Collapse"]');
               if (c) c.click();
-            }, 1500);
-          }
+            }
+          }, 2000);
           return;
         }
         t = t.parentElement;
