@@ -1146,26 +1146,30 @@ function openBensonWidget() {
   if (btn) btn.click();
 }
 
-// Auto-collapse: phone button is a toggle (aria-label stays "Start a call"
-// even during call). Click 1 = start, click 2 = end → collapse.
+// Auto-collapse: capture-phase delegation on shadow root survives button re-creation.
 (function watchWidgetForCallEnd() {
   var widget = document.querySelector('elevenlabs-convai');
   if (!widget) return setTimeout(watchWidgetForCallEnd, 1000);
   function setup() {
     var root = widget.shadowRoot;
     if (!root) return setTimeout(setup, 500);
-    var phoneBtn = root.querySelector('button[aria-label="Start a call"]');
-    if (!phoneBtn) return;
     var inCall = false;
-    phoneBtn.addEventListener('click', function() {
-      inCall = !inCall;
-      if (!inCall) {
-        setTimeout(function() {
-          var collapse = root.querySelector('button[aria-label="Collapse"]');
-          if (collapse) collapse.click();
-        }, 1500);
+    root.addEventListener('click', function(e) {
+      var t = e.target;
+      while (t && t !== root) {
+        if (t.tagName === 'BUTTON' && t.getAttribute('aria-label') === 'Start a call') {
+          inCall = !inCall;
+          if (!inCall) {
+            setTimeout(function() {
+              var c = root.querySelector('button[aria-label="Collapse"]');
+              if (c) c.click();
+            }, 1500);
+          }
+          return;
+        }
+        t = t.parentElement;
       }
-    });
+    }, true);
   }
   setup();
 })();

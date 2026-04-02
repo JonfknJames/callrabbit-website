@@ -378,21 +378,26 @@ if (rabbitContainer) {
       });
     }).observe(root, {childList: true, subtree: true});
 
-    // Auto-collapse: phone button is a toggle (aria-label stays "Start a call"
-    // even during call). Click 1 = start, click 2 = end → collapse.
-    var phoneBtn = root.querySelector('button[aria-label="Start a call"]');
-    if (phoneBtn) {
-      var inCall = false;
-      phoneBtn.addEventListener('click', function() {
-        inCall = !inCall;
-        if (!inCall) {
-          setTimeout(function() {
-            var collapse = root.querySelector('button[aria-label="Collapse"]');
-            if (collapse) collapse.click();
-          }, 1500);
+    // Auto-collapse: every click on the phone button that ENDS a call
+    // triggers Collapse. Uses capture-phase event delegation on the shadow
+    // root so it survives button re-creation during state changes.
+    var inCall = false;
+    root.addEventListener('click', function(e) {
+      var t = e.target;
+      while (t && t !== root) {
+        if (t.tagName === 'BUTTON' && t.getAttribute('aria-label') === 'Start a call') {
+          inCall = !inCall;
+          if (!inCall) {
+            setTimeout(function() {
+              var c = root.querySelector('button[aria-label="Collapse"]');
+              if (c) c.click();
+            }, 1500);
+          }
+          return;
         }
-      });
-    }
+        t = t.parentElement;
+      }
+    }, true);
   }
   styleWidget();
 })();
