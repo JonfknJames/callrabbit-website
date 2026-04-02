@@ -1630,7 +1630,7 @@ if (container) {
   // Easter egg — click logo for a backflip
   let flipProgress = 0;  // 0 = idle, >0 = flipping (radians accumulated)
   let flipping = false;
-  const FLIP_SPEED = 0.04; // radians per frame (~2.4 seconds for full 2π)
+  const FLIP_SPEED = -0.048; // negative = backflip, 20% faster
 
   container.addEventListener('click', (e) => {
     e.preventDefault();
@@ -1652,7 +1652,7 @@ if (container) {
       let baseRotX = -scrollProgress * 0.15;
       if (flipping) {
         flipProgress += FLIP_SPEED;
-        if (flipProgress >= Math.PI * 2) {
+        if (Math.abs(flipProgress) >= Math.PI * 2) {
           flipProgress = 0;
           flipping = false;
         }
@@ -2015,8 +2015,8 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="info-modal" style="display:none;position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;height:480px;opacity:0;">
   <div id="info-modal-atropos" class="atropos" data-atropos style="width:100%;height:100%;">
     <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
-      <div class="industry-card" style="width:100%;height:100%;position:relative;">
-        <img id="info-modal-img" class="industry-card__image" data-atropos-offset="-3" src="" alt="" style="filter:brightness(0.3) saturate(0.7);"/>
+      <div class="industry-card" style="width:100%;height:100%;position:relative;box-shadow:0 2px 4px rgba(0,0,0,0.3),0 8px 16px rgba(0,0,0,0.3),0 24px 48px rgba(0,0,0,0.45),0 48px 96px rgba(0,0,0,0.25),0 0 80px rgba(16,185,129,0.06),inset 0 1px 0 rgba(255,255,255,0.1),inset 1px 0 0 rgba(255,255,255,0.06),inset -1px 0 0 rgba(255,255,255,0.04);">
+        <img id="info-modal-img" class="industry-card__image" data-atropos-offset="-3" src="" alt="" style="filter:brightness(0.4) saturate(0.9);"/>
         <div class="industry-card__overlay"></div>
         <button id="info-modal-close" onclick="closeInfoModal()" style="position:absolute;top:14px;right:14px;z-index:6;" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer" title="Close">
           <span class="material-symbols-outlined text-xl" style="background:rgba(14,14,19,0.7);border-radius:50%;padding:4px;backdrop-filter:blur(6px);">close</span>
