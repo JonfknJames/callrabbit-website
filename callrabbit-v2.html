@@ -156,6 +156,35 @@
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
 
+        /* Skeuomorphic logo frame — debossed with glass highlight */
+        .hero-logo-skeu {
+            position: relative;
+            border-radius: 24px;
+            padding: 16px;
+            background: linear-gradient(145deg, #1a1a1f, #222228);
+            box-shadow: inset 4px 4px 10px rgba(0,0,0,0.6),
+                        inset -2px -2px 6px rgba(255,255,255,0.04),
+                        8px 8px 20px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+        .hero-logo-skeu::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 10%; right: 10%; height: 30%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.06), transparent);
+            border-radius: 20px 20px 50% 50%;
+            pointer-events: none;
+        }
+
+        /* Clickable process steps */
+        .process-step-circle { cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .process-step-circle:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(16,185,129,0.15); }
+
+        /* Clickable compliance items */
+        .compliance-item { cursor: pointer; transition: transform 0.2s ease; }
+        .compliance-item:hover { transform: translateY(-2px); }
+        .compliance-item:hover .icon-circle { box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), 0 0 12px rgba(16,185,129,0.15); }
+
         /* ===== 3D Cards (shared by both platform-swiper and industry-swiper) ===== */
         .platform-swiper,
         .industry-swiper {
@@ -415,8 +444,8 @@
         }
 
         /* --- HERO (compact) --- */
-        #hero { padding: 20px; gap: 16px; }
-        #hero h1 { font-size: 1.5rem; }
+        #hero { padding: 16px; gap: 12px; }
+        #hero h1 { font-size: 1.35rem; }
         #hero .hero-subtext { font-size: 0.85rem; }
         #hero .hero-logo-wrap { min-height: 140px; }
         #hero .hero-logo-wrap img { max-height: 130px; }
@@ -462,8 +491,8 @@
            ============================================ */
         @media (min-width: 768px) {
             #navbar-3d-container { width: 200px; margin: 0; }
-            #hero { padding: 32px 48px; gap: 32px; }
-            #hero h1 { font-size: 3.25rem; }
+            #hero { padding: 28px 40px; gap: 24px; }
+            #hero h1 { font-size: 2.75rem; }
             #hero .hero-subtext { font-size: 1.05rem; }
             #hero .hero-logo-wrap { min-height: 280px; }
             #hero .hero-logo-wrap img { max-height: 250px; }
@@ -597,11 +626,11 @@
 </nav>
 <main class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Hero Section -->
-<section id="hero" class="relative w-full rounded-3xl p-5 md:p-8 lg:p-10 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-5 md:gap-8">
+<section id="hero" class="relative w-full rounded-3xl p-4 md:p-6 lg:p-8 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-4 md:gap-6">
 <div class="absolute -right-20 -top-20 w-72 h-72 emerald-glow pointer-events-none"></div>
-<div class="w-full md:w-3/5 space-y-4 md:space-y-5 relative z-10">
-<h1 class="text-2xl sm:text-4xl md:text-5xl font-extrabold tracking-tighter leading-tight text-on-surface text-center">
-<span class="text-primary-container">Answer calls</span> and automate your business
+<div class="w-full md:w-3/5 space-y-3 md:space-y-4 relative z-10">
+<h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tighter leading-tight text-on-surface text-center">
+<span class="text-primary-container">Automate</span> your business
                 </h1>
 <p class="hero-subtext text-on-surface-variant max-w-lg font-medium leading-relaxed text-center mx-auto">
                     Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7. Custom built for your business with zero hold music and zero missed calls.
@@ -616,7 +645,9 @@
 </div>
 </div>
 <div class="hero-logo-wrap w-full md:w-2/5 flex justify-center items-center relative">
-<img src="logo-woodcut.png" alt="CallRabbit" style="width: auto; object-fit: contain; filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.08));" />
+<div class="hero-logo-skeu">
+<img src="logo-woodcut.png" alt="CallRabbit" style="width: auto; max-height: 240px; object-fit: contain; filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.08));" />
+</div>
 </div>
 </section>
 <!-- Services — 3D Card Carousel (closes main for full-width, re-opens after) -->
@@ -787,41 +818,64 @@
     </div>
   </div>
 
+  <!-- AI Business Agents -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=640&q=80" alt="AI Business Agents"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">smart_toy</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">AI Business Agents</h4>
+            <p class="industry-card__desc">Custom agents trained for your specific business tasks.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>We build AI agents with specialised skills tailored to your operations — from creating and scheduling social media content across all channels, to automating data entry, managing customer follow-ups, and monitoring inventory. Each agent is trained on your workflows and brand voice.</p>
+            <div><span class="tag">Social Media</span><span class="tag">Data Entry</span><span class="tag">Follow-Ups</span><span class="tag">Custom Skills</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
 </div>
 </div>
 </section>
 <main class="pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Process Section -->
-<section class="py-10 relative">
-<div class="text-center mb-10">
+<section class="py-6 relative">
+<div class="text-center mb-6">
 <h3 class="text-4xl font-extrabold tracking-tight">Seamless Implementation</h3>
 </div>
 <div class="relative flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-6 md:gap-0">
 <!-- Sunken connection line -->
 <div class="absolute top-1/2 left-0 w-full h-3 tactile-sunken rounded-full -translate-y-1/2 hidden md:block"></div>
 <!-- Step 1 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="connect" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         1
                     </div>
 <span class="text-sm font-bold tracking-widest uppercase">Connect</span>
 </div>
 <!-- Step 2 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="train" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         2
                     </div>
 <span class="text-sm font-bold tracking-widest uppercase">Train</span>
 </div>
 <!-- Step 3 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="launch" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         3
                     </div>
 <span class="text-sm font-bold tracking-widest uppercase">Launch</span>
 </div>
 <!-- Step 4 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="optimize" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         4
                     </div>
@@ -1120,25 +1174,25 @@
 <main class="pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Compliance Banner -->
 <section class="tactile-raised rounded-2xl md:rounded-3xl p-5 md:p-12 grid grid-cols-2 md:flex md:flex-wrap md:justify-between items-center gap-4 md:gap-12 border border-white/5">
-<div class="compliance-item flex items-center">
+<div class="compliance-item flex items-center" data-compliance="soc2" onclick="openInfoModal(this)">
 <div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
 <span class="material-symbols-outlined text-primary" data-weight="fill">verified_user</span>
 </div>
 <div class="badge-text font-bold tracking-widest uppercase">SOC2 Type II Compliant</div>
 </div>
-<div class="compliance-item flex items-center">
+<div class="compliance-item flex items-center" data-compliance="hipaa" onclick="openInfoModal(this)">
 <div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
 <span class="material-symbols-outlined text-primary" data-weight="fill">health_and_safety</span>
 </div>
 <div class="badge-text font-bold tracking-widest uppercase">HIPAA Ready</div>
 </div>
-<div class="compliance-item flex items-center">
+<div class="compliance-item flex items-center" data-compliance="gdpr" onclick="openInfoModal(this)">
 <div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
 <span class="material-symbols-outlined text-primary" data-weight="fill">policy</span>
 </div>
 <div class="badge-text font-bold tracking-widest uppercase">GDPR Compliant</div>
 </div>
-<div class="compliance-item flex items-center">
+<div class="compliance-item flex items-center" data-compliance="pci" onclick="openInfoModal(this)">
 <div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
 <span class="material-symbols-outlined text-primary" data-weight="fill">security</span>
 </div>
@@ -1936,5 +1990,86 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   init();
 });
+</script>
+<!-- Info Modal (shared by process steps + compliance badges) -->
+<div id="info-modal-backdrop" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);opacity:0;"></div>
+<div id="info-modal" style="display:none;position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:480px;opacity:0;">
+  <div class="tactile-raised rounded-3xl border border-white/5 p-6 md:p-8 relative" style="max-height:80vh;overflow-y:auto;">
+    <button id="info-modal-close" onclick="closeInfoModal()" style="position:absolute;top:12px;right:12px;" class="w-8 h-8 rounded-full tactile-sunken flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer">
+      <span class="material-symbols-outlined text-lg">close</span>
+    </button>
+    <div id="info-modal-icon" class="w-12 h-12 rounded-xl tactile-sunken flex items-center justify-center border border-white/5 mb-4"></div>
+    <h4 id="info-modal-title" class="text-xl font-extrabold tracking-tight mb-3 text-on-surface"></h4>
+    <div id="info-modal-body" class="text-on-surface-variant text-sm leading-relaxed space-y-3"></div>
+  </div>
+</div>
+
+<script>
+// ===== INFO MODAL SYSTEM (process steps + compliance badges) =====
+// All content is hardcoded — no user input flows into these strings.
+var INFO_CONTENT = {
+  connect: { icon: 'link', title: 'Step 1 \u2014 Connect',
+    body: '<p>We integrate with your existing phone system, CRM, and booking tools. Whether you use RingCentral, Salesforce, HubSpot, or a custom PBX \u2014 we plug in seamlessly.</p><p>Typical setup takes under 48 hours with zero downtime. Your current systems keep running while we wire everything together behind the scenes.</p>' },
+  train: { icon: 'school', title: 'Step 2 \u2014 Train',
+    body: '<p>Your AI agent learns your business inside out: services, pricing, FAQs, policies, and your exact tone of voice. We feed it real call transcripts so it sounds like your best employee on day one.</p><p>You review and refine every response before it goes live. Nothing reaches your customers without your approval.</p>' },
+  launch: { icon: 'rocket_launch', title: 'Step 3 \u2014 Launch',
+    body: '<p>We start with a soft launch \u2014 your AI agent handles a portion of calls while we monitor every interaction in real time. We fine-tune responses, catch edge cases, and build confidence.</p><p>Once you are satisfied, we flip the switch to full deployment. Your agent is now handling calls 24/7 while you focus on growing your business.</p>' },
+  optimize: { icon: 'trending_up', title: 'Step 4 \u2014 Optimize',
+    body: '<p>This is where the magic compounds. Ongoing analytics reveal exactly how your agent performs \u2014 answer rates, resolution rates, satisfaction scores, and conversion metrics.</p><p>We A/B test scripts, refine objection handling, and run monthly performance reviews. Your agent gets measurably smarter every week.</p>' },
+  soc2: { icon: 'verified_user', title: 'SOC2 Type II Compliant',
+    body: '<p>Annual third-party audits verify our security controls, availability, and data handling. SOC2 Type II is a continuous commitment to operational security, not a one-time checkbox.</p><p>Your data is encrypted at rest (AES-256) and in transit (TLS 1.3) with enterprise-grade infrastructure hosted in SOC2-certified data centres.</p>' },
+  hipaa: { icon: 'health_and_safety', title: 'HIPAA Ready',
+    body: '<p>Built for healthcare from day one. Business Associate Agreements (BAAs) available for every client handling protected health information.</p><p>PHI handling protocols, encrypted storage, role-based access controls, and complete audit trails for every patient interaction.</p>' },
+  gdpr: { icon: 'policy', title: 'GDPR Compliant',
+    body: '<p>Full EU data privacy compliance built into our architecture. Right to erasure, explicit consent management, and data processing agreements included with every deployment.</p><p>Data residency controls let you keep EU citizen data in EU-based infrastructure. Transparent data flows, no hidden processing.</p>' },
+  pci: { icon: 'security', title: 'PCI-DSS Level 1',
+    body: '<p>The highest level of payment card security certification. All payment data is encrypted, tokenized, and never stored on our servers.</p><p>If your AI agent handles transactions or takes payment details over the phone, every piece of cardholder data is protected to the standard that banks themselves must meet.</p>' }
+};
+var _modalAnimTimer = null;
+function openInfoModal(el) {
+  var key = el.dataset.step || el.dataset.compliance;
+  if (!key || !INFO_CONTENT[key]) return;
+  var d = INFO_CONTENT[key];
+  var bd = document.getElementById('info-modal-backdrop');
+  var m = document.getElementById('info-modal');
+  // Safe: all content is from hardcoded INFO_CONTENT above, not user input
+  document.getElementById('info-modal-icon').textContent = '';
+  var iconEl = document.createElement('span');
+  iconEl.className = 'material-symbols-outlined text-primary text-2xl';
+  iconEl.textContent = d.icon;
+  document.getElementById('info-modal-icon').appendChild(iconEl);
+  document.getElementById('info-modal-title').textContent = d.title;
+  document.getElementById('info-modal-body').innerHTML = d.body;
+  bd.style.display = 'block'; m.style.display = 'block';
+  if (_modalAnimTimer) clearInterval(_modalAnimTimer);
+  var s = Date.now();
+  _modalAnimTimer = setInterval(function() {
+    var t = Math.min((Date.now() - s) / 300, 1);
+    var e = 1 - Math.pow(1 - t, 3);
+    bd.style.opacity = String(e);
+    m.style.opacity = String(e);
+    m.style.transform = 'translate(-50%,-50%) translateY(' + ((1 - e) * 12) + 'px)';
+    if (t >= 1) { clearInterval(_modalAnimTimer); _modalAnimTimer = null; }
+  }, 16);
+}
+function closeInfoModal() {
+  var bd = document.getElementById('info-modal-backdrop');
+  var m = document.getElementById('info-modal');
+  if (_modalAnimTimer) clearInterval(_modalAnimTimer);
+  var s = Date.now();
+  _modalAnimTimer = setInterval(function() {
+    var t = Math.min((Date.now() - s) / 250, 1);
+    var e = 1 - Math.pow(1 - t, 3);
+    bd.style.opacity = String(1 - e);
+    m.style.opacity = String(1 - e);
+    m.style.transform = 'translate(-50%,-50%) translateY(' + (e * 8) + 'px)';
+    if (t >= 1) {
+      clearInterval(_modalAnimTimer); _modalAnimTimer = null;
+      bd.style.display = 'none'; m.style.display = 'none';
+    }
+  }, 16);
+}
+document.getElementById('info-modal-backdrop').addEventListener('click', closeInfoModal);
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeInfoModal(); });
 </script>
 </body></html>
