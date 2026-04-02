@@ -1155,6 +1155,7 @@ function openBensonWidget() {
     if (!root) return setTimeout(setup, 500);
     var inCall = false;
     root.addEventListener('click', function(e) {
+      if (!e.isTrusted) return; // ignore synthetic clicks from widget internals
       var t = e.target;
       while (t && t !== root) {
         if (t.tagName === 'BUTTON' && t.getAttribute('aria-label') === 'Start a call') {
