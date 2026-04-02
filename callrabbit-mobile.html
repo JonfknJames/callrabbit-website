@@ -370,27 +370,29 @@ if (rabbitContainer) {
       '*{color:#E4E1E8!important;}' +
       'a[href*="elevenlabs"],a[href*="eleven"],a[target="_blank"],[class*="powered"],[class*="branding"],[class*="watermark"]{display:none!important;pointer-events:none!important;}';
     root.appendChild(s);
-    // Watch for branding links (kill them) and call end (collapse widget)
-    var wasInCall = false;
+    // Kill branding links on mutation
     new MutationObserver(function() {
-      // Kill branding links
       root.querySelectorAll('a[href*="elevenlabs"],a[target="_blank"],[class*="powered"]').forEach(function(el) {
         el.style.display = 'none';
         el.style.pointerEvents = 'none';
       });
-      // Auto-collapse: detect "End call" via aria-label (buttons have no textContent)
-      var hasEndCall = Array.from(root.querySelectorAll('button')).some(function(b) {
-        return (b.getAttribute('aria-label') || '').toLowerCase().indexOf('end call') !== -1;
+    }).observe(root, {childList: true, subtree: true});
+
+    // Auto-collapse: phone button is a toggle (aria-label stays "Start a call"
+    // even during call). Click 1 = start, click 2 = end → collapse.
+    var phoneBtn = root.querySelector('button[aria-label="Start a call"]');
+    if (phoneBtn) {
+      var inCall = false;
+      phoneBtn.addEventListener('click', function() {
+        inCall = !inCall;
+        if (!inCall) {
+          setTimeout(function() {
+            var collapse = root.querySelector('button[aria-label="Collapse"]');
+            if (collapse) collapse.click();
+          }, 1500);
+        }
       });
-      if (hasEndCall) { wasInCall = true; return; }
-      if (wasInCall) {
-        wasInCall = false;
-        setTimeout(function() {
-          var btn = root.querySelector('button[aria-label="Collapse"]');
-          if (btn) btn.click();
-        }, 1500);
-      }
-    }).observe(root, {childList: true, subtree: true, characterData: true});
+    }
   }
   styleWidget();
 })();

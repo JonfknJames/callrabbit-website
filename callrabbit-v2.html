@@ -1146,39 +1146,28 @@ function openBensonWidget() {
   if (btn) btn.click();
 }
 
-// Auto-collapse widget after call ends
+// Auto-collapse: phone button is a toggle (aria-label stays "Start a call"
+// even during call). Click 1 = start, click 2 = end → collapse.
 (function watchWidgetForCallEnd() {
   var widget = document.querySelector('elevenlabs-convai');
   if (!widget) return setTimeout(watchWidgetForCallEnd, 1000);
-
-  function collapseWidget() {
+  function setup() {
     var root = widget.shadowRoot;
-    if (!root) return;
-    var btn = root.querySelector('button[aria-label="Collapse"]');
-    if (btn) btn.click();
-  }
-
-  // Prefer native event
-  widget.addEventListener('elevenlabs-convai:call_ended', function() {
-    setTimeout(collapseWidget, 1500);
-  });
-
-  // Mutation-observer fallback: watch for "End call" button disappearing
-  (function setupObserver() {
-    if (!widget.shadowRoot) return setTimeout(setupObserver, 1000);
-    var root = widget.shadowRoot;
-    var wasInCall = false;
-    new MutationObserver(function() {
-      var hasEndBtn = Array.from(root.querySelectorAll('button')).some(function(b) {
-        return (b.getAttribute('aria-label') || '').toLowerCase().indexOf('end call') !== -1;
-      });
-      if (hasEndBtn) { wasInCall = true; return; }
-      if (wasInCall) {
-        wasInCall = false;
-        setTimeout(collapseWidget, 1500);
+    if (!root) return setTimeout(setup, 500);
+    var phoneBtn = root.querySelector('button[aria-label="Start a call"]');
+    if (!phoneBtn) return;
+    var inCall = false;
+    phoneBtn.addEventListener('click', function() {
+      inCall = !inCall;
+      if (!inCall) {
+        setTimeout(function() {
+          var collapse = root.querySelector('button[aria-label="Collapse"]');
+          if (collapse) collapse.click();
+        }, 1500);
       }
-    }).observe(root, { childList: true, subtree: true, characterData: true });
-  })();
+    });
+  }
+  setup();
 })();
 </script>
 <style>
