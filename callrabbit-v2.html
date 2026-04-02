@@ -1154,22 +1154,8 @@ function openBensonWidget() {
   function collapseWidget() {
     var root = widget.shadowRoot;
     if (!root) return;
-    // Try widget public API
-    if (typeof widget.collapse === 'function') { widget.collapse(); return; }
-    if (typeof widget.close === 'function') { widget.close(); return; }
-    // Try ElevenLabs-specific compact sheet element
-    var sheet = root.querySelector('.rounded-compact-sheet,[class*="compact-sheet"]');
-    if (sheet) { sheet.click(); return; }
-    // Try labelled close/back button
-    var closeBtn = root.querySelector('[aria-label*="close" i],[aria-label*="back" i],[aria-label*="collapse" i],[aria-label*="dismiss" i]');
-    if (closeBtn) { closeBtn.click(); return; }
-    // Last resort: find any button that isn't "Start a call" — likely the toggle/close
-    var btns = Array.from(root.querySelectorAll('button'));
-    var other = btns.find(function(b) {
-      var t = b.textContent.trim().toLowerCase();
-      return t.indexOf('start') === -1 && t.indexOf('end') === -1;
-    });
-    if (other) other.click();
+    var btn = root.querySelector('button[aria-label="Collapse"]');
+    if (btn) btn.click();
   }
 
   // Prefer native event
@@ -1184,7 +1170,7 @@ function openBensonWidget() {
     var wasInCall = false;
     new MutationObserver(function() {
       var hasEndBtn = Array.from(root.querySelectorAll('button')).some(function(b) {
-        return b.textContent && b.textContent.trim().toLowerCase().includes('end call');
+        return (b.getAttribute('aria-label') || '').toLowerCase().indexOf('end call') !== -1;
       });
       if (hasEndBtn) { wasInCall = true; return; }
       if (wasInCall) {

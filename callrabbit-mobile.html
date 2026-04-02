@@ -370,26 +370,6 @@ if (rabbitContainer) {
       '*{color:#E4E1E8!important;}' +
       'a[href*="elevenlabs"],a[href*="eleven"],a[target="_blank"],[class*="powered"],[class*="branding"],[class*="watermark"]{display:none!important;pointer-events:none!important;}';
     root.appendChild(s);
-    // Collapse the widget back to its launcher pill
-    function collapse(root) {
-      // Try widget public API
-      if (typeof widget.collapse === 'function') { widget.collapse(); return; }
-      if (typeof widget.close === 'function') { widget.close(); return; }
-      // Try ElevenLabs-specific compact sheet element
-      var sheet = root.querySelector('.rounded-compact-sheet,[class*="compact-sheet"]');
-      if (sheet) { sheet.click(); return; }
-      // Try labelled close/back button
-      var closeBtn = root.querySelector('[aria-label*="close" i],[aria-label*="back" i],[aria-label*="collapse" i],[aria-label*="dismiss" i]');
-      if (closeBtn) { closeBtn.click(); return; }
-      // Last resort: find any button that isn't "Start a call" — likely the toggle/close
-      var btns = Array.from(root.querySelectorAll('button'));
-      var other = btns.find(function(b) {
-        var t = b.textContent.trim().toLowerCase();
-        return t.indexOf('start') === -1 && t.indexOf('end') === -1;
-      });
-      if (other) other.click();
-    }
-
     // Watch for branding links (kill them) and call end (collapse widget)
     var wasInCall = false;
     new MutationObserver(function() {
@@ -398,14 +378,17 @@ if (rabbitContainer) {
         el.style.display = 'none';
         el.style.pointerEvents = 'none';
       });
-      // Auto-collapse: detect "End call" button disappearing after call was active
+      // Auto-collapse: detect "End call" via aria-label (buttons have no textContent)
       var hasEndCall = Array.from(root.querySelectorAll('button')).some(function(b) {
-        return b.textContent && b.textContent.trim().toLowerCase().indexOf('end call') !== -1;
+        return (b.getAttribute('aria-label') || '').toLowerCase().indexOf('end call') !== -1;
       });
       if (hasEndCall) { wasInCall = true; return; }
       if (wasInCall) {
         wasInCall = false;
-        setTimeout(function() { collapse(root); }, 1500);
+        setTimeout(function() {
+          var btn = root.querySelector('button[aria-label="Collapse"]');
+          if (btn) btn.click();
+        }, 1500);
       }
     }).observe(root, {childList: true, subtree: true, characterData: true});
   }
