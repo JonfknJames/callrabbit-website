@@ -263,6 +263,15 @@
         .swiper-slide-active .industry-card__image {
             filter: brightness(0.4) saturate(0.9);
         }
+        /* Popup card must match active carousel card appearance */
+        #info-modal .industry-card {
+            transform: none !important;
+            opacity: 1 !important;
+            filter: none !important;
+        }
+        #info-modal .industry-card__image {
+            filter: brightness(0.4) saturate(0.9) !important;
+        }
         /* Top highlight edge — simulates light catching a raised surface */
         .industry-card::before {
             content: '';
@@ -613,12 +622,11 @@
 <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tighter leading-tight text-on-surface text-center">
 <span class="text-primary-container">Automate</span> your business
                 </h1>
-<p class="hero-subtext text-on-surface-variant max-w-lg font-medium leading-relaxed text-center mx-auto">
+<div class="flex-1 flex items-center justify-center">
+<p id="hero-rotating-line" class="hero-subtext text-on-surface-variant max-w-lg font-medium leading-relaxed text-center mx-auto" style="min-height:2.8em;">
                     Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7.
                 </p>
-<p id="hero-rotating-line" class="hero-subtext text-on-surface-variant max-w-lg font-medium leading-relaxed text-center mx-auto" style="min-height:1.8em;">
-                    Custom built for your business with zero hold music and zero missed calls.
-                </p>
+</div>
 <div class="hero-buttons flex justify-center items-center">
 <a href="#contact" class="tactile-button-raised text-on-primary rounded-xl font-bold tracking-wide uppercase inline-block text-center">
                         Get Started
@@ -634,7 +642,7 @@
 </section>
 <!-- Services — 3D Card Carousel (closes main for full-width, re-opens after) -->
 </main>
-<section id="platform" class="space-y-12 py-8">
+<section id="platform" class="space-y-12 pt-4 pb-8">
 <h3 class="text-3xl font-extrabold tracking-tight px-10 border-l-4 border-primary max-w-7xl mx-auto">Custom Tailored Solutions</h3>
 <div class="swiper platform-swiper">
 <div class="swiper-wrapper">
@@ -1985,6 +1993,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
 (function() {
   var lines = [
+    'Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7.',
     'Custom built for your business with zero hold music and zero missed calls.',
     'Secure personal AI assistants you can call, text, and trust with your day.',
     'Custom AI agents trained on your workflows to automate complex business tasks.',
