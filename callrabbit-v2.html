@@ -1638,7 +1638,7 @@ if (container) {
   // Easter egg — click logo for a backflip
   let flipProgress = 0;  // 0 = idle, >0 = flipping (radians accumulated)
   let flipping = false;
-  const FLIP_SPEED = -0.048; // negative = backflip, 20% faster
+  const FLIP_SPEED = -0.096; // negative = backflip, doubled speed
 
   container.addEventListener('click', (e) => {
     e.preventDefault();
@@ -2022,14 +2022,15 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- Info Modal — single 3D card with Atropos tilt -->
 <div id="info-modal-backdrop" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);opacity:0;"></div>
 <div id="info-modal" style="display:none;position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;height:480px;opacity:0;">
+  <!-- Close button OUTSIDE Atropos so clicks aren't intercepted by parallax tracking -->
+  <button id="info-modal-close" onclick="closeInfoModal()" style="position:absolute;top:14px;right:14px;z-index:10000;" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer" title="Close">
+    <span class="material-symbols-outlined text-xl" style="background:rgba(14,14,19,0.85);border-radius:50%;padding:5px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.1);">close</span>
+  </button>
   <div id="info-modal-atropos" class="atropos" data-atropos style="width:100%;height:100%;">
     <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
       <div class="industry-card" style="width:100%;height:100%;position:relative;box-shadow:0 2px 4px rgba(0,0,0,0.3),0 8px 16px rgba(0,0,0,0.3),0 24px 48px rgba(0,0,0,0.45),0 48px 96px rgba(0,0,0,0.25),0 0 80px rgba(16,185,129,0.06),inset 0 1px 0 rgba(255,255,255,0.1),inset 1px 0 0 rgba(255,255,255,0.06),inset -1px 0 0 rgba(255,255,255,0.04);">
         <img id="info-modal-img" class="industry-card__image" data-atropos-offset="-3" src="" alt="" style="filter:brightness(0.4) saturate(0.9);"/>
         <div class="industry-card__overlay"></div>
-        <button id="info-modal-close" onclick="closeInfoModal()" style="position:absolute;top:14px;right:14px;z-index:6;" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer" title="Close">
-          <span class="material-symbols-outlined text-xl" style="background:rgba(14,14,19,0.7);border-radius:50%;padding:4px;backdrop-filter:blur(6px);">close</span>
-        </button>
         <div class="industry-card__content" data-atropos-offset="5" style="z-index:2;bottom:0;left:0;right:0;position:absolute;padding:28px;text-align:center;display:flex;flex-direction:column;align-items:center;">
           <div class="industry-card__icon-wrap" data-atropos-offset="8">
             <span id="info-modal-icon" class="material-symbols-outlined text-primary text-2xl"></span>
@@ -2046,21 +2047,21 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===== INFO MODAL SYSTEM (process steps + compliance badges) =====
 // All content is hardcoded — no user input flows into these strings.
 var INFO_CONTENT = {
-  connect: { icon: 'link', title: 'Connect', img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=640&q=80',
+  connect: { icon: 'link', title: 'Connect', img: 'card-connect.jpg',
     body: '<p>We integrate with your existing phone system, CRM, and booking tools. Whether you use RingCentral, Salesforce, HubSpot, or a custom PBX \u2014 we plug in seamlessly.</p><p>Typical setup takes under 48 hours with zero downtime.</p>' },
   train: { icon: 'school', title: 'Train', img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=640&q=80',
     body: '<p>Your AI agent learns your business: services, pricing, FAQs, and your exact tone of voice. We feed it real call transcripts so it sounds like your best employee.</p><p>Nothing reaches your customers without your approval.</p>' },
-  launch: { icon: 'rocket_launch', title: 'Launch', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=640&q=80',
+  launch: { icon: 'rocket_launch', title: 'Launch', img: 'card-launch.jpg',
     body: '<p>Soft launch with live monitoring, then full deployment. Your agent handles calls 24/7 while we watch every interaction and fine-tune responses in real time.</p>' },
   optimize: { icon: 'trending_up', title: 'Optimize', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&q=80',
     body: '<p>Ongoing analytics, A/B testing of scripts, and monthly performance reviews. Answer rates, resolution rates, satisfaction scores \u2014 your agent gets measurably smarter every week.</p>' },
-  soc2: { icon: 'verified_user', title: 'SOC2 Type II', img: 'https://images.unsplash.com/photo-1563986768609-322da13575f2?w=640&q=80',
+  soc2: { icon: 'verified_user', title: 'SOC2 Type II', img: 'card-soc2.webp',
     body: '<p>Annual third-party audits verify our security controls and data handling. Your data is encrypted at rest (AES-256) and in transit (TLS 1.3) with enterprise-grade infrastructure.</p>' },
-  hipaa: { icon: 'health_and_safety', title: 'HIPAA Ready', img: 'https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=640&q=80',
+  hipaa: { icon: 'health_and_safety', title: 'HIPAA Ready', img: 'card-hipaa.png',
     body: '<p>Built for healthcare. BAA agreements available, PHI handling protocols, encrypted storage, role-based access controls, and complete audit trails for every patient interaction.</p>' },
-  gdpr: { icon: 'policy', title: 'GDPR Compliant', img: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=640&q=80',
+  gdpr: { icon: 'policy', title: 'GDPR Compliant', img: 'card-gdpr.webp',
     body: '<p>Full EU data privacy compliance. Right to erasure, consent management, data processing agreements, and residency controls to keep EU data in EU infrastructure.</p>' },
-  pci: { icon: 'security', title: 'PCI-DSS Level 1', img: 'https://images.unsplash.com/photo-1563986768609-322da13575f2?w=640&q=80',
+  pci: { icon: 'security', title: 'PCI-DSS Level 1', img: 'card-pci.png',
     body: '<p>The highest level of payment card security. All payment data encrypted, tokenized, and never stored on our servers. Every piece of cardholder data protected to bank-grade standards.</p>' }
 };
 var _modalAnimTimer = null;
