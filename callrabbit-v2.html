@@ -2077,21 +2077,18 @@ function openInfoModal(el) {
   document.getElementById('info-modal-title').textContent = d.title;
   document.getElementById('info-modal-body').innerHTML = d.body;
   bd.style.display = 'block'; m.style.display = 'block';
-  // Initialize Atropos on the modal card (same settings as carousel cards)
-  if (_modalAtropos) { try { _modalAtropos.destroy(); } catch(e) {} }
-  setTimeout(function() {
-    if (typeof Atropos !== 'undefined') {
-      _modalAtropos = Atropos({
-        el: document.getElementById('info-modal-atropos'),
-        activeOffset: 40,
-        shadowScale: 1.08,
-        rotateXMax: 10,
-        rotateYMax: 10,
-        shadow: true,
-        highlight: true,
-      });
-    }
-  }, 50);
+  // Initialize Atropos once — keep it alive across opens (no destroy/recreate delay)
+  if (!_modalAtropos && typeof Atropos !== 'undefined') {
+    _modalAtropos = Atropos({
+      el: document.getElementById('info-modal-atropos'),
+      activeOffset: 40,
+      shadowScale: 1.08,
+      rotateXMax: 10,
+      rotateYMax: 10,
+      shadow: true,
+      highlight: true,
+    });
+  }
   if (_modalAnimTimer) clearInterval(_modalAnimTimer);
   var s = Date.now();
   _modalAnimTimer = setInterval(function() {
@@ -2104,7 +2101,7 @@ function openInfoModal(el) {
   }, 16);
 }
 function closeInfoModal() {
-  if (_modalAtropos) { try { _modalAtropos.destroy(); } catch(e) {} _modalAtropos = null; }
+  // Keep Atropos alive — no destroy needed, card container stays in DOM
   var bd = document.getElementById('info-modal-backdrop');
   var m = document.getElementById('info-modal');
   if (_modalAnimTimer) clearInterval(_modalAnimTimer);
