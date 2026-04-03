@@ -2047,7 +2047,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // ===== INFO MODAL SYSTEM (process steps + compliance badges) =====
 // All content is hardcoded — no user input flows into these strings.
 var INFO_CONTENT = {
-  connect: { icon: 'link', title: 'Connect', img: 'card-connect.jpg',
+  connect: { icon: 'link', title: 'Connect', img: 'card-connect.jpg', pos: '60% 30%',
     body: '<p>We integrate with your existing phone system, CRM, and booking tools. Whether you use RingCentral, Salesforce, HubSpot, or a custom PBX \u2014 we plug in seamlessly.</p><p>Typical setup takes under 48 hours with zero downtime.</p>' },
   train: { icon: 'school', title: 'Train', img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=640&q=80',
     body: '<p>Your AI agent learns your business: services, pricing, FAQs, and your exact tone of voice. We feed it real call transcripts so it sounds like your best employee.</p><p>Nothing reaches your customers without your approval.</p>' },
@@ -2072,8 +2072,10 @@ function openInfoModal(el) {
   var d = INFO_CONTENT[key];
   var bd = document.getElementById('info-modal-backdrop');
   var m = document.getElementById('info-modal');
-  document.getElementById('info-modal-img').src = d.img;
-  document.getElementById('info-modal-img').alt = d.title;
+  var imgEl = document.getElementById('info-modal-img');
+  imgEl.src = d.img;
+  imgEl.alt = d.title;
+  imgEl.style.objectPosition = d.pos || 'center center';
   document.getElementById('info-modal-icon').textContent = d.icon;
   document.getElementById('info-modal-title').textContent = d.title;
   document.getElementById('info-modal-body').innerHTML = d.body;
