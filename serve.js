@@ -13,12 +13,14 @@ const MIME = {
     '.json': 'application/json',
     '.png': 'image/png',
     '.jpg': 'image/jpeg',
+    '.jfif': 'image/jpeg',
     '.svg': 'image/svg+xml',
     '.glb': 'model/gltf-binary',
     '.gltf': 'model/gltf+json',
     '.ico': 'image/x-icon',
     '.woff2': 'font/woff2',
     '.webp': 'image/webp',
+    '.avif': 'image/avif',
 };
 
 http.createServer((req, res) => {
