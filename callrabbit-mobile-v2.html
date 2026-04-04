@@ -1659,6 +1659,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (isExpanded) {
           slide.classList.remove('expanded');
+          deactivateCardAtropos(slide);
           animateOverlay(expandEl, 1, 0, 0, 8, 350, function() {
             expandEl.style.visibility = 'hidden';
             expandEl.style.pointerEvents = 'none';
@@ -1667,6 +1668,7 @@ document.addEventListener('DOMContentLoaded', function() {
           if (image) animateProps(image, { filter: ['brightness(0.15)', 'brightness(0.3)'] }, 500);
         } else {
           slide.classList.add('expanded');
+          activateCardAtropos(slide);
           expandEl.style.visibility = 'visible';
           expandEl.style.pointerEvents = 'auto';
           animateOverlay(expandEl, 0, 1, 8, 0, 450, null);
@@ -1679,6 +1681,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function collapseAllIndustry() {
       document.querySelectorAll('.industry-swiper .swiper-slide.expanded').forEach(function(s) {
         s.classList.remove('expanded');
+        deactivateCardAtropos(s);
         var exp = s.querySelector('.industry-card__expand');
         if (exp) {
           if (exp.__animTimer) { clearInterval(exp.__animTimer); exp.__animTimer = null; }
@@ -1772,11 +1775,13 @@ document.addEventListener('DOMContentLoaded', function() {
         var image = slide.querySelector('.industry-card__image');
         if (isExpanded) {
           slide.classList.remove('expanded');
+          deactivateCardAtropos(slide);
           animateOverlay(expandEl, 1, 0, 0, 8, 350, function() { expandEl.style.visibility = 'hidden'; expandEl.style.pointerEvents = 'none'; });
           if (desc) animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 300);
           if (image) animateProps(image, { filter: ['brightness(0.15)', 'brightness(0.3)'] }, 500);
         } else {
           slide.classList.add('expanded');
+          activateCardAtropos(slide);
           expandEl.style.visibility = 'visible';
           expandEl.style.pointerEvents = 'auto';
           animateOverlay(expandEl, 0, 1, 8, 0, 450, null);
@@ -1789,6 +1794,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function collapseAllPlatform() {
       document.querySelectorAll('.platform-swiper .swiper-slide.expanded').forEach(function(s) {
         s.classList.remove('expanded');
+        deactivateCardAtropos(s);
         var exp = s.querySelector('.industry-card__expand');
         if (exp) {
           if (exp.__animTimer) { clearInterval(exp.__animTimer); exp.__animTimer = null; }
@@ -1821,10 +1827,13 @@ document.addEventListener('DOMContentLoaded', function() {
       platformObserver.observe(slide, { attributes: true, attributeFilter: ['class'] });
     });
 
-    // Initialize Atropos on all cards (touch-friendly reduced values)
-    document.querySelectorAll('.industry-swiper [data-atropos], .platform-swiper [data-atropos]').forEach(function(el) {
-      Atropos({
-        el: el,
+    // Atropos on carousel cards: only activate when expanded (prevents scroll hijack)
+    // Modal Atropos is initialized separately and stays always-on
+    function activateCardAtropos(slide) {
+      var atroposEl = slide.querySelector('[data-atropos]');
+      if (!atroposEl || atroposEl.__atroposInstance) return;
+      atroposEl.__atroposInstance = Atropos({
+        el: atroposEl,
         activeOffset: 30,
         shadowScale: 1.05,
         rotateXMax: 8,
@@ -1832,7 +1841,13 @@ document.addEventListener('DOMContentLoaded', function() {
         shadow: true,
         highlight: true,
       });
-    });
+    }
+    function deactivateCardAtropos(slide) {
+      var atroposEl = slide.querySelector('[data-atropos]');
+      if (!atroposEl || !atroposEl.__atroposInstance) return;
+      atroposEl.__atroposInstance.destroy();
+      atroposEl.__atroposInstance = null;
+    }
   }
   init();
 });
