@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="cache-control" content="no-cache"/>
   <title>CALL RABBIT</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
   <style>
@@ -13,7 +14,8 @@
 </head>
 <body>
   <script>
-    var base = window.innerWidth < 768 ? 'callrabbit-mobile-v2.html' : 'callrabbit-v2.html';
+    var isMobile = window.innerWidth < 768 || /Android.*Mobile|iPhone|iPod/i.test(navigator.userAgent);
+    var base = isMobile ? 'callrabbit-mobile-v2.html' : 'callrabbit-v2.html';
     var src = base + '?v=' + Date.now();
     var iframe = document.createElement('iframe');
     iframe.src = src;
