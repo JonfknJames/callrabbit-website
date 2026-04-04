@@ -494,10 +494,11 @@ elevenlabs-convai {
   --el-powered-by-display: none;
   position: fixed !important;
   bottom: 16px !important;
-  right: auto !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
+  left: 0 !important;
+  right: 0 !important;
   z-index: 9990 !important;
+  width: 100% !important;
+  pointer-events: none !important;
 }
 elevenlabs-convai + div[style*="Powered"],
 [class*="powered-by"],
@@ -1174,8 +1175,9 @@ a[href*="elevenlabs.io"][target="_blank"] {
     '* { color: #E4E1E8 !important; }',
     'p, span, label, [class*="subtitle"], [class*="secondary"] { color: #BBCABF !important; }',
     'a[href*="elevenlabs"], [class*="powered"], [class*="branding"] { display: none !important; }',
-    ':host { position: fixed !important; bottom: 16px !important; left: 50% !important; right: auto !important; transform: translateX(-50%) !important; }',
-    '[class*="card"], [class*="panel"], [class*="dialog"], [class*="modal"], [class*="container"] { left: auto !important; right: auto !important; }'
+    ':host { pointer-events: none !important; }',
+    '.overlay { left: 0 !important; right: 0 !important; bottom: 0 !important; align-items: center !important; pointer-events: none !important; }',
+    '.overlay > * { pointer-events: auto !important; }'
   ].join('\n');
   root.appendChild(style);
   var hideBranding = function() {
@@ -1192,11 +1194,14 @@ a[href*="elevenlabs.io"][target="_blank"] {
 function openBensonWidget() {
   var widget = document.querySelector('elevenlabs-convai');
   if (!widget) return;
+  // Temporarily enable pointer events on host for the click to propagate
+  widget.style.pointerEvents = 'auto';
   if (typeof widget.open === 'function') { widget.open(); return; }
   var root = widget.shadowRoot;
   if (!root) return;
-  var btn = root.querySelector('button') || root.querySelector('[role="button"]');
-  if (btn) btn.click();
+  // Click the compact pill to expand
+  var pill = root.querySelector('.rounded-compact-sheet') || root.querySelector('button') || root.querySelector('[role="button"]');
+  if (pill) pill.click();
 }
 </script>
 
