@@ -1829,9 +1829,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Atropos on carousel cards: only activate when expanded (prevents scroll hijack)
     // Modal Atropos is initialized separately and stays always-on
+    //
+    // Strip data-atropos from carousel cards to prevent Atropos auto-init.
+    // Mark them with data-atropos-deferred so we can find them later.
+    document.querySelectorAll('.industry-swiper [data-atropos], .platform-swiper [data-atropos]').forEach(function(el) {
+      el.removeAttribute('data-atropos');
+      el.setAttribute('data-atropos-deferred', '');
+      // Also destroy any already-auto-initialized instance
+      if (el.atropos) { try { el.atropos.destroy(); } catch(e) {} }
+    });
+
     function activateCardAtropos(slide) {
-      var atroposEl = slide.querySelector('[data-atropos]');
+      var atroposEl = slide.querySelector('[data-atropos-deferred]');
       if (!atroposEl || atroposEl.__atroposInstance) return;
+      atroposEl.setAttribute('data-atropos', '');
       atroposEl.__atroposInstance = Atropos({
         el: atroposEl,
         activeOffset: 30,
@@ -1843,10 +1854,11 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     function deactivateCardAtropos(slide) {
-      var atroposEl = slide.querySelector('[data-atropos]');
+      var atroposEl = slide.querySelector('[data-atropos-deferred]');
       if (!atroposEl || !atroposEl.__atroposInstance) return;
       atroposEl.__atroposInstance.destroy();
       atroposEl.__atroposInstance = null;
+      atroposEl.removeAttribute('data-atropos');
     }
   }
   init();
