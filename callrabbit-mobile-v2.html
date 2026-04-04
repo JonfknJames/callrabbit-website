@@ -1265,8 +1265,13 @@ if (contactContainer) {
   controls.enablePan = false;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 1.2;
-  controls.minPolarAngle = Math.PI * 0.2;
-  controls.maxPolarAngle = Math.PI * 0.75;
+  // Lock vertical rotation so vertical touch passes through to page scroll
+  var lockPolar = Math.PI * 0.45;
+  controls.minPolarAngle = lockPolar;
+  controls.maxPolarAngle = lockPolar;
+  controls.touches = { ONE: THREE.TOUCH.ROTATE, TWO: THREE.TOUCH.NONE };
+  // Allow vertical scroll to pass through the canvas
+  renderer.domElement.style.touchAction = 'pan-y';
 
   var model = null;
   var dracoLoader = new DRACOLoader();
@@ -1315,21 +1320,15 @@ if (contactContainer) {
     glowLight.position.y = my * 2 + 1;
   });
 
-  // Elastic restore
-  var restPolarAngle = Math.PI * 0.45;
-  var isRestoring = false;
+  // Resume auto-rotate after interaction
   var interactionTimeout2;
-
   controls.addEventListener('start', function() {
     controls.autoRotate = false;
-    isRestoring = false;
     clearTimeout(interactionTimeout2);
   });
-
   controls.addEventListener('end', function() {
     interactionTimeout2 = setTimeout(function() {
       controls.autoRotate = true;
-      isRestoring = true;
     }, 2000);
   });
 
@@ -1339,22 +1338,6 @@ if (contactContainer) {
     var elapsed = clock2.getElapsedTime();
     if (model) model.position.y = Math.sin(elapsed * 0.8) * 0.04;
     glowLight.intensity = 0.6 + Math.sin(elapsed * 1.5) * 0.15;
-
-    if (isRestoring) {
-      var current = controls.getPolarAngle();
-      var diff = Math.abs(current - restPolarAngle);
-      if (diff > 0.005) {
-        var lerpFactor = 0.005;
-        var newAngle = current + (restPolarAngle - current) * lerpFactor;
-        controls.minPolarAngle = newAngle;
-        controls.maxPolarAngle = newAngle;
-      } else {
-        isRestoring = false;
-        controls.minPolarAngle = Math.PI * 0.2;
-        controls.maxPolarAngle = Math.PI * 0.75;
-      }
-    }
-
     controls.update();
     renderer.render(scene, camera);
   }
