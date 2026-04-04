@@ -1273,7 +1273,7 @@ if (contactContainer) {
   dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.164.1/examples/jsm/libs/draco/');
   var loader2 = new GLTFLoader();
   loader2.setDRACOLoader(dracoLoader);
-  loader2.load('rabbit-logo-draco.glb', function(gltf) {
+  loader2.load('rabbit-logo-mobile.glb', function(gltf) {
     model = gltf.scene;
     var box = new THREE.Box3().setFromObject(model);
     var size = box.getSize(new THREE.Vector3());
