@@ -1648,8 +1648,8 @@ document.addEventListener('DOMContentLoaded', function() {
           // Delay the reveal so it starts after the card settles into centre
           clearTimeout(desc.__revealDelay);
           desc.__revealDelay = setTimeout(function() {
-            animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 600);
-          }, 250);
+            animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 900);
+          }, 100);
         } else {
           clearTimeout(desc.__revealDelay);
           if (currentOpacity > 0) {
@@ -1769,8 +1769,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isActive && !isExpanded) {
           clearTimeout(desc.__revealDelay);
           desc.__revealDelay = setTimeout(function() {
-            animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 600);
-          }, 250);
+            animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 900);
+          }, 100);
         } else {
           clearTimeout(desc.__revealDelay);
           if (currentOpacity > 0) {
