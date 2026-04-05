@@ -1649,8 +1649,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     updateIndustryDescVisibility();
+    industrySwiper.on('slideChangeTransitionStart', updateIndustryDescVisibility);
     industrySwiper.on('slideChangeTransitionEnd', updateIndustryDescVisibility);
-    industrySwiper.on('slideChange', updateIndustryDescVisibility);
 
     // ===== PLATFORM SWIPER =====
     var platformSwiper = new Swiper('.platform-swiper', {
@@ -1753,8 +1753,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     updatePlatformDescVisibility();
+    platformSwiper.on('slideChangeTransitionStart', updatePlatformDescVisibility);
     platformSwiper.on('slideChangeTransitionEnd', updatePlatformDescVisibility);
-    platformSwiper.on('slideChange', updatePlatformDescVisibility);
 
     // No Atropos on carousel cards — prevents scroll hijack on mobile.
     // Atropos only used on info modal card (standalone, not in scroll flow).
