@@ -1065,20 +1065,6 @@ a[href*="elevenlabs.io"][target="_blank"] {
   </div>
 </section>
 
-<!-- Force AudioContext to 24kHz to match ElevenLabs output sample rate -->
-<script>
-(function() {
-  var OrigAC = window.AudioContext || window.webkitAudioContext;
-  if (!OrigAC) return;
-  window.AudioContext = window.webkitAudioContext = function(opts) {
-    opts = opts || {};
-    if (!opts.sampleRate) opts.sampleRate = 24000;
-    return new OrigAC(opts);
-  };
-  window.AudioContext.prototype = OrigAC.prototype;
-  Object.setPrototypeOf(window.AudioContext, OrigAC);
-})();
-</script>
 <!-- ElevenLabs Conversational AI Widget (Benson) -->
 <elevenlabs-convai
   agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
