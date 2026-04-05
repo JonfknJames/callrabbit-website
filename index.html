@@ -15,13 +15,19 @@
 <body>
   <script>
     var isMobile = window.innerWidth < 768 || /Android.*Mobile|iPhone|iPod/i.test(navigator.userAgent);
-    var base = isMobile ? 'callrabbit-mobile-v2.html' : 'callrabbit-v2.html';
-    var src = base + '?v=' + Date.now();
-    var iframe = document.createElement('iframe');
-    iframe.src = src;
-    iframe.setAttribute('allowfullscreen', '');
-    iframe.setAttribute('allow', 'microphone; camera; autoplay; clipboard-write');
-    document.body.appendChild(iframe);
+    if (isMobile) {
+      // Direct redirect — no iframe. iOS AudioContext behaves inconsistently
+      // inside iframes, causing alternating pitch on the ElevenLabs widget.
+      window.location.replace('callrabbit-mobile-v2.html');
+    } else {
+      var base = 'callrabbit-v2.html';
+      var src = base + '?v=' + Date.now();
+      var iframe = document.createElement('iframe');
+      iframe.src = src;
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('allow', 'microphone; camera; autoplay; clipboard-write');
+      document.body.appendChild(iframe);
+    }
   </script>
   <noscript>
     <meta http-equiv="refresh" content="0; url=callrabbit-v2.html"/>

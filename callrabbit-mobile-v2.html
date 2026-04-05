@@ -1065,30 +1065,6 @@ a[href*="elevenlabs.io"][target="_blank"] {
   </div>
 </section>
 
-<!-- Stabilize AudioContext sample rate before widget loads.
-     iOS audio hardware alternates between 48kHz (speaker) and 44.1kHz
-     (headphones/BT) and doesn't reset between page loads. ElevenLabs
-     streams at a fixed rate but doesn't resample, causing pitch shift.
-     Fix: create a silent AudioContext early to lock the hardware rate,
-     then let the widget reuse it. -->
-<script>
-(function() {
-  var AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC) return;
-  // Create a silent context to "warm up" and lock the hardware sample rate
-  var warmup = new AC();
-  // Create a silent oscillator to force the context to actually engage the hardware
-  var osc = warmup.createOscillator();
-  var gain = warmup.createGain();
-  gain.gain.value = 0; // silent
-  osc.connect(gain);
-  gain.connect(warmup.destination);
-  osc.start();
-  osc.stop(warmup.currentTime + 0.001);
-  // Store the locked rate for reference
-  window.__lockedSampleRate = warmup.sampleRate;
-})();
-</script>
 <!-- ElevenLabs Conversational AI Widget (Benson) -->
 <elevenlabs-convai
   agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
