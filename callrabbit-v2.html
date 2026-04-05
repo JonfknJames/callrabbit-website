@@ -346,8 +346,12 @@
             max-height: 0;
             opacity: 0;
             overflow: hidden;
-            /* NO CSS transition — creates stuck Web Animations inside Swiper/Atropos.
-               Desc visibility is toggled by JS after Swiper init. */
+            transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1), max-height 2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, max-height;
+        }
+        .industry-card__desc.reveal {
+            max-height: 60px;
+            opacity: 1;
         }
         /* Expanded card state — overlay with NO CSS transitions.
            CSS transitions on these elements create Web Animations that permanently
@@ -1862,15 +1866,12 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.industry-swiper .swiper-slide').forEach(function(slide) {
         var desc = slide.querySelector('.industry-card__desc');
         if (!desc) return;
-        desc.getAnimations().forEach(function(a) { a.cancel(); });
         var isActive = slide.classList.contains('swiper-slide-active');
         var isExpanded = slide.classList.contains('expanded');
         if (isActive && !isExpanded) {
-          desc.style.maxHeight = '60px';
-          desc.style.opacity = '1';
+          desc.classList.add('reveal');
         } else {
-          desc.style.maxHeight = '0';
-          desc.style.opacity = '0';
+          desc.classList.remove('reveal');
         }
       });
     }
@@ -1976,11 +1977,13 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.platform-swiper .swiper-slide').forEach(function(slide) {
         var desc = slide.querySelector('.industry-card__desc');
         if (!desc) return;
-        desc.getAnimations().forEach(function(a) { a.cancel(); });
         var isActive = slide.classList.contains('swiper-slide-active');
         var isExpanded = slide.classList.contains('expanded');
-        if (isActive && !isExpanded) { desc.style.maxHeight = '60px'; desc.style.opacity = '1'; }
-        else { desc.style.maxHeight = '0'; desc.style.opacity = '0'; }
+        if (isActive && !isExpanded) {
+          desc.classList.add('reveal');
+        } else {
+          desc.classList.remove('reveal');
+        }
       });
     }
     updatePlatformDescVisibility();
