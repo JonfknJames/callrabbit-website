@@ -915,7 +915,7 @@ a[href*="elevenlabs.io"][target="_blank"] {
       <!-- Restaurants -->
       <div class="swiper-slide">
         <div class="industry-card">
-              <img class="industry-card__image" data-atropos-offset="-3" src="https://www.thedailymeal.com/img/gallery/the-most-beautiful-restaurants-in-the-world/intro-1688049904.webp" alt="Restaurants"/>
+              <img class="industry-card__image" data-atropos-offset="-3" src="Restaurant.webp" alt="Restaurants"/>
               <div class="industry-card__overlay"></div>
               <div class="industry-card__content" data-atropos-offset="5">
                 <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -1568,14 +1568,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!isActive) {
         collapseAllIndustry();
         industrySwiper.animating = false;
-        var slideRect = slide.getBoundingClientRect();
-        var activeSlide = document.querySelector('.industry-swiper .swiper-slide-active');
-        var activeRect = activeSlide ? activeSlide.getBoundingClientRect() : null;
-        if (activeRect && slideRect.left < activeRect.left) {
-          industrySwiper.slidePrev(500);
-        } else {
-          industrySwiper.slideNext(500);
-        }
+        var clickedIndex = parseInt(slide.getAttribute('data-swiper-slide-index') || Array.from(slide.parentNode.children).indexOf(slide));
+        industrySwiper.slideToLoop(clickedIndex, 500);
       } else {
         var expandEl = slide.querySelector('.industry-card__expand');
         if (!expandEl) return;
@@ -1698,11 +1692,8 @@ document.addEventListener('DOMContentLoaded', function() {
       if (!isActive) {
         collapseAllPlatform();
         platformSwiper.animating = false;
-        var slideRect = slide.getBoundingClientRect();
-        var activeSlide = document.querySelector('.platform-swiper .swiper-slide-active');
-        var activeRect = activeSlide ? activeSlide.getBoundingClientRect() : null;
-        if (activeRect && slideRect.left < activeRect.left) { platformSwiper.slidePrev(500); }
-        else { platformSwiper.slideNext(500); }
+        var clickedIndex = parseInt(slide.getAttribute('data-swiper-slide-index') || Array.from(slide.parentNode.children).indexOf(slide));
+        platformSwiper.slideToLoop(clickedIndex, 500);
       } else {
         var expandEl = slide.querySelector('.industry-card__expand');
         if (!expandEl) return;
