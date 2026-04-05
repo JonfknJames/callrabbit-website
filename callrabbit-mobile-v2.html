@@ -1634,6 +1634,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Desc visibility for industry swiper — GPU-accelerated CSS transition
+    // Uses Swiper events instead of MutationObserver because loop mode
+    // creates cloned slides that MutationObserver doesn't catch.
     function updateIndustryDescVisibility() {
       document.querySelectorAll('.industry-swiper .swiper-slide').forEach(function(slide) {
         var desc = slide.querySelector('.industry-card__desc');
@@ -1648,10 +1650,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     updateIndustryDescVisibility();
-    var industryObserver = new MutationObserver(updateIndustryDescVisibility);
-    document.querySelectorAll('.industry-swiper .swiper-slide').forEach(function(slide) {
-      industryObserver.observe(slide, { attributes: true, attributeFilter: ['class'] });
-    });
+    industrySwiper.on('slideChangeTransitionEnd', updateIndustryDescVisibility);
+    industrySwiper.on('slideChange', updateIndustryDescVisibility);
 
     // ===== PLATFORM SWIPER =====
     var platformSwiper = new Swiper('.platform-swiper', {
@@ -1754,10 +1754,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
     updatePlatformDescVisibility();
-    var platformObserver = new MutationObserver(updatePlatformDescVisibility);
-    document.querySelectorAll('.platform-swiper .swiper-slide').forEach(function(slide) {
-      platformObserver.observe(slide, { attributes: true, attributeFilter: ['class'] });
-    });
+    platformSwiper.on('slideChangeTransitionEnd', updatePlatformDescVisibility);
+    platformSwiper.on('slideChange', updatePlatformDescVisibility);
 
     // No Atropos on carousel cards — prevents scroll hijack on mobile.
     // Atropos only used on info modal card (standalone, not in scroll flow).
