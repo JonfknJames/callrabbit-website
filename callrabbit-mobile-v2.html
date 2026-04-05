@@ -1634,20 +1634,30 @@ document.addEventListener('DOMContentLoaded', function() {
       exp.style.pointerEvents = 'none';
     });
 
-    // Desc visibility for industry swiper
+    // Desc visibility for industry swiper — smooth animated reveal
     function updateIndustryDescVisibility() {
       document.querySelectorAll('.industry-swiper .swiper-slide').forEach(function(slide) {
         var desc = slide.querySelector('.industry-card__desc');
         if (!desc) return;
         desc.getAnimations().forEach(function(a) { a.cancel(); });
+        if (desc.__descTimer) { clearInterval(desc.__descTimer); desc.__descTimer = null; }
         var isActive = slide.classList.contains('swiper-slide-active');
         var isExpanded = slide.classList.contains('expanded');
+        var currentOpacity = parseFloat(desc.style.opacity) || 0;
         if (isActive && !isExpanded) {
-          desc.style.maxHeight = '60px';
-          desc.style.opacity = '1';
+          // Delay the reveal so it starts after the card settles into centre
+          clearTimeout(desc.__revealDelay);
+          desc.__revealDelay = setTimeout(function() {
+            animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 600);
+          }, 250);
         } else {
-          desc.style.maxHeight = '0';
-          desc.style.opacity = '0';
+          clearTimeout(desc.__revealDelay);
+          if (currentOpacity > 0) {
+            animateProps(desc, { opacity: [currentOpacity, 0], maxHeight: [60, 0] }, 300);
+          } else {
+            desc.style.maxHeight = '0';
+            desc.style.opacity = '0';
+          }
         }
       });
     }
@@ -1746,16 +1756,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     platformSwiper.on('slideChange', collapseAllPlatform);
 
-    // Desc visibility for platform swiper
+    // Desc visibility for platform swiper — smooth animated reveal
     function updatePlatformDescVisibility() {
       document.querySelectorAll('.platform-swiper .swiper-slide').forEach(function(slide) {
         var desc = slide.querySelector('.industry-card__desc');
         if (!desc) return;
         desc.getAnimations().forEach(function(a) { a.cancel(); });
+        if (desc.__descTimer) { clearInterval(desc.__descTimer); desc.__descTimer = null; }
         var isActive = slide.classList.contains('swiper-slide-active');
         var isExpanded = slide.classList.contains('expanded');
-        if (isActive && !isExpanded) { desc.style.maxHeight = '60px'; desc.style.opacity = '1'; }
-        else { desc.style.maxHeight = '0'; desc.style.opacity = '0'; }
+        var currentOpacity = parseFloat(desc.style.opacity) || 0;
+        if (isActive && !isExpanded) {
+          clearTimeout(desc.__revealDelay);
+          desc.__revealDelay = setTimeout(function() {
+            animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 600);
+          }, 250);
+        } else {
+          clearTimeout(desc.__revealDelay);
+          if (currentOpacity > 0) {
+            animateProps(desc, { opacity: [currentOpacity, 0], maxHeight: [60, 0] }, 300);
+          } else {
+            desc.style.maxHeight = '0';
+            desc.style.opacity = '0';
+          }
+        }
       });
     }
     updatePlatformDescVisibility();
