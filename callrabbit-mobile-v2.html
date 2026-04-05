@@ -1065,18 +1065,6 @@ a[href*="elevenlabs.io"][target="_blank"] {
   </div>
 </section>
 
-<!-- Debug: show AudioContext sample rate -->
-<div id="audio-debug" style="position:fixed;top:60px;left:50%;transform:translateX(-50%);z-index:9999;background:rgba(16,185,129,0.9);color:#000;padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;font-family:monospace;pointer-events:none;"></div>
-<script>
-(function() {
-  var AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC) return;
-  var ctx = new AC();
-  var el = document.getElementById('audio-debug');
-  if (el) el.textContent = 'AudioContext: ' + ctx.sampleRate + 'Hz | state: ' + ctx.state;
-  ctx.close();
-})();
-</script>
 <!-- ElevenLabs Conversational AI Widget (Benson) -->
 <elevenlabs-convai
   agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
