@@ -455,24 +455,26 @@ input, textarea, select {
 .industry-card__expand .visit-link span.material-symbols-outlined {
   font-size: 1rem;
 }
-/* Collections card — denser layout to fit description + tags + CTA without cutoff */
+/* Collections card — visit-link pinned to bottom so it's always reachable;
+   description + tags vertically centered in the space above. */
 .industry-card__expand--payus {
-  padding: 14px 14px !important;
-  justify-content: flex-start !important;
-  gap: 6px;
+  padding: 16px 14px 60px 14px !important;
+  justify-content: center !important;
 }
 .industry-card__expand--payus p {
   font-size: 0.78rem !important;
   line-height: 1.5 !important;
-  margin-bottom: 6px !important;
-}
-.industry-card__expand--payus .tag {
-  margin-bottom: 4px !important;
+  margin-bottom: 8px !important;
 }
 .industry-card__expand--payus .visit-link {
-  margin-top: 6px !important;
+  position: absolute !important;
+  left: 50% !important;
+  bottom: 14px !important;
+  transform: translateX(-50%) !important;
+  margin-top: 0 !important;
   padding: 8px 14px !important;
   font-size: 0.68rem !important;
+  z-index: 10 !important;
 }
 .atropos-inner {
   border-radius: 24px !important;
@@ -1082,13 +1084,12 @@ a[href*="elevenlabs.io"][target="_blank"] {
                 <p class="industry-card__desc">Recover receivables compliantly — voice, SMS, demand letters with the audit log built in.</p>
               </div>
               <div class="industry-card__expand industry-card__expand--payus">
-                <p><strong>PAYUS</strong> is CallRabbit's collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself.</p>
+                <p><strong>PAYUS</strong> holds the line on collections rules across every jurisdiction — FDCPA, CASL, GDPR — while the audit log writes itself.</p>
                 <div><span class="tag">FDCPA</span><span class="tag">Multi-Jurisdiction</span><span class="tag">Voice + SMS</span><span class="tag">Audit Log</span></div>
-                <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener noreferrer"
+                <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener"
                    onmousedown="event.stopPropagation()"
                    onpointerdown="event.stopPropagation()"
-                   ontouchstart="event.stopPropagation()"
-                   onclick="event.stopPropagation(); event.preventDefault(); window.open('https://payus.money','_blank','noopener,noreferrer'); return false;"
+                   onclick="event.stopPropagation()"
                    data-event-name="industry-card-payus-click">
                   <span>Visit payus.money</span>
                   <span class="material-symbols-outlined">arrow_outward</span>
