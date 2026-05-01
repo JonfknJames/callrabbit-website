@@ -1885,22 +1885,40 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 16);
     }
 
-    // PAYUS visit-link — capture-phase handler runs BEFORE Swiper/Atropos
-    // can intercept. Navigates the top window to bypass iframe popup blocks
-    // (production loads this page inside an iframe via index.html).
-    document.addEventListener('click', function(e) {
-      var link = e.target.closest && e.target.closest('.visit-link');
-      if (!link) return;
-      e.stopPropagation();
-      e.preventDefault();
-      var url = link.getAttribute('href');
+    // PAYUS visit-link navigation. Production loads this file inside an
+    // iframe (see index.html), so window.open is silently popup-blocked
+    // in many browsers — even when it returns a non-null window object.
+    // When iframed, navigate the top window directly. When standalone,
+    // open in a new tab with same-tab fallback.
+    function payusNavigate(url) {
       try {
-        var w = window.open(url, '_blank', 'noopener,noreferrer');
-        if (!w) throw new Error('popup blocked');
-      } catch (_) {
-        (window.top || window).location.href = url;
-      }
-    }, true);
+        if (window.top !== window) {
+          window.top.location.href = url;
+          return;
+        }
+      } catch (_) { /* cross-origin top — fall through */ }
+      var w = null;
+      try { w = window.open(url, '_blank', 'noopener,noreferrer'); } catch (_) {}
+      if (!w) window.location.href = url;
+    }
+
+    // Bind directly on each .visit-link element (capture phase) so
+    // Swiper/Atropos can't swallow the click before we handle it.
+    function bindPayusLinks() {
+      document.querySelectorAll('.visit-link').forEach(function(link) {
+        if (link.dataset.payusBound) return;
+        link.dataset.payusBound = '1';
+        ['mousedown','pointerdown','touchstart'].forEach(function(evt) {
+          link.addEventListener(evt, function(e) { e.stopPropagation(); }, true);
+        });
+        link.addEventListener('click', function(e) {
+          e.stopPropagation();
+          e.preventDefault();
+          payusNavigate(link.getAttribute('href'));
+        }, true);
+      });
+    }
+    bindPayusLinks();
 
     // Click handler — navigate or expand
     document.querySelector('.industry-swiper').addEventListener('click', function(e) {
