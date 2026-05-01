@@ -11,6 +11,15 @@
 <meta property="og:image" content="og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <title>CALL RABBIT | AI Phone &amp; Text Agent Platform</title>
+<script>
+  // Mask the file path so the URL bar reads callrabbit.ai/ instead of
+  // callrabbit.ai/callrabbit-mobile-v2.html. Runs synchronously before
+  // any rendering. Reload still works because index.html re-routes by
+  // viewport on the root path.
+  if (location.pathname.endsWith('/callrabbit-mobile-v2.html')) {
+    history.replaceState(null, '', '/');
+  }
+</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <link rel="preload" as="image" href="logo-woodcut.webp" fetchpriority="high"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -394,6 +403,57 @@ input, textarea, select {
 .swiper-slide.expanded .industry-card__image {
   filter: brightness(0.15) saturate(0.5);
   transform: scale(1.1);
+}
+/* PAYUS wordmark backdrop — replaces <img> for the Collections card */
+.industry-card__wordmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at center, #0E2C56 0%, #0A1F3D 60%, #07162B 100%);
+  filter: brightness(0.7) saturate(1) !important;
+}
+.swiper-slide-active .industry-card__wordmark {
+  filter: brightness(0.85) saturate(1) !important;
+}
+.swiper-slide.expanded .industry-card__wordmark {
+  filter: brightness(0.45) saturate(0.8) !important;
+}
+.industry-card__wordmark span {
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.75rem, 14vw, 4.5rem);
+  letter-spacing: -0.04em;
+  color: #FCFAF7;
+  text-decoration: underline;
+  text-decoration-color: #00A39E;
+  text-decoration-thickness: 6px;
+  text-underline-offset: 8px;
+  text-decoration-skip-ink: none;
+  line-height: 1;
+}
+.industry-card__expand .visit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  padding: 9px 16px;
+  border-radius: 9999px;
+  background: #00A39E;
+  color: #FCFAF7;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0,163,158,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.industry-card__expand .visit-link:active {
+  transform: translateY(1px);
+}
+.industry-card__expand .visit-link span.material-symbols-outlined {
+  font-size: 1rem;
 }
 .atropos-inner {
   border-radius: 24px !important;
@@ -984,6 +1044,31 @@ a[href*="elevenlabs.io"][target="_blank"] {
               <div class="industry-card__expand">
                 <p>Schedule advisory appointments, deliver loan application status updates, handle routine account inquiries, and send payment reminders — all with built-in compliance guardrails for regulated communications.</p>
                 <div><span class="tag">Advisory</span><span class="tag">Loans</span><span class="tag">Compliance</span><span class="tag">Payments</span></div>
+              </div>
+            </div>
+      </div>
+
+      <!-- Collections — powered by PAYUS (specialised CallRabbit collections software) -->
+      <div class="swiper-slide">
+        <div class="industry-card">
+              <div class="industry-card__image industry-card__wordmark" data-atropos-offset="-3" role="img" aria-label="PAYUS — collections software by CallRabbit">
+                <span>PAYUS</span>
+              </div>
+              <div class="industry-card__overlay"></div>
+              <div class="industry-card__content" data-atropos-offset="5">
+                <div class="industry-card__icon-wrap" data-atropos-offset="8">
+                  <span class="material-symbols-outlined text-primary text-2xl">request_quote</span>
+                </div>
+                <h4 class="industry-card__title" data-atropos-offset="6">Collections</h4>
+                <p class="industry-card__desc">Recover receivables compliantly — voice, SMS, demand letters with the audit log built in.</p>
+              </div>
+              <div class="industry-card__expand">
+                <p><strong>PAYUS</strong> is CallRabbit's purpose-built collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself.</p>
+                <div><span class="tag">FDCPA</span><span class="tag">Multi-Jurisdiction</span><span class="tag">Voice + SMS</span><span class="tag">Audit Log</span></div>
+                <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-event-name="industry-card-payus-click">
+                  <span>Visit payus.money</span>
+                  <span class="material-symbols-outlined">arrow_outward</span>
+                </a>
               </div>
             </div>
       </div>
