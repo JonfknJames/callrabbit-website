@@ -57,6 +57,75 @@ body{
 #rabbit:active{cursor:grabbing;}
 #rabbit canvas{display:block;width:100%!important;height:100%!important;}
 
+/* PAYUS Collections card — specialised collections software by CallRabbit */
+#payus-card{width:100%;padding:48px 16px 0;}
+.payus-card{
+  position:relative;
+  overflow:hidden;
+  background:#1F1F24;
+  box-shadow:20px 20px 40px rgba(0,0,0,0.4),inset 1px 1px 0px rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.05);
+  border-radius:24px;
+  padding:32px 24px 24px;
+}
+.payus-card__backdrop{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,#0E2C56 0%,#0A1F3D 60%,#07162B 100%);
+  pointer-events:none;
+  z-index:0;
+}
+.payus-card__backdrop span{
+  font-family:'Manrope',sans-serif;
+  font-weight:800;
+  font-size:5rem;
+  letter-spacing:-0.04em;
+  color:#FCFAF7;
+  opacity:0.18;
+  text-decoration:underline;
+  text-decoration-color:#00A39E;
+  text-decoration-thickness:6px;
+  text-underline-offset:8px;
+  text-decoration-skip-ink:none;
+  line-height:1;
+}
+.payus-card__overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(14,14,19,0.92) 0%,rgba(14,14,19,0.55) 50%,rgba(14,14,19,0.2) 100%);
+  pointer-events:none;
+  z-index:1;
+}
+.payus-card__content{position:relative;z-index:2;display:flex;flex-direction:column;gap:14px;}
+.payus-card__icon-wrap{
+  width:48px;height:48px;border-radius:14px;
+  background:rgba(0,163,158,0.18);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:inset 1px 1px 0 rgba(255,255,255,0.08);
+}
+.payus-card__icon{color:#00A39E;font-size:22px;font-family:'Material Symbols Outlined';font-weight:400;line-height:1;}
+.payus-card__title{font-size:22px;font-weight:800;color:#FCFAF7;letter-spacing:-0.01em;line-height:1.2;}
+.payus-card__desc{font-size:14px;line-height:1.65;color:#C8D0CC;}
+.payus-card__tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;}
+.payus-card__tags span{
+  font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
+  padding:4px 10px;border-radius:8px;
+  background:rgba(0,163,158,0.16);color:#5BC9C5;
+  box-shadow:inset 2px 2px 4px rgba(0,0,0,0.3);
+}
+.payus-card__cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  margin-top:8px;
+  background:#00A39E;color:#FCFAF7;
+  border-radius:9999px;
+  font-family:'Manrope',sans-serif;font-weight:800;font-size:13px;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:14px 20px;
+  text-decoration:none;
+  box-shadow:8px 8px 16px rgba(0,0,0,0.4),inset 1px 1px 0px rgba(255,255,255,0.2);
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+.payus-card__cta:active{transform:translateY(1px);box-shadow:inset 4px 4px 8px rgba(0,0,0,0.4);}
+
 /* Contact section */
 #contact{width:100%;padding:48px 16px 0;}
 /* Neumorphic card */
@@ -127,7 +196,13 @@ footer{
 .footer-links a:hover{color:#E4E1E8;}
 .footer-copy{font-size:10px;letter-spacing:0.06em;text-transform:uppercase;color:rgba(187,202,191,0.4);}
 
-/* ElevenLabs widget — dark theme vars */
+/* ElevenLabs widget — visually hidden, triggered by proxy button */
+/* opacity:0 hides it; pointer-events:none prevents accidental taps;
+   programmatic .click() still fires regardless of pointer-events */
+elevenlabs-convai{
+  opacity:0!important;
+  pointer-events:none!important;
+}
 elevenlabs-convai{
   --el-bg-color:#1F1F24;
   --el-text-color:#E4E1E8;
@@ -138,6 +213,68 @@ elevenlabs-convai{
   --el-powered-by-display:none;
 }
 elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlabs.io"][target="_blank"]{display:none!important;}
+
+/* Proxy call button — inline between rabbit and form */
+#widget-wrap{
+  width:100%;
+  padding:0 16px;
+  margin-top:32px;
+}
+#call-btn{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  background:#1F1F24;
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:9999px;
+  box-shadow:12px 12px 24px rgba(0,0,0,0.4),inset 1px 1px 0 rgba(255,255,255,0.06);
+  padding:12px 16px 12px 12px;
+  cursor:pointer;
+  transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
+  font-family:'Manrope',sans-serif;
+  text-align:left;
+}
+#call-btn:active{
+  box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5),1px 1px 0 rgba(255,255,255,0.02);
+  transform:translateY(1px);
+}
+#call-btn img{
+  width:40px;height:40px;
+  border-radius:50%;
+  object-fit:cover;
+  flex-shrink:0;
+}
+#call-btn-label{
+  display:flex;flex-direction:column;align-items:flex-start;gap:3px;
+  flex:1;
+}
+#call-btn-label .btn-title{
+  font-family:'Manrope',sans-serif;
+  font-size:15px;
+  font-weight:800;
+  color:#E4E1E8;
+  letter-spacing:0.01em;
+  line-height:1.2;
+}
+#call-btn-label .btn-sub{
+  font-family:'Manrope',sans-serif;
+  font-size:11px;
+  color:#BBCABF;
+  font-weight:500;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  line-height:1.2;
+}
+#call-btn-icon{
+  margin-left:auto;
+  width:36px;height:36px;border-radius:50%;
+  background:#10B981;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  box-shadow:4px 4px 8px rgba(0,0,0,0.3),inset 1px 1px 0 rgba(255,255,255,0.2);
+}
 </style>
 </head>
 <body>
@@ -172,14 +309,50 @@ elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlab
     <div id="rabbit"></div>
   </div>
 
-  <!-- 3. WIDGET — default ElevenLabs floating widget, dark-themed -->
+  <!-- 3. WIDGET PROXY BUTTON + hidden ElevenLabs element -->
+  <div id="widget-wrap">
+    <button id="call-btn" onclick="openBensonWidget()">
+      <img src="benson-face.png" alt="Benson"/>
+      <div id="call-btn-label">
+        <span class="btn-title">Talk to Benson</span>
+        <span class="btn-sub">AI voice agent · available now</span>
+      </div>
+      <div id="call-btn-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#003824" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.02 1.18C.02.62.42.07 1 .02h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L5.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z"/></svg>
+      </div>
+    </button>
+  </div>
+
+  <!-- ElevenLabs widget — hidden, triggered by proxy button above -->
   <elevenlabs-convai
     agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
     avatar-image-url="benson-face.png"
   ></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
-  <!-- 4. CONTACT FORM -->
+  <!-- 4. PAYUS / COLLECTIONS — specialised collections software by CallRabbit -->
+  <section id="payus-card">
+    <div class="payus-card">
+      <div class="payus-card__backdrop" aria-hidden="true"><span>PAYUS</span></div>
+      <div class="payus-card__overlay" aria-hidden="true"></div>
+      <div class="payus-card__content">
+        <div class="payus-card__icon-wrap">
+          <span class="payus-card__icon">request_quote</span>
+        </div>
+        <h3 class="payus-card__title">Collections, automated. Compliantly.</h3>
+        <p class="payus-card__desc">PAYUS is CallRabbit's purpose-built collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself.</p>
+        <div class="payus-card__tags">
+          <span>FDCPA</span><span>Multi-Jurisdiction</span><span>Voice + SMS</span><span>Audit Log</span>
+        </div>
+        <a class="payus-card__cta" href="https://payus.money" target="_blank" rel="noopener">
+          Visit payus.money
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. CONTACT FORM -->
   <section id="contact">
     <div class="tactile-raised">
       <form action="https://formsubmit.co/info@callrabbit.ai" method="POST">
@@ -204,7 +377,7 @@ elevenlabs-convai+div[style*="Powered"],[class*="powered-by"],a[href*="elevenlab
     </div>
   </section>
 
-  <!-- 5. FOOTER -->
+  <!-- 6. FOOTER -->
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">CALL RABBIT</div>
@@ -355,31 +528,56 @@ if (rabbitContainer) {
 }
 </script>
 
-<!-- ElevenLabs: dark theme + nuke all branding links -->
+<!-- ElevenLabs restyling -->
 <script>
-(function() {
-  function styleWidget() {
-    var widget = document.querySelector('elevenlabs-convai');
-    if (!widget || !widget.shadowRoot) return setTimeout(styleWidget, 500);
-    var root = widget.shadowRoot;
-    var s = document.createElement('style');
-    s.textContent =
-      'button,[role="button"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.06)!important;box-shadow:12px 12px 24px rgba(0,0,0,0.45),inset 1px 1px 0 rgba(255,255,255,0.07)!important;}' +
-      '[class*="card"],[class*="panel"],[class*="dialog"],[class*="modal"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.05)!important;box-shadow:20px 20px 40px rgba(0,0,0,0.4),inset 1px 1px 0 rgba(255,255,255,0.05)!important;border-radius:24px!important;}' +
-      'input,textarea{background:#0E0E13!important;border:none!important;border-radius:12px!important;color:#E4E1E8!important;box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5)!important;}' +
-      '*{color:#E4E1E8!important;}' +
-      'a[href*="elevenlabs"],a[href*="eleven"],a[target="_blank"],[class*="powered"],[class*="branding"],[class*="watermark"]{display:none!important;pointer-events:none!important;}';
-    root.appendChild(s);
-    // Kill branding links on mutation
-    new MutationObserver(function() {
-      root.querySelectorAll('a[href*="elevenlabs"],a[target="_blank"],[class*="powered"]').forEach(function(el) {
-        el.style.display = 'none';
-        el.style.pointerEvents = 'none';
-      });
-    }).observe(root, {childList: true, subtree: true});
+function openBensonWidget() {
+  var widget = document.querySelector('elevenlabs-convai');
+  if (!widget) return;
+  if (typeof widget.open === 'function') { widget.open(); return; }
+  var root = widget.shadowRoot;
+  if (!root) return;
+  var btn = root.querySelector('button') || root.querySelector('[role="button"]');
+  if (btn) btn.click();
+}
 
-  }
-  styleWidget();
+(function styleWidget() {
+  const widget = document.querySelector('elevenlabs-convai');
+  if (!widget || !widget.shadowRoot) return setTimeout(styleWidget, 500);
+  const root = widget.shadowRoot;
+  const style = document.createElement('style');
+  style.textContent = `
+    button,[role="button"],.launcher,[class*="trigger"],[class*="bubble"],[class*="fab"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.06)!important;box-shadow:12px 12px 24px rgba(0,0,0,0.45),-4px -4px 12px rgba(255,255,255,0.03),inset 1px 1px 0px rgba(255,255,255,0.07)!important;transition:all 0.3s cubic-bezier(0.4,0,0.2,1)!important;}
+    [class*="card"],[class*="panel"],[class*="dialog"],[class*="modal"],[class*="container"]{background:#1F1F24!important;border:1px solid rgba(255,255,255,0.05)!important;box-shadow:20px 20px 40px rgba(0,0,0,0.4),inset 1px 1px 0px rgba(255,255,255,0.05)!important;border-radius:24px!important;}
+    input,textarea{background:#0E0E13!important;border:none!important;border-radius:12px!important;box-shadow:inset 4px 4px 8px rgba(0,0,0,0.5),1px 1px 0px rgba(255,255,255,0.02)!important;color:#E4E1E8!important;}
+    *{color:#E4E1E8!important;}
+    p,span,label,[class*="subtitle"],[class*="secondary"]{color:#BBCABF!important;}
+    a[href*="elevenlabs"],[class*="powered"],[class*="branding"]{display:none!important;}
+  `;
+  root.appendChild(style);
+  const hideBranding = () => root.querySelectorAll('*').forEach(el => { if (el.textContent && el.textContent.includes('Powered by') && el.children.length < 3) el.style.display = 'none'; });
+  hideBranding();
+  new MutationObserver(hideBranding).observe(root, {childList:true, subtree:true});
+})();
+
+(function watchCallEnd() {
+  const widget = document.querySelector('elevenlabs-convai');
+  if (!widget || !widget.shadowRoot) return setTimeout(watchCallEnd, 1000);
+  const root = widget.shadowRoot;
+  let wasInCall = false;
+  new MutationObserver(function() {
+    let startBtn=null, feedbackEl=null, endBtn=null;
+    root.querySelectorAll('button,span,div').forEach(el => {
+      const t = el.textContent ? el.textContent.trim() : '';
+      if (t === 'Start a call') startBtn = el;
+      if (t.includes('How was') || t.includes('Rate') || t.includes('feedback')) feedbackEl = el;
+    });
+    root.querySelectorAll('button').forEach(b => { if (b.textContent && b.textContent.trim() === 'End call') endBtn = b; });
+    if (endBtn) wasInCall = true;
+    if (wasInCall && (feedbackEl || startBtn)) {
+      wasInCall = false;
+      setTimeout(() => { const s = root.querySelector('.rounded-compact-sheet'); if (s) s.click(); }, 800);
+    }
+  }).observe(root, {childList:true, subtree:true, characterData:true});
 })();
 </script>
 </body>
