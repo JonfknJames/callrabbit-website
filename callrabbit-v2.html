@@ -461,6 +461,25 @@
         .industry-card__expand .visit-link span.material-symbols-outlined {
             font-size: 1.1rem;
         }
+        /* Collections card — denser layout to fit description + tags + CTA without cutoff */
+        .industry-card__expand--payus {
+            padding: 16px 18px !important;
+            justify-content: flex-start !important;
+            gap: 8px;
+        }
+        .industry-card__expand--payus p {
+            font-size: 0.85rem !important;
+            line-height: 1.55 !important;
+            margin-bottom: 8px !important;
+        }
+        .industry-card__expand--payus .tag {
+            margin-bottom: 4px !important;
+        }
+        .industry-card__expand--payus .visit-link {
+            margin-top: 8px !important;
+            padding: 9px 16px !important;
+            font-size: 0.72rem !important;
+        }
         /* Atropos depth */
         .atropos-inner {
             border-radius: 24px !important;
@@ -1209,8 +1228,8 @@
             <h4 class="industry-card__title" data-atropos-offset="6">Collections</h4>
             <p class="industry-card__desc">Recover receivables compliantly — voice, SMS, and demand letters with the audit log built in.</p>
           </div>
-          <div class="industry-card__expand">
-            <p><strong>PAYUS</strong> is CallRabbit's purpose-built collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself.</p>
+          <div class="industry-card__expand industry-card__expand--payus">
+            <p><strong>PAYUS</strong> is CallRabbit's collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself.</p>
             <div><span class="tag">FDCPA</span><span class="tag">Multi-Jurisdiction</span><span class="tag">Voice + SMS</span><span class="tag">Audit Log</span></div>
             <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-event-name="industry-card-payus-click">
               <span>Visit payus.money</span>
