@@ -1084,7 +1084,12 @@ a[href*="elevenlabs.io"][target="_blank"] {
               <div class="industry-card__expand industry-card__expand--payus">
                 <p><strong>PAYUS</strong> is CallRabbit's collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself.</p>
                 <div><span class="tag">FDCPA</span><span class="tag">Multi-Jurisdiction</span><span class="tag">Voice + SMS</span><span class="tag">Audit Log</span></div>
-                <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-event-name="industry-card-payus-click">
+                <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener noreferrer"
+                   onmousedown="event.stopPropagation()"
+                   onpointerdown="event.stopPropagation()"
+                   ontouchstart="event.stopPropagation()"
+                   onclick="event.stopPropagation(); event.preventDefault(); window.open('https://payus.money','_blank','noopener,noreferrer'); return false;"
+                   data-event-name="industry-card-payus-click">
                   <span>Visit payus.money</span>
                   <span class="material-symbols-outlined">arrow_outward</span>
                 </a>
