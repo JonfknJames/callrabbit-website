@@ -156,16 +156,29 @@
             mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
         }
 
-        /* ===== 3D Industry Cards ===== */
+
+        /* Clickable process steps */
+        .process-step-circle { cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .process-step-circle:hover { transform: scale(1.1); box-shadow: 0 0 20px rgba(16,185,129,0.15); }
+
+        /* Clickable compliance items */
+        .compliance-item { cursor: pointer; transition: transform 0.2s ease; }
+        .compliance-item:hover { transform: translateY(-2px); }
+        .compliance-item:hover .icon-circle { box-shadow: inset 4px 4px 8px rgba(0,0,0,0.5), 0 0 12px rgba(16,185,129,0.15); }
+
+        /* ===== 3D Cards (shared by both platform-swiper and industry-swiper) ===== */
+        .platform-swiper,
         .industry-swiper {
             padding: 40px 0 60px;
             max-width: 1100px;
             margin: 0 auto;
             overflow: visible !important;
         }
+        .platform-swiper .swiper-wrapper,
         .industry-swiper .swiper-wrapper {
             align-items: center;
         }
+        .platform-swiper .swiper-slide,
         .industry-swiper .swiper-slide {
             height: 480px;
             cursor: pointer;
@@ -196,6 +209,10 @@
             filter: brightness(0.8);
         }
         /* Ensure Atropos + card fill the slide */
+        .platform-swiper .atropos,
+        .platform-swiper .atropos-scale,
+        .platform-swiper .atropos-rotate,
+        .platform-swiper .atropos-inner,
         .industry-swiper .atropos,
         .industry-swiper .atropos-scale,
         .industry-swiper .atropos-rotate,
@@ -245,6 +262,15 @@
         }
         .swiper-slide-active .industry-card__image {
             filter: brightness(0.4) saturate(0.9);
+        }
+        /* Popup card must match active carousel card appearance */
+        #info-modal .industry-card {
+            transform: none !important;
+            opacity: 1 !important;
+            filter: none !important;
+        }
+        #info-modal .industry-card__image {
+            filter: brightness(0.4) saturate(0.9) !important;
         }
         /* Top highlight edge — simulates light catching a raised surface */
         .industry-card::before {
@@ -320,8 +346,12 @@
             max-height: 0;
             opacity: 0;
             overflow: hidden;
-            /* NO CSS transition — creates stuck Web Animations inside Swiper/Atropos.
-               Desc visibility is toggled by JS after Swiper init. */
+            transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1), max-height 2s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: opacity, max-height;
+        }
+        .industry-card__desc.reveal {
+            max-height: 60px;
+            opacity: 1;
         }
         /* Expanded card state — overlay with NO CSS transitions.
            CSS transitions on these elements create Web Animations that permanently
@@ -377,9 +407,7 @@
             transition: filter 0.8s cubic-bezier(0.4, 0, 0.2, 1),
                         transform 1s cubic-bezier(0.4, 0, 0.2, 1) !important;
         }
-        /* PAYUS wordmark backdrop — replaces <img> for the Collections card.
-           Uses same .industry-card__image class to inherit brightness/atropos
-           wiring; .industry-card__wordmark layers brand typography on top. */
+        /* PAYUS wordmark backdrop — replaces <img> for the Collections card */
         .industry-card__wordmark {
             display: flex;
             align-items: center;
@@ -406,7 +434,6 @@
             text-decoration-skip-ink: none;
             line-height: 1;
         }
-        /* "Visit payus.money" CTA inside the expand panel */
         .industry-card__expand .visit-link {
             display: inline-flex;
             align-items: center;
@@ -421,6 +448,7 @@
             font-size: 0.8rem;
             letter-spacing: 0.04em;
             text-transform: uppercase;
+            text-decoration: none;
             box-shadow: 0 4px 12px rgba(0,163,158,0.35),
                         inset 0 1px 0 rgba(255,255,255,0.15);
             transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -463,15 +491,15 @@
             right: 16px;
         }
 
-        /* --- HERO --- */
-        #hero { padding: 20px; gap: 16px; }
-        #hero h1 { font-size: 1.75rem; }
-        #hero .hero-subtext { font-size: 0.9rem; }
-        #hero .hero-logo-wrap { min-height: 180px; }
-        #hero .hero-logo-wrap img { max-height: 160px; }
-        #hero .hero-buttons { flex-direction: column; gap: 12px; }
+        /* --- HERO (compact) --- */
+        #hero { padding: 16px; gap: 12px; }
+        #hero h1 { font-size: 1.35rem; }
+        #hero .hero-subtext { font-size: 0.85rem; }
+        #hero .hero-logo-wrap { min-height: 140px; }
+        #hero .hero-logo-wrap img { max-height: 130px; }
+        #hero .hero-buttons { flex-direction: column; gap: 10px; }
         #hero .hero-buttons a,
-        #hero .hero-buttons button { width: 100%; text-align: center; font-size: 0.9rem; padding: 14px 24px; }
+        #hero .hero-buttons button { width: 100%; text-align: center; font-size: 0.85rem; padding: 12px 20px; }
 
         /* --- SERVICE CARDS --- */
         .service-card { padding: 20px; }
@@ -480,7 +508,8 @@
         /* --- PROCESS --- */
         .process-step-circle { width: 64px; height: 64px; font-size: 1.25rem; }
 
-        /* --- INDUSTRY CAROUSEL --- */
+        /* --- 3D CAROUSELS --- */
+        .platform-swiper .swiper-slide,
         .industry-swiper .swiper-slide { height: 360px; }
 
         /* --- COMPLIANCE --- */
@@ -510,17 +539,18 @@
            ============================================ */
         @media (min-width: 768px) {
             #navbar-3d-container { width: 200px; margin: 0; }
-            #hero { padding: 48px 80px; gap: 48px; }
-            #hero h1 { font-size: 4.5rem; }
-            #hero .hero-subtext { font-size: 1.25rem; }
-            #hero .hero-logo-wrap { min-height: 420px; }
-            #hero .hero-logo-wrap img { max-height: 380px; }
-            #hero .hero-buttons { flex-direction: row; gap: 24px; }
+            #hero { padding: 28px 40px; gap: 24px; }
+            #hero h1 { font-size: 2.75rem; }
+            #hero .hero-subtext { font-size: 1.05rem; }
+            #hero .hero-logo-wrap { min-height: 280px; }
+            #hero .hero-logo-wrap img { max-height: 250px; }
+            #hero .hero-buttons { flex-direction: row; gap: 16px; }
             #hero .hero-buttons a,
-            #hero .hero-buttons button { width: auto; font-size: 1.125rem; padding: 16px 32px; }
+            #hero .hero-buttons button { width: auto; font-size: 1rem; padding: 14px 28px; }
             .service-card { padding: 32px; }
             .service-card .icon-wrap { width: 64px; height: 64px; margin-bottom: 32px; }
             .process-step-circle { width: 96px; height: 96px; font-size: 1.5rem; }
+            .platform-swiper .swiper-slide,
             .industry-swiper .swiper-slide { height: 480px; }
             #demo { padding: 48px 64px; }
             #demo h2 { font-size: 3rem; }
@@ -642,20 +672,19 @@
 <a href="#contact" class="bg-[#10B981] text-[#003824] px-5 py-3 rounded-full font-bold text-sm tracking-wide text-center" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Get Started</a>
 </div>
 </nav>
-<main class="pt-24 md:pt-32 pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
+<main class="pt-24 md:pt-32 pb-8 md:pb-14 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Hero Section -->
-<section id="hero" class="relative w-full rounded-3xl p-6 md:p-12 lg:p-20 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-6 md:gap-12">
-<div class="absolute -right-20 -top-20 w-96 h-96 emerald-glow pointer-events-none"></div>
-<div class="w-full md:w-3/5 space-y-5 md:space-y-8 relative z-10">
-<h1 class="text-3xl sm:text-5xl md:text-7xl font-extrabold tracking-tighter leading-tight text-on-surface text-center">
-<span class="text-primary-container">Answer calls</span> and automate your business
+<section id="hero" class="relative w-full rounded-3xl p-4 md:p-6 lg:p-8 tactile-raised overflow-hidden flex flex-col md:flex-row items-center gap-4 md:gap-6">
+<div class="absolute -right-20 -top-20 w-72 h-72 emerald-glow pointer-events-none"></div>
+<div class="w-full md:w-3/5 space-y-3 md:space-y-4 relative z-10">
+<h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tighter leading-tight text-on-surface text-center">
+<span class="text-primary-container">Automate</span> your business
                 </h1>
-<p class="hero-subtext text-on-surface-variant max-w-xl font-medium leading-relaxed text-center mx-auto">
+<div class="flex-1 flex items-center justify-center">
+<p id="hero-rotating-line" class="hero-subtext text-on-surface-variant max-w-lg font-medium leading-relaxed text-center mx-auto" style="min-height:2.8em;">
                     Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7.
                 </p>
-<p class="hero-subtext text-on-surface-variant max-w-xl font-medium leading-relaxed text-center mx-auto">
-                    Custom built for your business with zero hold music and zero missed calls.
-                </p>
+</div>
 <div class="hero-buttons flex justify-center items-center">
 <a href="#contact" class="tactile-button-raised text-on-primary rounded-xl font-bold tracking-wide uppercase inline-block text-center">
                         Get Started
@@ -666,98 +695,235 @@
 </div>
 </div>
 <div class="hero-logo-wrap w-full md:w-2/5 flex justify-center items-center relative">
-<!-- Classic CallRabbit Woodcut Logo -->
-<img src="logo-woodcut.png" alt="CallRabbit" style="width: auto; object-fit: contain; filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.08));" />
+<img src="logo-woodcut.webp" alt="CallRabbit" style="width: auto; object-fit: contain; filter: drop-shadow(0 0 40px rgba(16, 185, 129, 0.08));" />
 </div>
 </section>
-<!-- Services Grid -->
-<section id="platform" class="space-y-16">
-<div class="max-w-3xl">
-<h2 class="text-xs uppercase tracking-[0.3em] font-black text-primary mb-4">Core Ecosystem</h2>
-<h3 class="text-4xl font-extrabold tracking-tight">Sculpted AI Solutions</h3>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
-<!-- Service Card 1 -->
-<div class="service-card tactile-raised rounded-2xl group transition-all duration-500 hover:-translate-y-2">
-<div class="icon-wrap rounded-2xl tactile-raised flex items-center justify-center border border-white/5">
-<span class="material-symbols-outlined text-primary text-3xl">settings_voice</span>
-</div>
-<h4 class="text-xl font-bold mb-4 tracking-tight">Voice Agents</h4>
-<p class="text-on-surface-variant text-base leading-relaxed">Low-latency neural voice synthesis that sounds indistinguishable from humans.</p>
-</div>
-<!-- Service Card 2 -->
-<div class="service-card tactile-raised rounded-2xl group transition-all duration-500 hover:-translate-y-2">
-<div class="icon-wrap rounded-2xl tactile-raised flex items-center justify-center border border-white/5">
-<span class="material-symbols-outlined text-primary text-3xl">chat_bubble</span>
-</div>
-<h4 class="text-xl font-bold mb-4 tracking-tight">Text Agents</h4>
-<p class="text-on-surface-variant text-base leading-relaxed">Automate SMS, WhatsApp, and web chat with consistent brand personality.</p>
-</div>
-<!-- Service Card 3 -->
-<div class="service-card tactile-raised rounded-2xl group transition-all duration-500 hover:-translate-y-2">
-<div class="icon-wrap rounded-2xl tactile-raised flex items-center justify-center border border-white/5">
-<span class="material-symbols-outlined text-primary text-3xl">hub</span>
-</div>
-<h4 class="text-xl font-bold mb-4 tracking-tight">Workflow Automation</h4>
-<p class="text-on-surface-variant text-base leading-relaxed">Deeply integrated triggers that update your CRM and internal pipelines instantly.</p>
-</div>
-<!-- Service Card 4 -->
-<div class="service-card tactile-raised rounded-2xl group transition-all duration-500 hover:-translate-y-2">
-<div class="icon-wrap rounded-2xl tactile-raised flex items-center justify-center border border-white/5">
-<span class="material-symbols-outlined text-primary text-3xl">api</span>
-</div>
-<h4 class="text-xl font-bold mb-4 tracking-tight">Custom Integrations</h4>
-<p class="text-on-surface-variant text-base leading-relaxed">Connect CallRabbit to your existing tech stack via our robust enterprise API.</p>
-</div>
-<!-- Service Card 5 -->
-<div class="service-card tactile-raised rounded-2xl group transition-all duration-500 hover:-translate-y-2">
-<div class="icon-wrap rounded-2xl tactile-raised flex items-center justify-center border border-white/5">
-<span class="material-symbols-outlined text-primary text-3xl">alt_route</span>
-</div>
-<h4 class="text-xl font-bold mb-4 tracking-tight">Smart Routing</h4>
-<p class="text-on-surface-variant text-base leading-relaxed">Intelligently qualify leads and route complex queries to the right human expert.</p>
-</div>
-<!-- Service Card 6 -->
-<div class="service-card tactile-raised rounded-2xl group transition-all duration-500 hover:-translate-y-2">
-<div class="icon-wrap rounded-2xl tactile-raised flex items-center justify-center border border-white/5">
-<span class="material-symbols-outlined text-primary text-3xl">schedule</span>
-</div>
-<h4 class="text-xl font-bold mb-4 tracking-tight">Always On</h4>
-<p class="text-on-surface-variant text-base leading-relaxed">Global uptime with 24/7/365 coverage for your business without fatigue.</p>
+<!-- Services — 3D Card Carousel (closes main for full-width, re-opens after) -->
+</main>
+<section id="platform" class="space-y-12 pt-0 pb-8">
+<h3 class="text-3xl font-extrabold tracking-tight px-10 border-l-4 border-primary max-w-7xl mx-auto text-center">Tailored Business Solutions</h3>
+<div class="swiper platform-swiper">
+<div class="swiper-wrapper">
+
+  <!-- Secure Personal Assistant -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="rabbit-running.webp" alt="Secure Personal Assistant" style="mix-blend-mode:lighten;object-position:center 30%;filter:brightness(0.45) saturate(0.8);"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">shield_person</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">Secure Personal Assistant</h4>
+            <p class="industry-card__desc">Call it. Text it.<br/>Let it handle your day-to-day.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>Your own AI assistant you can call or text — it handles schedules, pickups, reminders, and daily chaos so you don't have to. No unsafe OpenClaw. No rogue agents. No data leaks. We build it with you, running privately on your device or through a trusted cloud provider you choose.</p>
+            <div><span class="tag">No OpenClaw</span><span class="tag">Call &amp; Text It</span><span class="tag">Private by Design</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <!-- Voice Agents -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="voice-agents.webp" alt="Voice Agents"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">settings_voice</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">Voice Agents</h4>
+            <p class="industry-card__desc">Low-latency neural voice synthesis indistinguishable from humans.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>Our voice agents use cutting-edge neural synthesis to create conversations that feel completely human. Sub-200ms latency ensures natural turn-taking, while adaptive tone matching adjusts to caller emotion in real time.</p>
+            <div><span class="tag">Neural TTS</span><span class="tag">Low Latency</span><span class="tag">Emotion Detection</span><span class="tag">24/7</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <!-- Text Agents -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="SMS%20agents.webp" alt="Text Agents"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">chat_bubble</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">Text Agents</h4>
+            <p class="industry-card__desc">Automate SMS, WhatsApp, and web chat with brand personality.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>Deploy text agents across every messaging channel your customers use. Consistent brand voice, instant replies, and seamless handoff to human agents when conversations need a personal touch.</p>
+            <div><span class="tag">SMS</span><span class="tag">WhatsApp</span><span class="tag">Web Chat</span><span class="tag">Omnichannel</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <!-- Workflow Automation -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="Workflow%20automation.webp" alt="Workflow Automation"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">hub</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">Workflow Automation</h4>
+            <p class="industry-card__desc">Triggers that update your CRM and pipelines instantly.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>Every call and message automatically triggers downstream actions — CRM updates, calendar bookings, Slack notifications, and pipeline stage changes. Zero manual data entry, zero dropped balls.</p>
+            <div><span class="tag">CRM Sync</span><span class="tag">Webhooks</span><span class="tag">Zapier</span><span class="tag">Real-Time</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <!-- Custom Integrations -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="Integrations.webp" alt="Custom Integrations"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">api</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">Custom Integrations</h4>
+            <p class="industry-card__desc">Connect to your tech stack via robust enterprise API.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>Our REST and WebSocket APIs let you wire CallRabbit into any system. From legacy PBX to modern SaaS stacks, we provide SDKs, documentation, and dedicated integration support.</p>
+            <div><span class="tag">REST API</span><span class="tag">WebSocket</span><span class="tag">SDKs</span><span class="tag">Enterprise</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <!-- Smart Routing -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="Call%20Routing.webp" alt="Smart Routing"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">alt_route</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">Smart Routing</h4>
+            <p class="industry-card__desc">Qualify leads and route to the right human expert.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>AI-powered intent detection qualifies every interaction before it reaches your team. Calls route to the right department, leads get scored in real time, and VIP customers skip the queue automatically.</p>
+            <div><span class="tag">Intent Detection</span><span class="tag">Lead Scoring</span><span class="tag">VIP Routing</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <!-- AI Business Agents -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="AI%20Business%20Agents.webp" alt="AI Business Agents"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">smart_toy</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">AI Business Agents</h4>
+            <p class="industry-card__desc">Custom agents trained for your specific business tasks.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>We build AI agents with specialised skills tailored to your operations — from creating and scheduling social media content across all channels, to automating data entry, managing customer follow-ups, and monitoring inventory. Each agent is trained on your workflows and brand voice.</p>
+            <div><span class="tag">Social Media</span><span class="tag">Data Entry</span><span class="tag">Follow-Ups</span><span class="tag">Custom Skills</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
+  <!-- Always On -->
+  <div class="swiper-slide">
+    <div class="atropos" data-atropos>
+      <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+        <div class="industry-card">
+          <img class="industry-card__image" data-atropos-offset="-3" src="always-on.webp" alt="Always On"/>
+          <div class="industry-card__overlay"></div>
+          <div class="industry-card__content" data-atropos-offset="5">
+            <div class="industry-card__icon-wrap" data-atropos-offset="8">
+              <span class="material-symbols-outlined text-primary text-2xl">schedule</span>
+            </div>
+            <h4 class="industry-card__title" data-atropos-offset="6">Always On</h4>
+            <p class="industry-card__desc">24/7/365 global uptime without fatigue.</p>
+          </div>
+          <div class="industry-card__expand">
+            <p>Your AI agents never sleep, never call in sick, and never have a bad day. Multi-region redundancy ensures 99.99% uptime, with automatic failover and real-time monitoring dashboards.</p>
+            <div><span class="tag">99.99% SLA</span><span class="tag">Multi-Region</span><span class="tag">Failover</span><span class="tag">Monitoring</span></div>
+          </div>
+        </div>
+      </div></div></div>
+    </div>
+  </div>
+
 </div>
 </div>
 </section>
+<main class="pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
 <!-- Process Section -->
-<section class="py-10 relative">
-<div class="text-center mb-10">
-<h3 class="text-4xl font-extrabold tracking-tight">Seamless Implementation</h3>
+<section class="py-6 relative">
+<div class="text-center mb-16">
+<h3 class="text-3xl font-extrabold tracking-tight">Seamless Implementation</h3>
 </div>
 <div class="relative flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-6 md:gap-0">
 <!-- Sunken connection line -->
 <div class="absolute top-1/2 left-0 w-full h-3 tactile-sunken rounded-full -translate-y-1/2 hidden md:block"></div>
 <!-- Step 1 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="connect" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         1
                     </div>
 <span class="text-sm font-bold tracking-widest uppercase">Connect</span>
 </div>
 <!-- Step 2 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="train" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         2
                     </div>
 <span class="text-sm font-bold tracking-widest uppercase">Train</span>
 </div>
 <!-- Step 3 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="launch" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         3
                     </div>
 <span class="text-sm font-bold tracking-widest uppercase">Launch</span>
 </div>
 <!-- Step 4 -->
-<div class="relative z-10 flex flex-col items-center gap-6 group">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-step="optimize" onclick="openInfoModal(this)">
 <div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318] text-primary font-black">
                         4
                     </div>
@@ -765,10 +931,12 @@
 </div>
 </div>
 </section>
-<!-- Industries Section (outside main for full-width centering) -->
+
 </main>
+
+<!-- Industries Section (outside main for full-width centering) -->
 <section id="solutions" class="space-y-12 py-8">
-<h3 class="text-3xl font-extrabold tracking-tight px-10 border-l-4 border-primary max-w-7xl mx-auto">Specialised for Industry</h3>
+<h3 class="text-3xl font-extrabold tracking-tight px-10 border-l-4 border-primary max-w-7xl mx-auto text-center">Specialised for Industry</h3>
 <div class="swiper industry-swiper">
 <div class="swiper-wrapper">
 
@@ -777,7 +945,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://cdn.create.vista.com/api/media/medium/277798754/stock-photo-pretty-maid-apron-white-gloves-holding-hanger-bathrobe-hotel-room?token=" alt="Home Services"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="home-services.webp" alt="Home Services"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -800,7 +968,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?w=640&q=80" alt="Healthcare"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="healthcare.webp" alt="Healthcare"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -823,7 +991,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=640&q=80" alt="Real Estate"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="real-estate.webp" alt="Real Estate"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -846,7 +1014,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://www.ruf-automobile.de/site/assets/files/1136/dsc02378.1920x720.jpg" alt="Automotive"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="automotive.webp" alt="Automotive" style="object-position: 25% center;"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -869,7 +1037,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=640&q=80" alt="Legal"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="legal.webp" alt="Legal"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -892,7 +1060,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=640&q=80" alt="E-Commerce"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="ecommerce.webp" alt="E-Commerce"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -915,7 +1083,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=640&q=80" alt="Property Management"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="property-mgmt.webp" alt="Property Management"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -938,7 +1106,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://www.thedailymeal.com/img/gallery/the-most-beautiful-restaurants-in-the-world/intro-1688049904.webp" alt="Restaurants"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="Restaurant.webp" alt="Restaurants"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -961,7 +1129,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=640&q=80" alt="Insurance"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="insurance.webp" alt="Insurance"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -984,7 +1152,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="education.jpg" alt="Education"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="education.webp" alt="Education"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -1007,7 +1175,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=640&q=80" alt="Financial Services"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="Financial%20services.webp" alt="Financial Services"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -1042,7 +1210,7 @@
             <p class="industry-card__desc">Recover receivables compliantly — voice, SMS, and demand letters with the audit log built in.</p>
           </div>
           <div class="industry-card__expand">
-            <p><strong>PAYUS</strong> is CallRabbit's purpose-built collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself. Stop running every campaign through legal review.</p>
+            <p><strong>PAYUS</strong> is CallRabbit's purpose-built collections platform. Voice agents run the call, PAYUS holds the line on rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — and the audit log writes itself.</p>
             <div><span class="tag">FDCPA</span><span class="tag">Multi-Jurisdiction</span><span class="tag">Voice + SMS</span><span class="tag">Audit Log</span></div>
             <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener" onclick="event.stopPropagation()" data-event-name="industry-card-payus-click">
               <span>Visit payus.money</span>
@@ -1059,7 +1227,7 @@
     <div class="atropos" data-atropos>
       <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
         <div class="industry-card">
-          <img class="industry-card__image" data-atropos-offset="-3" src="https://avalonhollywood.com/wp-content/uploads/2024/09/062924_4B_Avalon-Hollywood_Tony@tonysib_visuals_photos_2024_0630_010655-00805-1-1920x1280.jpg" alt="Entertainment"/>
+          <img class="industry-card__image" data-atropos-offset="-3" src="entertainment.webp" alt="Entertainment"/>
           <div class="industry-card__overlay"></div>
           <div class="industry-card__content" data-atropos-offset="5">
             <div class="industry-card__icon-wrap" data-atropos-offset="8">
@@ -1081,31 +1249,36 @@
 </div>
 </section>
 <main class="pb-12 md:pb-20 px-4 md:px-6 max-w-7xl mx-auto space-y-10 md:space-y-16 relative z-10">
-<!-- Compliance Banner -->
-<section class="tactile-raised rounded-2xl md:rounded-3xl p-5 md:p-12 grid grid-cols-2 md:flex md:flex-wrap md:justify-between items-center gap-4 md:gap-12 border border-white/5">
-<div class="compliance-item flex items-center">
-<div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
-<span class="material-symbols-outlined text-primary" data-weight="fill">verified_user</span>
+<!-- Compliance — circle style matching process steps -->
+<section class="py-6 relative">
+<div class="text-center mb-16">
+<h3 class="text-3xl font-extrabold tracking-tight">Certified & Compliant</h3>
 </div>
-<div class="badge-text font-bold tracking-widest uppercase">SOC2 Type II Compliant</div>
+<div class="relative flex flex-col md:flex-row justify-between items-center max-w-5xl mx-auto gap-6 md:gap-0">
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-compliance="soc2" onclick="openInfoModal(this)">
+<div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318]">
+<span class="material-symbols-outlined text-primary text-2xl" data-weight="fill">verified_user</span>
 </div>
-<div class="compliance-item flex items-center">
-<div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
-<span class="material-symbols-outlined text-primary" data-weight="fill">health_and_safety</span>
+<span class="text-sm font-bold tracking-widest uppercase text-center">SOC2<br/>Type II</span>
 </div>
-<div class="badge-text font-bold tracking-widest uppercase">HIPAA Ready</div>
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-compliance="hipaa" onclick="openInfoModal(this)">
+<div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318]">
+<span class="material-symbols-outlined text-primary text-2xl" data-weight="fill">health_and_safety</span>
 </div>
-<div class="compliance-item flex items-center">
-<div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
-<span class="material-symbols-outlined text-primary" data-weight="fill">policy</span>
+<span class="text-sm font-bold tracking-widest uppercase">HIPAA</span>
 </div>
-<div class="badge-text font-bold tracking-widest uppercase">GDPR Compliant</div>
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-compliance="gdpr" onclick="openInfoModal(this)">
+<div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318]">
+<span class="material-symbols-outlined text-primary text-2xl" data-weight="fill">policy</span>
 </div>
-<div class="compliance-item flex items-center">
-<div class="icon-circle rounded-full tactile-sunken flex items-center justify-center">
-<span class="material-symbols-outlined text-primary" data-weight="fill">security</span>
+<span class="text-sm font-bold tracking-widest uppercase">GDPR</span>
 </div>
-<div class="badge-text font-bold tracking-widest uppercase">PCI-DSS Level 1</div>
+<div class="relative z-10 flex flex-col items-center gap-6 group" data-compliance="pci" onclick="openInfoModal(this)">
+<div class="process-step-circle rounded-full tactile-raised flex items-center justify-center border-4 border-[#131318]">
+<span class="material-symbols-outlined text-primary text-2xl" data-weight="fill">security</span>
+</div>
+<span class="text-sm font-bold tracking-widest uppercase text-center">PCI-DSS<br/>Level 1</span>
+</div>
 </div>
 </section>
 <!-- Live Demo CTA -->
@@ -1125,7 +1298,7 @@ Start voice demo
 </div>
 <div class="w-full md:w-1/2 flex flex-col items-center justify-center gap-4">
 <div class="benson-portrait relative">
-<img src="benson.png" alt="Benson — CallRabbit AI Agent" class="w-full h-full object-cover object-top" style="mix-blend-mode: lighten;"/>
+<img src="benson.webp" alt="Benson — CallRabbit AI Agent" class="w-full h-full object-cover object-top" style="mix-blend-mode: lighten;"/>
 </div>
 </div>
 </div>
@@ -1133,7 +1306,7 @@ Start voice demo
 <!-- ElevenLabs Conversational AI Widget (Benson) — Dark themed, CallRabbit branded -->
 <elevenlabs-convai
   agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
-  avatar-image-url="benson-face.png"
+  avatar-image-url="benson-face.webp"
 ></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 <script>
@@ -1231,41 +1404,6 @@ function openBensonWidget() {
   if (btn) btn.click();
 }
 
-// Auto-collapse widget after call ends (skip feedback screen)
-(function watchWidgetForCallEnd() {
-  var widget = document.querySelector('elevenlabs-convai');
-  if (!widget || !widget.shadowRoot) return setTimeout(watchWidgetForCallEnd, 1000);
-  var root = widget.shadowRoot;
-  var wasInCall = false;
-
-  new MutationObserver(function() {
-    // Detect if "Start a call" button reappears (call ended) or feedback UI shows
-    var startBtn = null;
-    var feedbackEl = null;
-    root.querySelectorAll('button, span, div').forEach(function(el) {
-      var text = el.textContent ? el.textContent.trim() : '';
-      if (text === 'Start a call') startBtn = el;
-      if (text.includes('How was') || text.includes('Rate') || text.includes('feedback')) feedbackEl = el;
-    });
-
-    // If we see a call-active indicator, mark that we were in a call
-    var endBtn = null;
-    root.querySelectorAll('button').forEach(function(b) {
-      if (b.textContent && b.textContent.trim() === 'End call') endBtn = b;
-    });
-    if (endBtn) wasInCall = true;
-
-    // If call ended (feedback or start button reappears after being in call), collapse
-    if (wasInCall && (feedbackEl || startBtn)) {
-      wasInCall = false;
-      // Click the widget to collapse it after a brief moment
-      setTimeout(function() {
-        var sheet = root.querySelector('.rounded-compact-sheet');
-        if (sheet) sheet.click();
-      }, 800);
-    }
-  }).observe(root, { childList: true, subtree: true, characterData: true });
-})();
 </script>
 <style>
   /* Override ElevenLabs widget to dark mode + CallRabbit brand */
@@ -1276,6 +1414,10 @@ function openBensonWidget() {
     --el-btn-text-color: #003824;
     --el-border-color: rgba(255,255,255,0.05);
     --el-focus-color: #10B981;
+    /* Lock floating position — bottom-right corner */
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
   }
 
   /* Hide ElevenLabs branding watermark */
@@ -1355,7 +1497,7 @@ function openBensonWidget() {
 <footer class="bg-[#0E0E13] w-full py-12 shadow-[inset_0px_4px_12px_rgba(0,0,0,0.5)] relative z-10">
 <div class="max-w-7xl mx-auto px-6 md:px-12 flex flex-col items-center gap-6">
 <div class="flex flex-col md:flex-row items-center justify-between w-full gap-4">
-<div class="text-lg font-bold text-[#BBCABF] font-['Manrope']">CALL RABBIT</div>
+<a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;" class="text-lg font-bold text-[#BBCABF] font-['Manrope'] cursor-pointer" style="text-decoration:none;">CALL RABBIT</a>
 <div class="flex flex-wrap justify-center gap-4 md:gap-8 font-['Manrope'] text-xs tracking-widest uppercase font-medium">
 <a class="text-[#BBCABF]/60 hover:text-[#E4E1E8] transition-colors" href="privacy.html">Privacy</a>
 <a class="text-[#BBCABF]/60 hover:text-[#E4E1E8] transition-colors" href="terms.html">Terms</a>
@@ -1583,13 +1725,39 @@ if (container) {
     scrollProgress = maxScroll > 0 ? window.scrollY / maxScroll : 0;
   }, { passive: true });
 
+  // Easter egg — click logo for a backflip
+  let flipProgress = 0;  // 0 = idle, >0 = flipping (radians accumulated)
+  let flipping = false;
+  const FLIP_SPEED = -0.096; // negative = backflip, doubled speed
+
+  container.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!flipping && textModel) {
+      flipping = true;
+      flipProgress = 0;
+    }
+  });
+
   function animate() {
     requestAnimationFrame(animate);
+
     const spotX = -4 + scrollProgress * 8;
     spotlight.position.x = spotX;
     spotlight.intensity = 4.0 + scrollProgress * 6.0;
     spotTarget.position.x = spotX * 0.3;
-    if (textModel) textModel.rotation.x = -scrollProgress * 0.15;
+    if (textModel) {
+      let baseRotX = -scrollProgress * 0.15;
+      if (flipping) {
+        flipProgress += FLIP_SPEED;
+        if (Math.abs(flipProgress) >= Math.PI * 2) {
+          flipProgress = 0;
+          flipping = false;
+        }
+        baseRotX += flipProgress;
+      }
+      textModel.rotation.x = baseRotX;
+    }
     renderer.render(scene, camera);
   }
   animate();
@@ -1625,23 +1793,11 @@ document.addEventListener('DOMContentLoaded', function() {
       spaceBetween: 16,
       loop: true,
       speed: isMobile ? 500 : 800,
+      initialSlide: 7,
       allowTouchMove: true,
+      autoplay: { delay: 4000, disableOnInteraction: true, pauseOnMouseEnter: true },
       breakpoints: {
         768: { slidesPerView: 3, spaceBetween: 24, allowTouchMove: false }
-      },
-      on: {
-        init: function() {
-          // Start autoplay after a delay to avoid stuck animation on load
-          var self = this;
-          setTimeout(function() {
-            if (!self.destroyed) self.autoplay.start();
-          }, 1000);
-        }
-      },
-      autoplay: {
-        delay: isMobile ? 2500 : 4000,
-        disableOnInteraction: true,
-        pauseOnMouseEnter: true,
       }
     });
 
@@ -1708,14 +1864,13 @@ document.addEventListener('DOMContentLoaded', function() {
       var isActive = slide.classList.contains('swiper-slide-active');
 
       if (!isActive) {
-        document.querySelectorAll('.swiper-slide.expanded').forEach(function(s) { s.classList.remove('expanded'); });
-        swiper.autoplay.stop();
+        collapseAll();
 
         // Force animating false so slideNext/slidePrev aren't blocked
         swiper.animating = false;
 
         var slideRect = slide.getBoundingClientRect();
-        var activeSlide = document.querySelector('.swiper-slide-active');
+        var activeSlide = document.querySelector('.industry-swiper .swiper-slide-active');
         var activeRect = activeSlide ? activeSlide.getBoundingClientRect() : null;
 
         if (activeRect && slideRect.left < activeRect.left) {
@@ -1724,8 +1879,7 @@ document.addEventListener('DOMContentLoaded', function() {
           swiper.slideNext(800);
         }
       } else {
-        // Toggle expand overlay on active card — direct style, no animations
-        swiper.autoplay.stop();
+        // Toggle expand overlay on active card
         var expandEl = slide.querySelector('.industry-card__expand');
         if (!expandEl) return;
 
@@ -1738,7 +1892,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var image = slide.querySelector('.industry-card__image');
 
         if (isExpanded) {
-          // Collapse — fade out + slide down, then restart autoplay
+          // Collapse — fade out + slide down
           slide.classList.remove('expanded');
           animateOverlay(expandEl, 1, 0, 0, 8, 350, function() {
             expandEl.style.visibility = 'hidden';
@@ -1746,8 +1900,6 @@ document.addEventListener('DOMContentLoaded', function() {
           });
           if (desc) animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 300);
           if (image) animateProps(image, { filter: ['brightness(0.15)', 'brightness(0.3)'] }, 500);
-          // Resume autoplay after collapse animation finishes
-          setTimeout(function() { swiper.autoplay.start(); }, 2000);
         } else {
           // Expand — fade in + slide up
           slide.classList.add('expanded');
@@ -1782,7 +1934,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     swiper.on('slideChange', collapseAll);
 
-    // Cancel ALL stuck Web Animations and set correct initial state.
+    // Cancel ALL stuck Web Animations and set correct initial state (both carousels).
     // CSS transitions inside Swiper/Atropos create Web Animations that lock at currentTime:0.
     document.querySelectorAll('.industry-card__expand, .industry-card__desc').forEach(function(el) {
       el.getAnimations().forEach(function(a) { a.cancel(); });
@@ -1800,15 +1952,12 @@ document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.industry-swiper .swiper-slide').forEach(function(slide) {
         var desc = slide.querySelector('.industry-card__desc');
         if (!desc) return;
-        desc.getAnimations().forEach(function(a) { a.cancel(); });
         var isActive = slide.classList.contains('swiper-slide-active');
         var isExpanded = slide.classList.contains('expanded');
         if (isActive && !isExpanded) {
-          desc.style.maxHeight = '60px';
-          desc.style.opacity = '1';
+          desc.classList.add('reveal');
         } else {
-          desc.style.maxHeight = '0';
-          desc.style.opacity = '0';
+          desc.classList.remove('reveal');
         }
       });
     }
@@ -1819,8 +1968,8 @@ document.addEventListener('DOMContentLoaded', function() {
       observer.observe(slide, { attributes: true, attributeFilter: ['class'] });
     });
 
-    // Initialize Atropos on each card for parallax hover tilt
-    document.querySelectorAll('.industry-swiper [data-atropos]').forEach(function(el) {
+    // Initialize Atropos on each card for parallax hover tilt (both carousels)
+    document.querySelectorAll('.industry-swiper [data-atropos], .platform-swiper [data-atropos]').forEach(function(el) {
       Atropos({
         el: el,
         activeOffset: 40,
@@ -1831,8 +1980,240 @@ document.addEventListener('DOMContentLoaded', function() {
         highlight: true,
       });
     });
+
+    // ===== PLATFORM SWIPER (Tailored Business Solutions) =====
+    var platformSwiper = new Swiper('.platform-swiper', {
+      centeredSlides: true,
+      slidesPerView: 1.4,
+      spaceBetween: 16,
+      loop: true,
+      speed: isMobile ? 500 : 800,
+      allowTouchMove: true,
+      autoplay: { delay: 4000, disableOnInteraction: true, pauseOnMouseEnter: true },
+      breakpoints: {
+        768: { slidesPerView: 3, spaceBetween: 24, allowTouchMove: false }
+      }
+    });
+    // Fix animating flag for platform swiper too
+    platformSwiper.on('slideChangeTransitionStart', function() {
+      var self = this;
+      if (self.__animResetTimer) clearTimeout(self.__animResetTimer);
+      self.__animResetTimer = setTimeout(function() {
+        if (self.animating) { self.animating = false; self.emit('transitionEnd'); }
+      }, self.params.speed + 100);
+    });
+
+    // Click handler for platform swiper
+    document.querySelector('.platform-swiper').addEventListener('click', function(e) {
+      var slide = e.target.closest('.swiper-slide');
+      if (!slide) return;
+      var isActive = slide.classList.contains('swiper-slide-active');
+      if (!isActive) {
+        collapseAllPlatform();
+        platformSwiper.animating = false;
+        var slideRect = slide.getBoundingClientRect();
+        var activeSlide = document.querySelector('.platform-swiper .swiper-slide-active');
+        var activeRect = activeSlide ? activeSlide.getBoundingClientRect() : null;
+        if (activeRect && slideRect.left < activeRect.left) { platformSwiper.slidePrev(800); }
+        else { platformSwiper.slideNext(800); }
+      } else {
+        var expandEl = slide.querySelector('.industry-card__expand');
+        if (!expandEl) return;
+        expandEl.getAnimations().forEach(function(a) { a.cancel(); });
+        if (expandEl.__animTimer) { clearInterval(expandEl.__animTimer); expandEl.__animTimer = null; }
+        var isExpanded = slide.classList.contains('expanded');
+        var desc = slide.querySelector('.industry-card__desc');
+        var image = slide.querySelector('.industry-card__image');
+        if (isExpanded) {
+          slide.classList.remove('expanded');
+          animateOverlay(expandEl, 1, 0, 0, 8, 350, function() { expandEl.style.visibility = 'hidden'; expandEl.style.pointerEvents = 'none'; });
+          if (desc) animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 300);
+          if (image) animateProps(image, { filter: ['brightness(0.15)', 'brightness(0.3)'] }, 500);
+        } else {
+          slide.classList.add('expanded');
+          expandEl.style.visibility = 'visible';
+          expandEl.style.pointerEvents = 'auto';
+          animateOverlay(expandEl, 0, 1, 8, 0, 450, null);
+          if (desc) animateProps(desc, { opacity: [1, 0], maxHeight: [60, 0] }, 250);
+          if (image) animateProps(image, { filter: ['brightness(0.3)', 'brightness(0.15)'] }, 500);
+        }
+      }
+    });
+
+    // Collapse on platform slide change
+    function collapseAllPlatform() {
+      document.querySelectorAll('.platform-swiper .swiper-slide.expanded').forEach(function(s) {
+        s.classList.remove('expanded');
+        var exp = s.querySelector('.industry-card__expand');
+        if (exp) {
+          if (exp.__animTimer) { clearInterval(exp.__animTimer); exp.__animTimer = null; }
+          exp.getAnimations().forEach(function(a) { a.cancel(); });
+          animateOverlay(exp, 1, 0, 0, 8, 350, function() { exp.style.visibility = 'hidden'; exp.style.pointerEvents = 'none'; });
+        }
+        var desc = s.querySelector('.industry-card__desc');
+        if (desc) animateProps(desc, { opacity: [0, 1], maxHeight: [0, 60] }, 300);
+        var image = s.querySelector('.industry-card__image');
+        if (image) animateProps(image, { filter: ['brightness(0.15)', 'brightness(0.3)'] }, 500);
+      });
+    }
+    platformSwiper.on('slideChange', collapseAllPlatform);
+
+    // Desc visibility for platform swiper
+    function updatePlatformDescVisibility() {
+      document.querySelectorAll('.platform-swiper .swiper-slide').forEach(function(slide) {
+        var desc = slide.querySelector('.industry-card__desc');
+        if (!desc) return;
+        var isActive = slide.classList.contains('swiper-slide-active');
+        var isExpanded = slide.classList.contains('expanded');
+        if (isActive && !isExpanded) {
+          desc.classList.add('reveal');
+        } else {
+          desc.classList.remove('reveal');
+        }
+      });
+    }
+    updatePlatformDescVisibility();
+    var platformObserver = new MutationObserver(updatePlatformDescVisibility);
+    document.querySelectorAll('.platform-swiper .swiper-slide').forEach(function(slide) {
+      platformObserver.observe(slide, { attributes: true, attributeFilter: ['class'] });
+    });
   }
   init();
 });
+</script>
+<!-- Hero subtitle rotator -->
+<script>
+(function() {
+  var lines = [
+    'Deploy hyper-realistic AI voice agents that handle support, booking, and sales 24/7.',
+    'Custom built for your business with zero hold music and zero missed calls.',
+    'Secure personal AI assistants you can call, text, and trust with your day.',
+    'Custom AI agents trained on your workflows to automate complex business tasks.',
+    'Intelligent call routing that qualifies leads and connects them to the right person.',
+    'SMS, WhatsApp, and web chat agents that never miss a conversation.'
+  ];
+  var idx = 0;
+  var el = document.getElementById('hero-rotating-line');
+  if (!el) return;
+  setInterval(function() {
+    idx = (idx + 1) % lines.length;
+    // Fade out
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(4px)';
+    setTimeout(function() {
+      el.textContent = lines[idx];
+      // Fade in
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }, 400);
+  }, 4000);
+  el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+})();
+</script>
+
+<!-- Info Modal — single 3D card with Atropos tilt -->
+<div id="info-modal-backdrop" style="display:none;position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);opacity:0;"></div>
+<div id="info-modal" style="display:none;position:fixed;z-index:9999;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:420px;height:480px;opacity:0;">
+  <!-- Close button OUTSIDE Atropos so clicks aren't intercepted by parallax tracking -->
+  <button id="info-modal-close" onclick="closeInfoModal()" style="position:absolute;top:14px;right:14px;z-index:10000;" class="w-9 h-9 rounded-full flex items-center justify-center text-on-surface-variant hover:text-primary cursor-pointer" title="Close">
+    <span class="material-symbols-outlined text-xl" style="background:rgba(14,14,19,0.85);border-radius:50%;padding:5px;backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,0.1);">close</span>
+  </button>
+  <div id="info-modal-atropos" class="atropos" data-atropos style="width:100%;height:100%;">
+    <div class="atropos-scale"><div class="atropos-rotate"><div class="atropos-inner">
+      <div class="industry-card" style="width:100%;height:100%;position:relative;box-shadow:0 2px 4px rgba(0,0,0,0.3),0 8px 16px rgba(0,0,0,0.3),0 24px 48px rgba(0,0,0,0.45),0 48px 96px rgba(0,0,0,0.25),0 0 80px rgba(16,185,129,0.06),inset 0 1px 0 rgba(255,255,255,0.1),inset 1px 0 0 rgba(255,255,255,0.06),inset -1px 0 0 rgba(255,255,255,0.04);">
+        <img id="info-modal-img" class="industry-card__image" data-atropos-offset="-3" src="" alt="" style="filter:brightness(0.4) saturate(0.9);"/>
+        <div class="industry-card__overlay"></div>
+        <div class="industry-card__content" data-atropos-offset="5" style="z-index:2;bottom:0;left:0;right:0;position:absolute;padding:28px;text-align:center;display:flex;flex-direction:column;align-items:center;">
+          <div class="industry-card__icon-wrap" data-atropos-offset="8">
+            <span id="info-modal-icon" class="material-symbols-outlined text-primary text-2xl"></span>
+          </div>
+          <h4 id="info-modal-title" class="industry-card__title" data-atropos-offset="6" style="margin-bottom:12px;"></h4>
+          <div id="info-modal-body" class="text-sm leading-relaxed" data-atropos-offset="4" style="color:#C8D0CC;max-height:180px;overflow-y:auto;scrollbar-width:none;"></div>
+        </div>
+      </div>
+    </div></div></div>
+  </div>
+</div>
+
+<script>
+// ===== INFO MODAL SYSTEM (process steps + compliance badges) =====
+// All content is hardcoded — no user input flows into these strings.
+var INFO_CONTENT = {
+  connect: { icon: 'link', title: 'Connect', img: 'card-connect.webp', pos: '60% 30%',
+    body: '<p>We integrate with your existing phone system, CRM, and booking tools. Whether you use RingCentral, Salesforce, HubSpot, or a custom PBX \u2014 we plug in seamlessly.</p><p>Typical setup takes under 48 hours with zero downtime.</p>' },
+  train: { icon: 'school', title: 'Train', img: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=640&q=80',
+    body: '<p>Your AI agent learns your business: services, pricing, FAQs, and your exact tone of voice. We feed it real call transcripts so it sounds like your best employee.</p><p>Nothing reaches your customers without your approval.</p>' },
+  launch: { icon: 'rocket_launch', title: 'Launch', img: 'card-launch.webp',
+    body: '<p>Soft launch with live monitoring, then full deployment. Your agent handles calls 24/7 while we watch every interaction and fine-tune responses in real time.</p>' },
+  optimize: { icon: 'trending_up', title: 'Optimize', img: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=640&q=80',
+    body: '<p>Ongoing analytics, A/B testing of scripts, and monthly performance reviews. Answer rates, resolution rates, satisfaction scores \u2014 your agent gets measurably smarter every week.</p>' },
+  soc2: { icon: 'verified_user', title: 'SOC2 Type II', img: 'card-soc2.webp',
+    body: '<p>Annual third-party audits verify our security controls and data handling. Your data is encrypted at rest (AES-256) and in transit (TLS 1.3) with enterprise-grade infrastructure.</p>' },
+  hipaa: { icon: 'health_and_safety', title: 'HIPAA Ready', img: 'card-hipaa.webp',
+    body: '<p>Built for healthcare. BAA agreements available, PHI handling protocols, encrypted storage, role-based access controls, and complete audit trails for every patient interaction.</p>' },
+  gdpr: { icon: 'policy', title: 'GDPR Compliant', img: 'card-gdpr.webp',
+    body: '<p>Full EU data privacy compliance. Right to erasure, consent management, data processing agreements, and residency controls to keep EU data in EU infrastructure.</p>' },
+  pci: { icon: 'security', title: 'PCI-DSS Level 1', img: 'card-pci.webp',
+    body: '<p>The highest level of payment card security. All payment data encrypted, tokenized, and never stored on our servers. Every piece of cardholder data protected to bank-grade standards.</p>' }
+};
+var _modalAnimTimer = null;
+var _modalAtropos = null;
+function openInfoModal(el) {
+  var key = el.dataset.step || el.dataset.compliance;
+  if (!key || !INFO_CONTENT[key]) return;
+  var d = INFO_CONTENT[key];
+  var bd = document.getElementById('info-modal-backdrop');
+  var m = document.getElementById('info-modal');
+  var imgEl = document.getElementById('info-modal-img');
+  imgEl.src = d.img;
+  imgEl.alt = d.title;
+  imgEl.style.objectPosition = d.pos || 'center center';
+  document.getElementById('info-modal-icon').textContent = d.icon;
+  document.getElementById('info-modal-title').textContent = d.title;
+  document.getElementById('info-modal-body').innerHTML = d.body;
+  bd.style.display = 'block'; m.style.display = 'block';
+  // Initialize Atropos once — keep it alive across opens (no destroy/recreate delay)
+  if (!_modalAtropos && typeof Atropos !== 'undefined') {
+    _modalAtropos = Atropos({
+      el: document.getElementById('info-modal-atropos'),
+      activeOffset: 40,
+      shadowScale: 1.08,
+      rotateXMax: 10,
+      rotateYMax: 10,
+      shadow: true,
+      highlight: true,
+    });
+  }
+  if (_modalAnimTimer) clearInterval(_modalAnimTimer);
+  var s = Date.now();
+  _modalAnimTimer = setInterval(function() {
+    var t = Math.min((Date.now() - s) / 300, 1);
+    var e = 1 - Math.pow(1 - t, 3);
+    bd.style.opacity = String(e);
+    m.style.opacity = String(e);
+    m.style.transform = 'translate(-50%,-50%) translateY(' + ((1 - e) * 12) + 'px)';
+    if (t >= 1) { clearInterval(_modalAnimTimer); _modalAnimTimer = null; }
+  }, 16);
+}
+function closeInfoModal() {
+  // Keep Atropos alive — no destroy needed, card container stays in DOM
+  var bd = document.getElementById('info-modal-backdrop');
+  var m = document.getElementById('info-modal');
+  if (_modalAnimTimer) clearInterval(_modalAnimTimer);
+  var s = Date.now();
+  _modalAnimTimer = setInterval(function() {
+    var t = Math.min((Date.now() - s) / 250, 1);
+    var e = 1 - Math.pow(1 - t, 3);
+    bd.style.opacity = String(1 - e);
+    m.style.opacity = String(1 - e);
+    m.style.transform = 'translate(-50%,-50%) translateY(' + (e * 8) + 'px)';
+    if (t >= 1) {
+      clearInterval(_modalAnimTimer); _modalAnimTimer = null;
+      bd.style.display = 'none'; m.style.display = 'none';
+    }
+  }, 16);
+}
+document.getElementById('info-modal-backdrop').addEventListener('click', closeInfoModal);
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeInfoModal(); });
 </script>
 </body></html>
