@@ -11,6 +11,15 @@
 <meta property="og:image" content="og-image.png"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <title>CALL RABBIT | AI Phone &amp; Text Agent Platform</title>
+<script>
+  // Mask the file path so the URL bar reads callrabbit.ai/ instead of
+  // callrabbit.ai/callrabbit-v2.html. Runs synchronously before any
+  // rendering. Reload still works because index.html re-routes by
+  // viewport on the root path.
+  if (location.pathname.endsWith('/callrabbit-v2.html')) {
+    history.replaceState(null, '', '/');
+  }
+</script>
 <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
@@ -1237,10 +1246,10 @@
           <div class="industry-card__expand industry-card__expand--payus">
             <p><strong>PAYUS</strong> holds the line on collections rules across every jurisdiction — FDCPA, CASL, GDPR — while the audit log writes itself.</p>
             <div><span class="tag">FDCPA</span><span class="tag">Multi-Jurisdiction</span><span class="tag">Voice + SMS</span><span class="tag">Audit Log</span></div>
-            <a class="visit-link" href="https://payus.money" rel="noopener"
+            <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener"
                onmousedown="event.stopPropagation()"
                onpointerdown="event.stopPropagation()"
-               onclick="event.stopPropagation();event.preventDefault();try{(window.top||window).location.href='https://payus.money';}catch(_){window.location.href='https://payus.money';}return false;"
+               onclick="event.stopPropagation()"
                data-event-name="industry-card-payus-click">
               <span>Visit payus.money</span>
               <span class="material-symbols-outlined">arrow_outward</span>
@@ -1884,30 +1893,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (t >= 1) clearInterval(timer);
       }, 16);
     }
-
-    // PAYUS visit-link — production loads this file inside an iframe (see
-    // index.html). target=_blank gets popup-blocked in iframes; target=_top
-    // tells the browser to navigate the top-level window natively, no
-    // window.open/JS navigation tricks needed. Outside iframe, keep _blank
-    // for new-tab behaviour.
-    function bindPayusLinks() {
-      var iframed = false;
-      try { iframed = (window.top !== window); } catch (_) { iframed = true; }
-      document.querySelectorAll('.visit-link').forEach(function(link) {
-        if (link.dataset.payusBound) return;
-        link.dataset.payusBound = '1';
-        if (iframed) link.setAttribute('target', '_top');
-        // Stop pointer events from reaching Swiper/Atropos so they don't
-        // interpret the click as the start of a swipe gesture.
-        ['mousedown','pointerdown','touchstart','click'].forEach(function(evt) {
-          link.addEventListener(evt, function(e) { e.stopPropagation(); }, true);
-        });
-      });
-    }
-    bindPayusLinks();
-    // Re-bind after Swiper potentially clones slides for loop mode.
-    setTimeout(bindPayusLinks, 500);
-    setTimeout(bindPayusLinks, 1500);
 
     // Click handler — navigate or expand
     document.querySelector('.industry-swiper').addEventListener('click', function(e) {

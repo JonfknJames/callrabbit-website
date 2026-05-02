@@ -6,28 +6,17 @@
   <meta http-equiv="cache-control" content="no-cache"/>
   <title>CALL RABBIT</title>
   <link rel="icon" type="image/svg+xml" href="favicon.svg"/>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;}
-    html,body{width:100%;height:100%;overflow:hidden;background:#131318;}
-    iframe{border:none;width:100%;height:100%;display:block;}
-  </style>
 </head>
 <body>
   <script>
+    // Direct redirect for both mobile and desktop. The iframe wrapper that
+    // previously held the desktop view was suppressing target=_blank link
+    // clicks (iframe popup blocking) and forcing JS-only navigation
+    // workarounds. Using the mobile pattern (plain location.replace) makes
+    // links work identically across device classes.
     var isMobile = window.innerWidth < 768 || /Android.*Mobile|iPhone|iPod/i.test(navigator.userAgent);
-    if (isMobile) {
-      // Direct redirect — no iframe. iOS AudioContext behaves inconsistently
-      // inside iframes, causing alternating pitch on the ElevenLabs widget.
-      window.location.replace('callrabbit-mobile-v2.html');
-    } else {
-      var base = 'callrabbit-v2.html';
-      var src = base + '?v=' + Date.now();
-      var iframe = document.createElement('iframe');
-      iframe.src = src;
-      iframe.setAttribute('allowfullscreen', '');
-      iframe.setAttribute('allow', 'microphone; camera; autoplay; clipboard-write');
-      document.body.appendChild(iframe);
-    }
+    var dest = isMobile ? 'callrabbit-mobile-v2.html' : ('callrabbit-v2.html?v=' + Date.now());
+    window.location.replace(dest);
   </script>
   <noscript>
     <meta http-equiv="refresh" content="0; url=callrabbit-v2.html"/>
