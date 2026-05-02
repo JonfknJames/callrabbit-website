@@ -1237,10 +1237,10 @@
           <div class="industry-card__expand industry-card__expand--payus">
             <p><strong>PAYUS</strong> holds the line on collections rules across every jurisdiction — FDCPA, CASL, GDPR — while the audit log writes itself.</p>
             <div><span class="tag">FDCPA</span><span class="tag">Multi-Jurisdiction</span><span class="tag">Voice + SMS</span><span class="tag">Audit Log</span></div>
-            <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener"
+            <a class="visit-link" href="https://payus.money" rel="noopener"
                onmousedown="event.stopPropagation()"
                onpointerdown="event.stopPropagation()"
-               onclick="event.stopPropagation()"
+               onclick="event.stopPropagation();event.preventDefault();try{(window.top||window).location.href='https://payus.money';}catch(_){window.location.href='https://payus.money';}return false;"
                data-event-name="industry-card-payus-click">
               <span>Visit payus.money</span>
               <span class="material-symbols-outlined">arrow_outward</span>
