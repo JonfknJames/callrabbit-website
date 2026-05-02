@@ -1232,7 +1232,7 @@
               <span class="material-symbols-outlined text-primary text-2xl">request_quote</span>
             </div>
             <h4 class="industry-card__title" data-atropos-offset="6">Collections</h4>
-            <p class="industry-card__desc">Compliant collections — voice, SMS, and demand letters.</p>
+            <p class="industry-card__desc">Compliant Collections — Voice, SMS, messaging apps, email, mail.</p>
           </div>
           <div class="industry-card__expand industry-card__expand--payus">
             <p><strong>PAYUS</strong> holds the line on collections rules across every jurisdiction — FDCPA, CASL, GDPR — while the audit log writes itself.</p>
@@ -1885,40 +1885,29 @@ document.addEventListener('DOMContentLoaded', function() {
       }, 16);
     }
 
-    // PAYUS visit-link navigation. Production loads this file inside an
-    // iframe (see index.html), so window.open is silently popup-blocked
-    // in many browsers — even when it returns a non-null window object.
-    // When iframed, navigate the top window directly. When standalone,
-    // open in a new tab with same-tab fallback.
-    function payusNavigate(url) {
-      try {
-        if (window.top !== window) {
-          window.top.location.href = url;
-          return;
-        }
-      } catch (_) { /* cross-origin top — fall through */ }
-      var w = null;
-      try { w = window.open(url, '_blank', 'noopener,noreferrer'); } catch (_) {}
-      if (!w) window.location.href = url;
-    }
-
-    // Bind directly on each .visit-link element (capture phase) so
-    // Swiper/Atropos can't swallow the click before we handle it.
+    // PAYUS visit-link — production loads this file inside an iframe (see
+    // index.html). target=_blank gets popup-blocked in iframes; target=_top
+    // tells the browser to navigate the top-level window natively, no
+    // window.open/JS navigation tricks needed. Outside iframe, keep _blank
+    // for new-tab behaviour.
     function bindPayusLinks() {
+      var iframed = false;
+      try { iframed = (window.top !== window); } catch (_) { iframed = true; }
       document.querySelectorAll('.visit-link').forEach(function(link) {
         if (link.dataset.payusBound) return;
         link.dataset.payusBound = '1';
-        ['mousedown','pointerdown','touchstart'].forEach(function(evt) {
+        if (iframed) link.setAttribute('target', '_top');
+        // Stop pointer events from reaching Swiper/Atropos so they don't
+        // interpret the click as the start of a swipe gesture.
+        ['mousedown','pointerdown','touchstart','click'].forEach(function(evt) {
           link.addEventListener(evt, function(e) { e.stopPropagation(); }, true);
         });
-        link.addEventListener('click', function(e) {
-          e.stopPropagation();
-          e.preventDefault();
-          payusNavigate(link.getAttribute('href'));
-        }, true);
       });
     }
     bindPayusLinks();
+    // Re-bind after Swiper potentially clones slides for loop mode.
+    setTimeout(bindPayusLinks, 500);
+    setTimeout(bindPayusLinks, 1500);
 
     // Click handler — navigate or expand
     document.querySelector('.industry-swiper').addEventListener('click', function(e) {
