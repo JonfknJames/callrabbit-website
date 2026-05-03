@@ -477,8 +477,9 @@
         .industry-card__expand .visit-link span.material-symbols-outlined {
             font-size: 1.1rem;
         }
-        /* Collections card — natural flow, content centered, button right
-           after the tags with normal spacing. Button kept on one line. */
+        /* Collections card — natural flow, content centered. Visit link is
+           rendered as plain bold text (no button background) since the
+           click navigation has been disabled. */
         .industry-card__expand--payus {
             padding: 20px 18px !important;
             justify-content: center !important;
@@ -490,10 +491,23 @@
             margin-bottom: 4px !important;
         }
         .industry-card__expand--payus .visit-link {
+            background: none !important;
+            box-shadow: none !important;
+            padding: 0 !important;
             margin-top: 4px !important;
-            padding: 9px 18px !important;
-            font-size: 0.72rem !important;
+            font-size: 0.95rem !important;
+            font-weight: 800 !important;
+            color: #00A39E !important;
+            text-transform: none !important;
+            letter-spacing: 0 !important;
             white-space: nowrap !important;
+            cursor: default !important;
+            display: inline !important;
+        }
+        .industry-card__expand--payus .visit-link:hover {
+            transform: none !important;
+            box-shadow: none !important;
+            color: #00A39E !important;
         }
         /* Atropos depth */
         .atropos-inner {
@@ -1245,8 +1259,8 @@
           </div>
           <div class="industry-card__expand industry-card__expand--payus">
             <p>Let <strong>PAYUS</strong> collect your debts — efficiently and affordably.</p>
-            <div><span class="tag">Voice</span><span class="tag">SMS</span><span class="tag">Messaging Apps</span><span class="tag">Social</span><span class="tag">Email</span><span class="tag">Mail</span></div>
             <p>Compliance first. <strong>PAYUS</strong> holds the line on collection rules across every jurisdiction — FDCPA, CFPB, CASL, GDPR — while the audit log writes itself.</p>
+            <div><span class="tag">Voice</span><span class="tag">SMS</span><span class="tag">Messaging Apps</span><span class="tag">Social</span><span class="tag">Email</span><span class="tag">Mail</span></div>
             <a class="visit-link" href="https://payus.money" target="_blank" rel="noopener"
                onmousedown="event.stopPropagation()"
                onpointerdown="event.stopPropagation()"
