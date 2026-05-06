@@ -1240,7 +1240,14 @@ function openBensonWidget() {
 
 <!-- ========== 8. CONTACT FORM ========== -->
 <section id="contact" class="space-y-6">
-  <div id="contact-rabbit-canvas" style="width: 100%; height: 250px; cursor: grab;"></div>
+  <div id="contact-rabbit-canvas" style="width: 100%; height: 250px; cursor: grab; position: relative;">
+    <img id="contact-rabbit-fallback" src="logo-woodcut.webp" alt="CallRabbit"
+         fetchpriority="low" decoding="async"
+         style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                max-height: 200px; width: auto; mix-blend-mode: lighten;
+                filter: drop-shadow(0 0 24px rgba(16, 185, 129, 0.12));
+                transition: opacity 350ms ease; pointer-events: none;"/>
+  </div>
   <form action="https://formsubmit.co/info@callrabbit.ai" method="POST" class="tactile-raised p-5 rounded-2xl border border-white/5 space-y-5">
     <input type="hidden" name="_subject" value="New CallRabbit inquiry"/>
     <input type="hidden" name="_captcha" value="false"/>
@@ -1322,7 +1329,15 @@ function lazyLoad3D() {
     var GLTFLoader = modules[1].GLTFLoader;
     var DRACOLoader = modules[2].DRACOLoader;
     var OrbitControls = modules[3].OrbitControls;
-    init3D(THREE, GLTFLoader, DRACOLoader, OrbitControls);
+    try {
+      init3D(THREE, GLTFLoader, DRACOLoader, OrbitControls);
+    } catch (err) {
+      // WebGL context creation or scene setup threw — fallback image stays.
+      console.warn('[CallRabbit] 3D init threw, fallback image kept:', err);
+    }
+  }).catch(function(err) {
+    // Three.js or addon failed to download (importmap, CSP, network, etc).
+    console.warn('[CallRabbit] Three.js failed to load, fallback image kept:', err);
   });
 }
 // Watch both 3D containers — load when either enters viewport
@@ -1413,6 +1428,17 @@ if (contactContainer) {
     scene.add(model);
     controls.target.set(0, 0, 0);
     controls.update();
+
+    // 3D loaded successfully — fade out the static fallback image
+    var fb = document.getElementById('contact-rabbit-fallback');
+    if (fb) {
+      fb.style.opacity = '0';
+      setTimeout(function() { if (fb && fb.parentNode) fb.parentNode.removeChild(fb); }, 400);
+    }
+  }, undefined, function(err) {
+    // DRACO decode failure, network failure, or GLB parse error — leave the
+    // static fallback image in place so iPhone Safari users still see a rabbit.
+    console.warn('[CallRabbit] 3D rabbit GLB failed to load, fallback image kept:', err);
   });
 
   // Touch/mouse-reactive glow
