@@ -1,0 +1,41 @@
+# DigitalOcean App Platform spec for callrabbit-website
+#
+# Static marketing site for callrabbit.ai.
+#
+# Why DO Apps instead of GitHub Pages: the source repo
+# JonfknJames/callrabbit-website was flipped to private as part of the
+# 2026-05-31 stealth pass. GitHub Pages free tier doesn't serve private
+# repos. DO Apps connects via GitHub App OAuth and works with private
+# repos at no cost on the Starter tier (3 free static_sites per account;
+# this is the 2nd of 3, alongside payus-website and traderabbit-site).
+#
+# Region: tor (Toronto). Mirrors payus-website for ops consistency.
+#
+# `zone` is intentionally omitted on both domains — same rationale as
+# payus-website. Without `zone`, DO uses external DNS, looking for a
+# CNAME at the registrar pointing to the default ingress. Matches the
+# existing Namecheap setup (current A records point at GitHub Pages
+# 185.199.x.x; they get repointed at the DO ingress hostname during
+# DNS cutover).
+#
+# Auto-deploys on push to main via DO's GitHub integration.
+
+name: callrabbit-website
+region: tor
+
+domains:
+  - domain: callrabbit.ai
+    type: PRIMARY
+  - domain: www.callrabbit.ai
+    type: ALIAS
+
+static_sites:
+  - name: site
+    github:
+      repo: JonfknJames/callrabbit-website
+      branch: main
+      deploy_on_push: true
+    source_dir: /
+    output_dir: /
+    routes:
+      - path: /
