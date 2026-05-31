@@ -1356,9 +1356,19 @@ Start voice demo
 </div>
 </section>
 <!-- ElevenLabs Conversational AI Widget (Benson) — Dark themed, CallRabbit branded -->
+<!-- use-rtc forces WebRTC transport instead of the default WebSocket PCM
+     path. WebSocket mode plays agent audio through a manual AudioWorkletNode
+     whose resample ratio is locked to the AudioContext sample rate at session
+     start; a second conversation on the same page session can get a fresh
+     context at a different device rate (after the mic has engaged), wrong
+     ratio → high-pitched "chipmunk" playback. WebRTC hands audio to the
+     browser's native media stack with per-session sample-rate negotiation —
+     no resample worklet, no cross-session rate mismatch. Also ElevenLabs'
+     default for voice conversations. -->
 <elevenlabs-convai
   agent-id="agent_4101khwycf5tevgt013jv9pgdnqa"
   avatar-image-url="benson-face.webp"
+  use-rtc="true"
 ></elevenlabs-convai>
 <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 <script>
