@@ -1541,7 +1541,10 @@ function openBensonWidget() {
 </div>
 <form action="https://formsubmit.co/info@callrabbit.ai" method="POST" class="tactile-raised p-6 md:p-12 rounded-2xl md:rounded-3xl border border-white/5 space-y-6 md:space-y-8">
 <input type="hidden" name="_subject" value="New CallRabbit inquiry"/>
-<input type="hidden" name="_captcha" value="false"/>
+<!-- reCAPTCHA re-enabled 2026-08-16 after spam started arriving. FormSubmit enables it
+     by default and recommends keeping it on; this form had it explicitly disabled with
+     value="false", which is why bots got through. Do not set it back to false. -->
+<input type="hidden" name="_captcha" value="true"/>
 <input type="hidden" name="_next" value="https://callrabbit.ai?thanks=1"/>
 <input type="text" name="_honey" style="display:none"/>
 <div class="space-y-2">
